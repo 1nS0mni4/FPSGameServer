@@ -1,0 +1,12 @@
+D:\Projects\Server\Practice\Server\ServerCore\bin\Debug\net6.0\ServerCore.deps.json
+D:\Projects\Server\Practice\Server\ServerCore\bin\Debug\net6.0\ServerCore.dll
+D:\Projects\Server\Practice\Server\ServerCore\bin\Debug\net6.0\ServerCore.pdb
+D:\Projects\Server\Practice\Server\ServerCore\obj\Debug\net6.0\ServerCore.csproj.AssemblyReference.cache
+D:\Projects\Server\Practice\Server\ServerCore\obj\Debug\net6.0\ServerCore.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projects\Server\Practice\Server\ServerCore\obj\Debug\net6.0\ServerCore.AssemblyInfoInputs.cache
+D:\Projects\Server\Practice\Server\ServerCore\obj\Debug\net6.0\ServerCore.AssemblyInfo.cs
+D:\Projects\Server\Practice\Server\ServerCore\obj\Debug\net6.0\ServerCore.csproj.CoreCompileInputs.cache
+D:\Projects\Server\Practice\Server\ServerCore\obj\Debug\net6.0\ServerCore.dll
+D:\Projects\Server\Practice\Server\ServerCore\obj\Debug\net6.0\refint\ServerCore.dll
+D:\Projects\Server\Practice\Server\ServerCore\obj\Debug\net6.0\ServerCore.pdb
+D:\Projects\Server\Practice\Server\ServerCore\obj\Debug\net6.0\ref\ServerCore.dll

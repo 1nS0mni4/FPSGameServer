@@ -1,0 +1,121 @@
+syntax = "proto3";
+
+package Protocol;
+import "google/protobuf/timestamp.proto";
+option csharp_namespace = "Google.Protobuf.Protocol";
+
+
+enum PacketID{
+	//option allow_alias = true;	//Other Enums can get same numerics
+	C_DEBUG				= 0;
+	S_DEBUG				= 1;
+	C_ACCESS			= 2;
+	S_ACCESS_RESPONSE	= 3;
+	C_REGISTER			= 4;
+	S_REGISTER_RESPONSE = 5;
+	C_DISCONNECT		= 6;
+	C_CHANGED_SCENE_TO	= 7;
+	S_PLAYER_LIST		= 8;
+	S_SPAWN_INDEX		= 9;
+	C_SPAWN_POINT		= 10;
+}
+
+//----------------------------------------<Client Packet>---------------------------------------
+message C_Debug{
+	string message = 1;
+}
+
+message C_Access{
+	string id = 1;
+	string pw = 2;
+}
+
+message C_Register{
+	string id = 1;
+	string pw = 2;
+}
+
+message C_Disconnect{ 
+}
+
+message C_Changed_Scene_To{
+	pSceneType SceneType = 1;
+}
+
+message C_Spawn_Point{
+	pVector3 position = 1;
+}
+
+//----------------------------------------<Server Packet>---------------------------------------
+
+message S_Debug{
+	int32 SessionID = 1;
+	string message = 2;
+}
+
+message S_Access_Response{
+	NetworkError ErrorCode = 1;
+	int32 SessionID = 2;
+}
+
+message S_Register_Response{
+	bool ErrorCode = 1;
+}
+
+message S_Player_List{
+	repeated pUserInGameData userList = 1;
+}
+
+message S_Spawn_Index{
+	int32 sessionID = 1;
+	int32 spawnIndex = 2;
+}
+
+//---------------------------------------<Packet Data Model>------------------------------------
+
+message pUserInGameData{
+	int32 sessionID = 1;
+	pVector3 position = 2;
+}
+
+message pVector3{
+	float x = 1;
+	float y = 2;
+	float z = 3;
+}
+
+message pAuthResult{
+	NetworkError ErrorCode = 1;
+	int32 AuthCode = 2;
+}
+
+enum pSceneType{
+	NONE = 0;
+	MAIN = 1;
+	LOGIN = 2;
+	LOBBY = 3;
+	LOADING = 4;
+	HIDEOUT = 5;
+	FIELDMAP = 6;
+}
+
+enum pPlayerStance{
+	IDLE		= 0;
+	CROUCH		= 1;
+	WALK		= 2;
+	RUN			= 3;
+}
+
+enum pObjectType{
+	PLAYER = 0;
+	MYPLAYER = 1;
+	PROJECTILE = 2;
+	FIELDOBJECT = 3;
+}
+
+enum NetworkError{
+	SUCCESS				= 0;
+	NOACCOUNT			= 1;
+	OVERLAP				= 2;
+	INVALID_PASSWORD	= 3;
+}
