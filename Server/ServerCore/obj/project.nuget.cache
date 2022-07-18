@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5xU0mxMbN/ByCgCJ13AOu48sq5CPK3LVeQvPEFxYZi7wb+So6tIF+EkB+Va7mQICvZjoLBPTDnkGJ0w2C2fCMQ==",
+  "dgSpecHash": "fJEYZ7458yx7mPHTLGedzmUBaARVm9kjy0BPAY7LNZBpOpv8ldeyGM34Nvy0AiMP0oaqCUsWqn/sR1GnjXqmpw==",
   "success": true,
-  "projectFilePath": "D:\\Projects\\Server\\Practice\\Server\\ServerCore\\ServerCore.csproj",
+  "projectFilePath": "D:\\Projects\\GitHub\\FPSGameServer\\Server\\ServerCore\\ServerCore.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

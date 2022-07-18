@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "aZky6LRpn2MMOKPU4/hOs4bdLZJ67hGwnV+DyoqbOnUdcaZG0BBETMWaMcTICk+eDEfY52iJNOs5tCNsXFVMCw==",
+  "dgSpecHash": "eu8Fzrrebk8rz1fW7vn24q2grVI2Re7NptGODlUMNdyyXXIvlfIisNzBoOitTRzsSK3/Tt2IH37GLpZlWajqLQ==",
   "success": true,
-  "projectFilePath": "D:\\Projects\\Server\\Practice\\Server\\PacketGenerator\\PacketGenerator.csproj",
+  "projectFilePath": "D:\\Projects\\GitHub\\FPSGameServer\\Server\\PacketGenerator\\PacketGenerator.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

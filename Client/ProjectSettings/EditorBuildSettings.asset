@@ -4,5 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Login.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Hideout.unity
+    guid: 901477769ceb50246b92e00ff9195e05
+  - enabled: 1
+    path: Assets/Scenes/Fieldmap.unity
+    guid: b5249681b797ad540b775f1704b48d15
   m_configObjects: {}

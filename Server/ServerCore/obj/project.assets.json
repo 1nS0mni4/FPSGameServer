@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\Server\\Practice\\Server\\ServerCore\\ServerCore.csproj",
+      "projectUniqueName": "D:\\Projects\\GitHub\\FPSGameServer\\Server\\ServerCore\\ServerCore.csproj",
       "projectName": "ServerCore",
-      "projectPath": "D:\\Projects\\Server\\Practice\\Server\\ServerCore\\ServerCore.csproj",
+      "projectPath": "D:\\Projects\\GitHub\\FPSGameServer\\Server\\ServerCore\\ServerCore.csproj",
       "packagesPath": "C:\\Users\\16624\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\Server\\Practice\\Server\\ServerCore\\obj\\",
+      "outputPath": "D:\\Projects\\GitHub\\FPSGameServer\\Server\\ServerCore\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

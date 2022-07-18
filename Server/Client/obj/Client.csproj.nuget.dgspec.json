@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Projects\\Server\\Practice\\Server\\Client\\Client.csproj": {}
+    "D:\\Projects\\GitHub\\FPSGameServer\\Server\\Client\\Client.csproj": {}
   },
   "projects": {
-    "D:\\Projects\\Server\\Practice\\Server\\Client\\Client.csproj": {
+    "D:\\Projects\\GitHub\\FPSGameServer\\Server\\Client\\Client.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projects\\Server\\Practice\\Server\\Client\\Client.csproj",
+        "projectUniqueName": "D:\\Projects\\GitHub\\FPSGameServer\\Server\\Client\\Client.csproj",
         "projectName": "Client",
-        "projectPath": "D:\\Projects\\Server\\Practice\\Server\\Client\\Client.csproj",
+        "projectPath": "D:\\Projects\\GitHub\\FPSGameServer\\Server\\Client\\Client.csproj",
         "packagesPath": "C:\\Users\\16624\\.nuget\\packages\\",
-        "outputPath": "D:\\Projects\\Server\\Practice\\Server\\Client\\obj\\",
+        "outputPath": "D:\\Projects\\GitHub\\FPSGameServer\\Server\\Client\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -32,8 +32,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "D:\\Projects\\Server\\Practice\\Server\\ServerCore\\ServerCore.csproj": {
-                "projectPath": "D:\\Projects\\Server\\Practice\\Server\\ServerCore\\ServerCore.csproj"
+              "D:\\Projects\\GitHub\\FPSGameServer\\Server\\ServerCore\\ServerCore.csproj": {
+                "projectPath": "D:\\Projects\\GitHub\\FPSGameServer\\Server\\ServerCore\\ServerCore.csproj"
               }
             }
           }
@@ -72,14 +72,14 @@
         }
       }
     },
-    "D:\\Projects\\Server\\Practice\\Server\\ServerCore\\ServerCore.csproj": {
+    "D:\\Projects\\GitHub\\FPSGameServer\\Server\\ServerCore\\ServerCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projects\\Server\\Practice\\Server\\ServerCore\\ServerCore.csproj",
+        "projectUniqueName": "D:\\Projects\\GitHub\\FPSGameServer\\Server\\ServerCore\\ServerCore.csproj",
         "projectName": "ServerCore",
-        "projectPath": "D:\\Projects\\Server\\Practice\\Server\\ServerCore\\ServerCore.csproj",
+        "projectPath": "D:\\Projects\\GitHub\\FPSGameServer\\Server\\ServerCore\\ServerCore.csproj",
         "packagesPath": "C:\\Users\\16624\\.nuget\\packages\\",
-        "outputPath": "D:\\Projects\\Server\\Practice\\Server\\ServerCore\\obj\\",
+        "outputPath": "D:\\Projects\\GitHub\\FPSGameServer\\Server\\ServerCore\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

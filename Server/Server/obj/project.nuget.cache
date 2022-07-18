@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Wy9EAGq+vluGuQ7u+ZHyUQB38dXQBybkOT8lfSxlqqxgy6LGehTy61Cg1igsQuHJeSyYeXZTzhaRAOrEsC0zpQ==",
+  "dgSpecHash": "csJrki9Lp//MAZrTB3cpQRDraZu9IFVuJGccbbEWiaukYZpEJ0R0KVudi3cJdm8gIYRkv78ARr+8SdTilLFbZQ==",
   "success": true,
-  "projectFilePath": "D:\\Projects\\Server\\Practice\\Server\\Server\\Server.csproj",
+  "projectFilePath": "D:\\Projects\\GitHub\\FPSGameServer\\Server\\Server\\Server.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\16624\\.nuget\\packages\\concurrencyvisualizer\\3.0.0\\concurrencyvisualizer.3.0.0.nupkg.sha512",
     "C:\\Users\\16624\\.nuget\\packages\\google.protobuf\\3.12.3\\google.protobuf.3.12.3.nupkg.sha512",

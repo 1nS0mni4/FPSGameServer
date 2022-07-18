@@ -44,8 +44,8 @@ public class ExecutionArea : MonoBehaviour
             isExecuting = true;
             executionRemaining = executionLimit;
             execution.gameObject.SetActive(true);
-            StartCoroutine("CoStartCountExecution");
-            Debug.Log("Execution Started!");
+            StartCoroutine(CoStartCountExecution());
+            //Debug.Log("Execution Started!");
         }
     }
 
@@ -59,14 +59,14 @@ public class ExecutionArea : MonoBehaviour
         isExecuting = false;
         executionRemaining = 0.0f;
         execution.gameObject.SetActive(false);
-        StopCoroutine("CoStartCountExecution");
-        Debug.Log("Execution Canceled!");
+        StopCoroutine(CoStartCountExecution());
+        //Debug.Log("Execution Canceled!");
     }
 
     public IEnumerator CoStartCountExecution() {
         while(isExecuting) {
             executionRemaining -= Time.deltaTime;
-            Debug.Log($"Execution Time : {executionRemaining}");
+            //Debug.Log($"Execution Time : {executionRemaining}");
             execution.SetExecTime(executionRemaining);
 
             if(executionRemaining <= 0.0f) {
