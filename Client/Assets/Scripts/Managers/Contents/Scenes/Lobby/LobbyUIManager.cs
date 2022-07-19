@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Define;
 
-public class LobbyUIManager : BaseUI {
+public class LobbyUIManager : UIManager {
     public override pSceneType Type { get; protected set; } = pSceneType.Lobby;
 
     [Header("UI Elements in Lobby")]
@@ -21,8 +21,8 @@ public class LobbyUIManager : BaseUI {
     public RoomListUI RoomListUI { get => _roomListUI; }
 
 
-    public override void Start() {
-        base.Start();
+    public override void Awake() {
+        base.Awake();
         RefreshList(automatic: true);
     }
 

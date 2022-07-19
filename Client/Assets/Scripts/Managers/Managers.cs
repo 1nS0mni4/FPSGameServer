@@ -57,18 +57,18 @@ public class Managers : MonoBehaviour {
     private SceneController _scene;
     public static SceneController Scene { get => Instance._scene; }
 
-    private BaseUI _ui;
-    public static BaseUI UI { get => Instance._ui;
-        set {
-            Instance._ui = value;
-        }
-    }
+    //private BaseUI _ui;
+    //public static BaseUI UI { get => Instance._ui;
+    //    set {
+    //        Instance._ui = value;
+    //    }
+    //}
 
-    private ObjectManager _object;
-    public static ObjectManager Object { get => Instance._object; set {
-            Instance._object = value;
-        }
-    }
+    //private ObjectManager _object;
+    //public static ObjectManager Object { get => Instance._object; set {
+    //        Instance._object = value;
+    //    }
+    //}
 
     #endregion
 

@@ -36,9 +36,11 @@ public class ExecutionArea : MonoBehaviour
     private void OnTriggerEnter(Collider other) {
         _player = other.GetComponent<MyPlayer>();
 
-        execution = ( Managers.UI as InGameUIManager ).ExecUI;
-        if(execution == null)
+        InGameUIManager uiManager = UIManager.GetUIManager<InGameUIManager>();
+        if(uiManager == null)
             return;
+
+        execution = uiManager.ExecUI;
 
         if(_player != null) {
             isExecuting = true;

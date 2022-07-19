@@ -7,7 +7,7 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using static Define;
 
-public class HideoutSceneManager : BaseScene {
+public class HideoutSceneManager : MSceneManager {
     public override pSceneType SceneType { get; protected set; } = pSceneType.Hideout;
 
 

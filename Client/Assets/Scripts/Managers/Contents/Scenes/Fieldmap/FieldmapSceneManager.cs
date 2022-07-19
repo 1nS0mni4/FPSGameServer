@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Define;
 
-public class FieldmapSceneManager : BaseScene {
+public class FieldmapSceneManager : MSceneManager {
     [SerializeField]
     private Transform _playerParent = null;
     [SerializeField]

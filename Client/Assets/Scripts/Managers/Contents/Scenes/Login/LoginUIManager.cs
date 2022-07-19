@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class LoginUIManager : BaseUI {
+public class LoginUIManager : UIManager {
     public override pSceneType Type { get; protected set; } = pSceneType.Login;
 
     [Header("UI Panels in Login Scene")]
@@ -41,8 +41,8 @@ public class LoginUIManager : BaseUI {
     private string pwInput = null;
     private bool isRegister = false;
 
-    public override void Start() {
-        base.Start();
+    public override void Awake() {
+        base.Awake();
         _loginPanel.SetActive(!isRegister);
         _registerPanel.SetActive(isRegister);
     }

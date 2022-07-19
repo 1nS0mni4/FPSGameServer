@@ -9,7 +9,7 @@ public class SceneController : MonoBehaviour
 {
     public pSceneType CurrentScene { get; private set; }
     public float progress;
-    public BaseScene Manager { private get; set; }
+    public MSceneManager Manager { private get; set; }
     public void ChangeSceneTo(pSceneType type) {
         StartCoroutine(CoStartChangeSceneTo(type));
     }
@@ -41,7 +41,7 @@ public class SceneController : MonoBehaviour
         //SceneManager.UnloadScene(prevScene);
         yield break;
     }
-    public T GetManager<T>() where T: BaseScene {
+    public T GetManager<T>() where T: MSceneManager {
         return Manager as T;
     }
 }

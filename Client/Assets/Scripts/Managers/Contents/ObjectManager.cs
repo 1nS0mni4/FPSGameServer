@@ -23,7 +23,7 @@ public class ObjectManager : MonoBehaviour {
     private GameObject[] _objectsPrefab = null;
 
     private void Awake() {
-        Managers.Object = this;
+        //Managers.Object = this;
         //PoolObjects();
     }
 

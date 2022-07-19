@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Define;
 
-public class LoadingUIManager : BaseUI {
+public class LoadingUIManager : UIManager {
     public override pSceneType Type { get; protected set; } = pSceneType.Loading;
 
     [Header("UI Elements in Loading")]
@@ -16,8 +16,8 @@ public class LoadingUIManager : BaseUI {
     private Slider _loadingBar = null;
 
 
-    public override void Start() {
-        base.Start();
+    public override void Awake() {
+        base.Awake();
         
 
     }
