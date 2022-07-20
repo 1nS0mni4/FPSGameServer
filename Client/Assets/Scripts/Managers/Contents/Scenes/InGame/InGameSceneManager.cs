@@ -1,79 +1,105 @@
 using Google.Protobuf.Protocol;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
-[RequireComponent(typeof(ObjectPoolManager))]
 public class InGameSceneManager : MSceneManager {
     public override pSceneType SceneType { get; protected set; }
+    [SerializeField]
+    private InGameUIManager _uiManager = null;
 
-    [Header("Map Prefab")]
+    [Header("Map")]
     public Transform _mapParent = null;
     [SerializeField]
     private GameObject _mapPrefab = null;
 
-    [Header("Field Objects (ex. SpawnPoint, Door, Box...)")]
+    [Header("Spawn Point")]
+    [SerializeField]
+    private List<PlayerInSceneFormat> _spawnPoints;
+
+    [Header("Player")]
+    [SerializeField]
+    private GameObject _myPlayerPrefab = null;
+    [SerializeField]
+    private GameObject _playerPrefab = null;
+
+    [Header("Field Objects (ex. ExtractionPoint, Door, Box...)")]
     public Transform _fieldObjectParent = null;
     [SerializeField]
-    private List<FIeldObjectFormat> _fieldObjects = new List<FIeldObjectFormat>();
+    private List<FieldObjectFormat> _fieldObjects = new List<FieldObjectFormat>();
 
     [Space]
+    [Header("----------------Object Pooling----------------")]
     [SerializeField]
-    private ObjectPoolManager _objectPool = new ObjectPoolManager();
-    public ObjectPoolManager Pool { get => _objectPool; }
-    public List<PoolableFormat> _poolableObjects = new List<PoolableFormat>();
+    private PoolManager<pObjectType> _objectPool = new PoolManager<pObjectType>();
+    public PoolManager<pObjectType> Pool { get => _objectPool; }
+    public Transform _poolParent = null;
+    public List<PoolableFormat<pObjectType>> _poolableObjects = new List<PoolableFormat<pObjectType>>();
+    public override void InitScene() {
+        LoadScene();
+    }
 
     private void LoadScene() {
-        Instantiate(_mapPrefab);
+        _objectPool.SetParent(_poolParent);
+        Instantiate(_mapPrefab, _mapParent);
 
         for(int i = 0; i < _fieldObjects.Count; i++) {
             GameObject fo = Instantiate(_fieldObjects[i].obj);
             fo.transform.position = _fieldObjects[i].position;
             fo.transform.rotation = Quaternion.Euler(_fieldObjects[i].rotation);
             fo.transform.localScale = _fieldObjects[i].scale;
+            fo.transform.SetParent(_fieldObjectParent);
         }
 
-        Pool.RegisterPoolObject(_poolableObjects);
+        for(int i = 0; i < _poolableObjects.Count; i++) {
+            _objectPool.RegisterPoolObject(_poolableObjects[i].type, _poolableObjects[i].obj);
+        }
 
-        GameObject go = Instantiate(new GameObject());
-        go.AddComponent<Camera>();
-        go.name = name;
-        go.tag = name;
-        go.transform.position = new Vector3(0, 8.5f, -10);
-        go.transform.rotation = Quaternion.Euler(new Vector3(25, 0, 0));
+        IsInitialized = true;
+
+        Interlocked.MemoryBarrier();
+
+        SpawnMyPlayerInScene();
+
+        C_Changed_Scene_To sceneChanged = new C_Changed_Scene_To();
+        sceneChanged.SceneType = SceneType;
+        Managers.Network.Send(sceneChanged);
     }
 
-    public override void InitScene() {
-        string name = "MainCamera";
+    public void SpawnMyPlayerInScene() {
+        Vector3 pos = new Vector3(0, 2, 0);
+        Vector3 rot = new Vector3(0, 0, 0);
 
+        for(int i = 0; i < _spawnPoints.Count; i++) {
+            if(_spawnPoints[i]._playerInScene == Managers.PrevScene) {
+                pos = _spawnPoints[i].position;
+                rot = _spawnPoints[i].rotation;
+            }
+        }
 
-        StartCoroutine(CoStartInitializing());
+        GameObject go = Instantiate(_myPlayerPrefab, pos, Quaternion.EulerAngles(rot));
+
+        _uiManager.Fade.FadeControlTo(false);
     }
 
     public override void ClearScene() {
 
-
-    }
-
-    private IEnumerator CoStartInitializing() {
-        IsInitialized = false;
-
-        LoadScene();
-
-        yield break;
     }
 }
 [System.Serializable]
-public struct FIeldObjectFormat {
+public struct FieldObjectFormat {
     public GameObject obj;
     public Vector3 position;
     public Vector3 rotation;
     public Vector3 scale;
 }
 
-[System.Serializable]
-public struct PoolableFormat {
-    public pObjectType _type;
-    public GameObject obj;
+[Serializable]
+public struct PlayerInSceneFormat {
+    public pSceneType _playerInScene;
+    public Vector3 position;
+    public Vector3 rotation;
 }

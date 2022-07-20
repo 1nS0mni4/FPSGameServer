@@ -100,17 +100,19 @@ enum pSceneType{
 }
 
 enum pPlayerStance{
-	IDLE		= 0;
-	CROUCH		= 1;
-	WALK		= 2;
-	RUN			= 3;
+	NOSTANCE	= 0;
+	IDLE		= 1;
+	CROUCH		= 2;
+	WALK		= 3;
+	RUN			= 4;
 }
 
 enum pObjectType{
 	PLAYER = 0;
 	MYPLAYER = 1;
 	PROJECTILE = 2;
-	FIELDOBJECT = 3;
+	DROP = 3;
+	FIELDOBJECT = 4;
 }
 
 enum NetworkError{

@@ -18,7 +18,7 @@ public static class PacketHandler {
     public static async void C_AccessHandler(PacketSession s, IMessage packet) {
         C_Access parsedPacket = (C_Access)packet;
         ClientSession session = (ClientSession)s;
-
+        Console.WriteLine("C_AccessHandler Test");
         UserAccount res = null;
 
         Task<pAuthResult> accountAsync = DbCommands.AccountValidationCheck(parsedPacket);
@@ -44,7 +44,7 @@ public static class PacketHandler {
     public static async void C_RegisterHandler(PacketSession s, IMessage packet) {
         C_Register parsedPacket = (C_Register)packet;
         ClientSession session = (ClientSession)s;
-
+        Console.WriteLine("C_RegisterHandler Test");
         Task<bool> accRegister = DbCommands.AccountCreate(parsedPacket);
 
         bool result = await accRegister;
@@ -56,6 +56,7 @@ public static class PacketHandler {
     }
     
     public static async void C_DisconnectHandler(PacketSession s, IMessage packet) {
+        Console.WriteLine("C_DisconnectHandler Test");
         C_Disconnect parsedPacket = (C_Disconnect)packet;
         ClientSession session = (ClientSession)s;
 
@@ -65,6 +66,7 @@ public static class PacketHandler {
     }
 
     public static void C_Changed_Scene_ToHandler(PacketSession s, IMessage packet) {
+        Console.WriteLine("C_Changed_Scene_ToHandler Test");
         C_Changed_Scene_To parsedPacket = (C_Changed_Scene_To)packet;
         ClientSession session = (ClientSession)s;
 

@@ -5,9 +5,12 @@ using UnityEngine;
 using static Define;
 
 public class InGameUIManager : UIManager {
+    public override pSceneType Type { get => _type; protected set => _type = value; }
     [SerializeField]
-    private ExecutionUI _execUI = null;
-    public ExecutionUI ExecUI { get => _execUI; }
-    public override pSceneType Type { get; protected set; } = pSceneType.Hideout;
+    private ExtractionUI _execUI = null;
+    public ExtractionUI ExtracUI { get => _execUI; }
 
+    [SerializeField]
+    private FadeUI _fade = null;
+    public FadeUI Fade { get => _fade; }
 }

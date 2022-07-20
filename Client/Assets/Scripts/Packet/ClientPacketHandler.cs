@@ -22,7 +22,7 @@ public static class PacketHandler {
 
         Debug.Log($"ErrorCode: {response.ErrorCode}, SessionID: {response.SessionID}");
 
-        LoginUIManager ui = UIManager.GetUIManager<LoginUIManager>();
+        LoginUIManager ui = UIManager.GetManager<LoginUIManager>();
         if(ui == null)
             return;
 
@@ -53,7 +53,7 @@ public static class PacketHandler {
             return;
         }
 
-        LoginUIManager ui = UIManager.GetUIManager<LoginUIManager>();
+        LoginUIManager ui = UIManager.GetManager<LoginUIManager>();
         if(ui == null)
             return;
 

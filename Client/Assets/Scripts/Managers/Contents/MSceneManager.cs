@@ -6,7 +6,7 @@ using static Define;
 
 public abstract class MSceneManager : MonoBehaviour {
     private static MSceneManager _instance = null;
-    public bool IsInitialized { get; protected set; } = false;
+    public static bool IsInitialized { get; protected set; } = false;
 
     public abstract pSceneType SceneType { get; protected set; }
     protected void Awake() {
@@ -22,7 +22,7 @@ public abstract class MSceneManager : MonoBehaviour {
     public abstract void InitScene();
     public abstract void ClearScene();
     public static T GetManager<T>() where T: MSceneManager {
-        return _instance.GetComponent<T>();
+        return _instance as T;
     }
     private void OnDestroy() {
         ClearScene();

@@ -20,8 +20,6 @@ public class KeyOption {
     public KeyCode Inventory        = KeyCode.Tab;
 }
 
-[RequireComponent(typeof(PlayerMovement))]
-[RequireComponent(typeof(MyPlayer))]
 public class PlayerController : MonoBehaviour {
     private PlayerMovement _movement = null;
     KeyOption _keyOption = new KeyOption();
@@ -59,7 +57,7 @@ public class PlayerController : MonoBehaviour {
         Managers.Input.AddMouseInputHandler(MouseInputHandler);
         Managers.Input.AddKeyInputHandler(KeyboardInputHandler);
 
-        this._movement = GetComponent<PlayerMovement>();
+        _movement = GetComponent<PlayerMovement>();
         Cursor.lockState = CursorLockMode.Locked;
     }
 
@@ -107,6 +105,9 @@ public class PlayerController : MonoBehaviour {
 
         #region Movement Input Handler
         if(_movement == null)
+            return;
+
+        if(_movement.IsGrounded == false)
             return;
 
         if(_keyOption == null)

@@ -48,12 +48,13 @@ namespace Google.Protobuf.Protocol {
             "U19QTEFZRVJfTElTVBAIEhEKDVNfU1BBV05fSU5ERVgQCRIRCg1DX1NQQVdO",
             "X1BPSU5UEAoqXgoKcFNjZW5lVHlwZRIICgROT05FEAASCAoETUFJThABEgkK",
             "BUxPR0lOEAISCQoFTE9CQlkQAxILCgdMT0FESU5HEAQSCwoHSElERU9VVBAF",
-            "EgwKCEZJRUxETUFQEAYqOAoNcFBsYXllclN0YW5jZRIICgRJRExFEAASCgoG",
-            "Q1JPVUNIEAESCAoEV0FMSxACEgcKA1JVThADKkgKC3BPYmplY3RUeXBlEgoK",
-            "BlBMQVlFUhAAEgwKCE1ZUExBWUVSEAESDgoKUFJPSkVDVElMRRACEg8KC0ZJ",
-            "RUxET0JKRUNUEAMqTQoMTmV0d29ya0Vycm9yEgsKB1NVQ0NFU1MQABINCglO",
-            "T0FDQ09VTlQQARILCgdPVkVSTEFQEAISFAoQSU5WQUxJRF9QQVNTV09SRBAD",
-            "QhuqAhhHb29nbGUuUHJvdG9idWYuUHJvdG9jb2xiBnByb3RvMw=="));
+            "EgwKCEZJRUxETUFQEAYqRgoNcFBsYXllclN0YW5jZRIMCghOT1NUQU5DRRAA",
+            "EggKBElETEUQARIKCgZDUk9VQ0gQAhIICgRXQUxLEAMSBwoDUlVOEAQqUgoL",
+            "cE9iamVjdFR5cGUSCgoGUExBWUVSEAASDAoITVlQTEFZRVIQARIOCgpQUk9K",
+            "RUNUSUxFEAISCAoERFJPUBADEg8KC0ZJRUxET0JKRUNUEAQqTQoMTmV0d29y",
+            "a0Vycm9yEgsKB1NVQ0NFU1MQABINCglOT0FDQ09VTlQQARILCgdPVkVSTEFQ",
+            "EAISFAoQSU5WQUxJRF9QQVNTV09SRBADQhuqAhhHb29nbGUuUHJvdG9idWYu",
+            "UHJvdG9jb2xiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.PacketID), typeof(global::Google.Protobuf.Protocol.pSceneType), typeof(global::Google.Protobuf.Protocol.pPlayerStance), typeof(global::Google.Protobuf.Protocol.pObjectType), typeof(global::Google.Protobuf.Protocol.NetworkError), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -105,17 +106,19 @@ namespace Google.Protobuf.Protocol {
   }
 
   public enum pPlayerStance {
-    [pbr::OriginalName("IDLE")] Idle = 0,
-    [pbr::OriginalName("CROUCH")] Crouch = 1,
-    [pbr::OriginalName("WALK")] Walk = 2,
-    [pbr::OriginalName("RUN")] Run = 3,
+    [pbr::OriginalName("NOSTANCE")] Nostance = 0,
+    [pbr::OriginalName("IDLE")] Idle = 1,
+    [pbr::OriginalName("CROUCH")] Crouch = 2,
+    [pbr::OriginalName("WALK")] Walk = 3,
+    [pbr::OriginalName("RUN")] Run = 4,
   }
 
   public enum pObjectType {
     [pbr::OriginalName("PLAYER")] Player = 0,
     [pbr::OriginalName("MYPLAYER")] Myplayer = 1,
     [pbr::OriginalName("PROJECTILE")] Projectile = 2,
-    [pbr::OriginalName("FIELDOBJECT")] Fieldobject = 3,
+    [pbr::OriginalName("DROP")] Drop = 3,
+    [pbr::OriginalName("FIELDOBJECT")] Fieldobject = 4,
   }
 
   public enum NetworkError {
