@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-
 public enum SlotType
 {
     Inventory, Storage
 }
 
+// 기획상나오는 스롯들의 기능 함수를 적어 click, drag, drop
 public class Slot : MonoBehaviour, IPointerClickHandler
 {
-
     private Container container;
     private Image image;
     public SlotItem item;
@@ -73,6 +72,10 @@ public class Slot : MonoBehaviour, IPointerClickHandler
         target.ChildNameText.GetComponent<Text>().text = target.item.itemName;
 
     }
+
+    // 니가 넣을 슬롯이 빈칸이냐 , 아이템있냐 
+    // 갯수관련 , 드래그앤 드롭 , 클릭 먹을꺼냐? 창착할꺼냐  
+    //보통은 슬롯에서 드래그 , 드롭 , 클릭 .... 처리를 이벤토리 ui             
 
     public void OnPointerClick(PointerEventData eventData)
     {//클릭에대한 함수구현 클릭했을때 돌아가는 로직

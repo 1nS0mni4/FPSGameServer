@@ -8,7 +8,7 @@ public enum ItemType
 }
 
 [System.Serializable]
-public class SlotItem
+public struct SlotItem
 {
     public Sprite itemImage;
     public string itemName;
