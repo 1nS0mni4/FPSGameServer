@@ -61,6 +61,10 @@ public class PlayerController : MonoBehaviour {
 
         this._movement = GetComponent<PlayerMovement>();
         Cursor.lockState = CursorLockMode.Locked;
+
+        inventory = FindObjectOfType<InventoryUI>(); //예비 추가---------------------
+        storageTarget = FindObjectOfType<StorageTarget>(); //예비 추가---------------------
+        storage = FindObjectOfType<StorageUI>(); //예비 추가---------------------
     }
 
     public void MouseInputHandler() {
@@ -169,5 +173,57 @@ public class PlayerController : MonoBehaviour {
     private void OnDestroy() {
         Managers.Input.RemoveMouseInputHandler(MouseInputHandler);
         Managers.Input.RemoveKeyInputHandler(KeyboardInputHandler);
+    }
+
+    // -----------마우스 커서 움직임, 보임----------- 마우스 회전이랑, 클릭은 방식을 몰라 인벤토리 아이템 클릭 적용 못했습니다.
+    public void CursorState(bool point)
+    {
+        if(point == false)
+        {
+            Cursor.visible = point;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        
+        if(point == true)
+        {
+            Cursor.visible = point;
+            Cursor.lockState = CursorLockMode.None;
+        }
+    }
+    // ----------------인벤토리, 창고----------------
+    private InventoryUI inventory;
+    private StorageTarget storageTarget;
+    private StorageUI storage;
+
+    private bool isPoint = false;
+    private bool isInventory = false;
+    private bool isStorage = false;
+
+    private void UpdateInventory()
+    {
+        if(Input.GetKeyDown(KeyCode.X))
+        {
+            inventory.Inventory();
+            isInventory = !isInventory;
+        }
+    }
+
+    private void UdateStorage()
+    {
+        if(storageTarget.isTarget == true)
+        {
+            if(Input.GetKeyDown(KeyCode.Z))
+            {
+                storage.Storage();
+                isStorage = !isStorage;
+            }
+        }
+    }
+
+    // ----------------업데이트 문----------------
+    private void Update()
+    {
+        UdateStorage();
+        UpdateInventory();
     }
 }
