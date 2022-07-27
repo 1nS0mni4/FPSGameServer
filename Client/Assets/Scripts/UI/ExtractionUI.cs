@@ -5,10 +5,11 @@ using UnityEngine;
 
 public class ExtractionUI : MonoBehaviour
 {
+    [SerializeField]
     private TextMeshProUGUI execTimeText = null;
 
     private void Awake() {
-        execTimeText = GetComponentInChildren<TextMeshProUGUI>();
+        
     }
 
     public void SetExecTime(float times) {

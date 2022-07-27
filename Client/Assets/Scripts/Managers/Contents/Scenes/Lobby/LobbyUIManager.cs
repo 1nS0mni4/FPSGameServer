@@ -6,8 +6,6 @@ using UnityEngine.UI;
 using static Define;
 
 public class LobbyUIManager : UIManager {
-    public override pSceneType Type { get; protected set; } = pSceneType.Lobby;
-
     [Header("UI Elements in Lobby")]
     [SerializeField]
     private RoomListUI _roomListUI = null;

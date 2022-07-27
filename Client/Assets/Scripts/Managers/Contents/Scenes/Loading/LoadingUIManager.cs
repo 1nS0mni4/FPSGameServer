@@ -7,8 +7,6 @@ using UnityEngine.UI;
 using static Define;
 
 public class LoadingUIManager : UIManager {
-    public override pSceneType Type { get; protected set; } = pSceneType.Loading;
-
     [Header("UI Elements in Loading")]
     [SerializeField]
     private TextMeshProUGUI _loadingText = null;

@@ -40,8 +40,8 @@ public class Managers : MonoBehaviour {
     #endregion
     #region Game Instances
 
-    private pSceneType _prevScene = pSceneType.None;
-    public static pSceneType PrevScene { get => _instance._prevScene; set => _instance._prevScene = value; }
+    private volatile pAreaType _prevScene = pAreaType.Hideout;
+    public static pAreaType CurArea { get => _instance._prevScene; set => _instance._prevScene = value; }
 
     #endregion
 

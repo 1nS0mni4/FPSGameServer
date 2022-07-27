@@ -147,9 +147,14 @@ public class PlayerController : MonoBehaviour {
             //movePacket.Dir.X = moveDir.x;
             //movePacket.Dir.Z = moveDir.z;
             //movePacket.Stance = _movement.Stance;
+            //입력 누르고 있는 시간 += Time.deltaTime;
 
             //Managers.Network.Send(movePacket);
         }
+        //else if(입력 누르고 있는 시간 >= 이동 주기){
+        //    Managers.Network.Send(movePacket);
+        //    입력 누르고 있는 시간 = 0.0f;
+        //}
         _movement.MoveTo(moveDir);
         #endregion
     }

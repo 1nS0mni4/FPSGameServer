@@ -16,29 +16,26 @@ namespace Server.Contents {
     //    public int ConnectedCount;
     //}
     public class GameRoom : IJobQueue {
-        private const int max_capacity = 5;
-        private JobQueue _jobQueue = new JobQueue();
+        protected const int max_capacity = 5;
+        protected JobQueue _jobQueue = new JobQueue();
 
-        private Dictionary<int, ServerCore.Session> _sessions = new Dictionary<int, ServerCore.Session>();
+        protected Dictionary<int, ClientSession> _sessions = new Dictionary<int, ClientSession>();
 
-        private Dictionary<int, Player> _players = new Dictionary<int, Player>();
+        protected Dictionary<int, Player> _players = new Dictionary<int, Player>();
 
-        private int SpawnIndexCount { get; set; } = 4;
+        protected int SpawnIndexCount { get; set; } = 4;
 
-        private System.Timers.Timer _timer = null;
+        protected System.Timers.Timer _timer = null;
 
-        public int RoomID { get; set; }
-        public int MaxCapacity {
-            get => max_capacity;
-        }
+        public int RoomCode { get; set; }
         public int ConnectedCount { get => _sessions.Count; }
-        public bool CanAccept { get { return MaxCapacity > 0; } }
+        public bool CanAccept { get { return max_capacity - _sessions.Count > 0; } }
 
         public void Init() {
             AddJobTimer(Update, 250f);
         }
 
-        private void AddJobTimer(Action action, float times) {
+        protected void AddJobTimer(Action action, float times) {
             if(action == null)
                 return;
 
@@ -64,7 +61,7 @@ namespace Server.Contents {
             _sessions = null;
             _jobQueue = null;
             GameRoomManager.Instance.Timer.Remove(_timer);
-            Console.WriteLine($"Try to Destory GameRoom {RoomID}");
+            Console.WriteLine($"Try to Destory GameRoom {RoomCode}");
             GameRoomManager.Instance.DestroyRoom(this);
         }
 
@@ -72,39 +69,47 @@ namespace Server.Contents {
             _jobQueue.Push(action);
         }
 
-        public void EnterRoom(ClientSession session) {
+        public void Enter(ClientSession session, pAreaType prevArea, pAreaType destArea) {
             if(session == null)
                 return;
-            if(_sessions.ContainsKey(session.SessionID))
+            if(_sessions.ContainsKey(session.AuthCode))
                 return;
 
-            _sessions.Add(session.SessionID, session);
-            _players.Add(session.SessionID, new Player());
+            _sessions.Add(session.AuthCode, session);
+            session.Section = this;
 
-            Console.WriteLine($"Client{session.SessionID} Entered Room{RoomID}");
+            Console.WriteLine($"Client{session.AuthCode} Entered Room{RoomCode}");
 
             //TODO: 오브젝트 데이터 패킷으로 신규 유저에게 전송
             {
-                S_Player_List list = new S_Player_List();
-                foreach(int sessionID in _players.Keys) {
-                    if(sessionID == session.SessionID)
-                        continue;
-                    list.UserList.Add(new pUserInGameData() { SessionID = sessionID, Position = _players[sessionID].position });
-                }
-                session.Send(list);
+                S_Load_Players playerList = GetpUserInGameDatas(session.AuthCode);
+                session.Send(playerList);
+                S_Load_Items itemList = new S_Load_Items();
+                session.Send(itemList);
+                S_Load_Fields fieldList = new S_Load_Fields();
+                session.Send(fieldList);
             }
 
-            S_Spawn_Index spawnIndex = new S_Spawn_Index(){ SpawnIndex = GetRandomSpawnIndex() , SessionID = session.SessionID};
-            Push(() => Broadcast(spawnIndex));
-            AddJobTimer(SendUserObjectSynch, 250f);
+            S_Spawn spawn = new S_Spawn();
+            spawn.AuthCode = session.AuthCode;
+            spawn.PrevArea = prevArea;
+            spawn.DestArea = destArea;
+
+            Push(() => Broadcast(spawn));
+            AddJobTimer(SendUserObjectSynch, 500f);
         }
 
-        public void LeaveRoom(ClientSession session) {
+        public void Leave(ClientSession session) {
             if(session == null)
                 return;
 
             _sessions.Remove(session.SessionID);
             //TODO: Broadcast Someone's Leave
+
+            S_Player_Leave playerLeave = new S_Player_Leave();
+            playerLeave.AuthCode = session.AuthCode;
+
+            Push(() => Broadcast(playerLeave));
 
             if(_sessions.Count == 0)
                 Push(() => DestroyRoom());
@@ -117,35 +122,56 @@ namespace Server.Contents {
 
             //TODO: 다른 Update가 필요한 오브젝트 컨테이너를 여기서 호출
         }
-
-        public int GetRandomSpawnIndex() {
-            return Random.Shared.Next(0, SpawnIndexCount);
-        }
-
-        public void UserInterpolation(int sessionID, pVector3 position) {
+        public void UserInterpolation(int authCode, pTransform transform) {
             Player player = null;
 
-            if(_players.TryGetValue(sessionID, out player)) {
-                player.position = position;
+            if(_players.TryGetValue(authCode, out player)) {
+                player.transform = transform;
+                player.isInterpolated = true;
             }
+            else {
+                player = new Player();
+                player.AuthCode = authCode;
+                player.transform = transform;
+                _players.Add(player.AuthCode, player);
+            }
+
+            S_Player_Interpol interpol = new S_Player_Interpol();
+            interpol.AuthCode = player.AuthCode;
+            interpol.Transform = player.transform;
+
+            Push(() => Broadcast(interpol));
         }
 
         //public void MapObjectInitialization() { }
 
         public void SendUserObjectSynch() {
-            List<pUserInGameData> list = new List<pUserInGameData>();
+            S_Load_Players playerList = new S_Load_Players();
 
             foreach(int key in _players.Keys) {
-                list.Add(new pUserInGameData() { SessionID = key, Position = _players[key].position });
-            }
+                pObjectData data = new pObjectData();
+                data.AuthCode = _players[key].AuthCode;
+                data.Transform = _players[key].transform;
 
-            S_Player_List playerList = new S_Player_List();
-            
-            for(int i = 0; i < list.Count; i++) {
-                playerList.UserList.Add(list[i]);
+                playerList.ObjectList.Add(data);
             }
 
             Push(() => Broadcast(playerList));
+        }
+
+        public S_Load_Players GetpUserInGameDatas(int exceptAuthCode = -1) {
+            S_Load_Players list = new S_Load_Players();
+            
+            foreach(int authCode in _players.Keys) {
+                if(authCode == exceptAuthCode)
+                    continue;
+                pObjectData data = new pObjectData();
+                data.AuthCode = _players[authCode].AuthCode;
+                data.Transform = _players[authCode].transform;
+                list.ObjectList.Add(data);
+            }
+
+            return list;
         }
     }
 }

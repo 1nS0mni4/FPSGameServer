@@ -25,13 +25,13 @@ public static class PacketHandler {
         ClientSession session = (ClientSession)s;
 
         throw new NotImplementedException();
-    }public static void C_Changed_Scene_ToHandler(PacketSession s, IMessage packet) {
-        C_Changed_Scene_To parsedPacket = (C_Changed_Scene_To)packet;
+    }public static void C_Extract_ToHandler(PacketSession s, IMessage packet) {
+        C_Extract_To parsedPacket = (C_Extract_To)packet;
         ClientSession session = (ClientSession)s;
 
         throw new NotImplementedException();
-    }public static void C_Spawn_PointHandler(PacketSession s, IMessage packet) {
-        C_Spawn_Point parsedPacket = (C_Spawn_Point)packet;
+    }public static void C_Spawn_ResponseHandler(PacketSession s, IMessage packet) {
+        C_Spawn_Response parsedPacket = (C_Spawn_Response)packet;
         ClientSession session = (ClientSession)s;
 
         throw new NotImplementedException();

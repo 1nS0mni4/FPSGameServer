@@ -14,7 +14,8 @@
           "Microsoft.EntityFrameworkCore.Design": "6.0.7",
           "Microsoft.EntityFrameworkCore.Relational": "6.0.7",
           "Microsoft.EntityFrameworkCore.SqlServer": "6.0.7",
-          "ServerCore": "1.0.0"
+          "ServerCore": "1.0.0",
+          "Unity3D.UnityEngine": "2020.3.21"
         },
         "runtime": {
           "Server.dll": {}
@@ -505,6 +506,14 @@
           }
         }
       },
+      "Unity3D.UnityEngine/2020.3.21": {
+        "runtime": {
+          "lib/UnityEngine.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
       "ServerCore/1.0.0": {
         "runtime": {
           "ServerCore.dll": {}
@@ -832,6 +841,13 @@
       "sha512": "sha512-CeWTdRNfRaSh0pm2gDTJFwVaXfTq6Xwv/sA887iwPTneW7oMtMlpvDIO+U60+3GWTB7Aom6oQwv5VZVUhQRdPQ==",
       "path": "system.windows.extensions/4.7.0",
       "hashPath": "system.windows.extensions.4.7.0.nupkg.sha512"
+    },
+    "Unity3D.UnityEngine/2020.3.21": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-VkDOwJRbu7ktjXGMzGMUNzLBTwVQmw7Olv3QOhs1gw11zL3rcEWg/O5dUbk/7cF8P5uNCdxVKuhGVNXYNN0mug==",
+      "path": "unity3d.unityengine/2020.3.21",
+      "hashPath": "unity3d.unityengine.2020.3.21.nupkg.sha512"
     },
     "ServerCore/1.0.0": {
       "type": "project",

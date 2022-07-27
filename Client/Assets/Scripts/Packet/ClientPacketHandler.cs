@@ -9,18 +9,18 @@ using UnityEngine.SceneManagement;
 using static Define;
 
 public static class PacketHandler {
-    public static void S_DebugHandler(PacketSession s, IMessage packet) {
+    public static void S_Error_PacketHandler(PacketSession s, IMessage packet) {
         ServerSession session = (ServerSession)s;
-        S_Debug response = (S_Debug)packet;
+        S_Error_Packet response = (S_Error_Packet)packet;
 
-        Debug.Log($"Response: {response.Message}");
+        Debug.Log(response.ErrorCode.ToString());
     }
 
     public static void S_Access_ResponseHandler(PacketSession s, IMessage packet) {
         ServerSession session = (ServerSession)s;
         S_Access_Response response = (S_Access_Response)packet;
 
-        Debug.Log($"ErrorCode: {response.ErrorCode}, SessionID: {response.SessionID}");
+        Debug.Log($"ErrorCode: {response.ErrorCode}, SessionID: {response.AuthCode}");
 
         LoginUIManager ui = UIManager.GetManager<LoginUIManager>();
         if(ui == null)
@@ -37,8 +37,8 @@ public static class PacketHandler {
 
             case NetworkError.Success: {
                 Debug.Log("Success!");
-                Managers.Network.SessionID = response.SessionID;
-                Managers.Scene.ChangeSceneTo(pSceneType.Hideout);
+                Managers.Network.AuthCode = response.AuthCode;
+                Managers.Scene.ChangeSceneTo(pAreaType.Hideout);
             }break;
             default:break;
         }
@@ -60,22 +60,89 @@ public static class PacketHandler {
         Debug.Log("Register Success!");
     }
 
-    public static void S_Player_ListHandler(PacketSession s, IMessage packet) {
+    public static void S_Load_PlayersHandler(PacketSession s, IMessage packet) {
         ServerSession session = (ServerSession)s;
-        S_Player_List response = (S_Player_List)packet;
+        S_Load_Players response = (S_Load_Players)packet;
 
-        throw new NotImplementedException();
+        if(Managers.Scene.IsLoading) {
+            Managers.Scene.Completed.Enqueue(() => {
+
+            });
+        }
     }
 
-    public static void S_Spawn_IndexHandler(PacketSession s, IMessage packet) {
+    public static void S_Load_ItemsHandler(PacketSession s, IMessage packet) {
         ServerSession session = (ServerSession)s;
-        S_Spawn_Index response = (S_Spawn_Index)packet;
+        S_Load_Items response = (S_Load_Items)packet;
 
-        FieldmapSceneManager manager = Managers.Scene.GetManager<FieldmapSceneManager>();
+        InGameSceneManager manager = Managers.Scene.GetManager<InGameSceneManager>();
 
         if(manager == null)
             return;
 
-        manager.SpawnPlayerWithPoint(response.SessionID, response.SpawnIndex);
+        //TODO: 맵의 아이템에 대한 모든 정보 기입
+
+        manager.f_Loaded_Item = true;
     }
+
+    public static void S_Load_FieldsHandler(PacketSession s, IMessage packet) {
+        ServerSession session = (ServerSession)s;
+        S_Load_Fields response = (S_Load_Fields)packet;
+
+        InGameSceneManager manager = Managers.Scene.GetManager<InGameSceneManager>();
+
+        if(manager == null)
+            return;
+
+
+
+        manager.f_Loaded_Field = true;
+    }
+
+    public static void S_Player_InterpolHandler(PacketSession s, IMessage packet) {
+        ServerSession session = (ServerSession)s;
+        S_Player_Interpol response = (S_Player_Interpol)packet;
+
+        InGameSceneManager manager = Managers.Scene.GetManager<InGameSceneManager>();
+
+        if(manager == null)
+            return;
+
+        manager.SynchObjectInPosition(response.AuthCode, response.Transform);
+
+
+        manager.f_Loaded_Player = true;
+    }
+
+    public static void S_SpawnHandler(PacketSession s, IMessage packet) {
+        ServerSession session = (ServerSession)s;
+        S_Spawn response = (S_Spawn)packet;
+
+        if(Managers.Scene.IsLoading) {
+            Managers.Scene.Completed.Enqueue(() => {
+                InGameSceneManager manager = MSceneManager.GetManager<InGameSceneManager>();
+
+                if(manager == null)
+                    return;
+
+                manager.SpawnPlayerInSpawnPoint(response.AuthCode, response.PrevArea);
+            });
+        }
+        //TODO: 이건 무슨 코드였지?
+        //manager.SpawnPlayerWithPoint(response.SessionID, response.SpawnIndex);
+    }
+
+
+    public static void S_Player_LeaveHandler(PacketSession s, IMessage packet) {
+        ServerSession session = (ServerSession)s;
+        S_Player_Leave response = (S_Player_Leave)packet;
+
+        InGameSceneManager manager = MSceneManager.GetManager<InGameSceneManager>();
+
+        if(manager == null)
+            return;
+
+        manager.RemovePlayer(response.AuthCode);
+    }
+    
 }

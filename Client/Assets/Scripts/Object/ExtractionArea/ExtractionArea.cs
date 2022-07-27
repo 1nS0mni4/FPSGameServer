@@ -2,6 +2,7 @@ using Google.Protobuf.Protocol;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
 using static Define;
@@ -10,62 +11,61 @@ public class ExtractionArea : MonoBehaviour
 {
     [Header("Elevator Destination")]
     [SerializeField]
-    private pSceneType destination;
+    private pAreaType _destination;
 
     [Header("Extraction Check Collider")]
     [SerializeField]
     private BoxCollider _collider = null;
+    public BoxCollider Collider { get => _collider; }
 
     [Header("Extraction Time")]
-    public float extractionLimit = -1.0f;
+    public float _extractionLimit = -1.0f;
     [SerializeField]
-    private float extractionRemaining = 0.0f;
+    private float _extractionRemaining = 0.0f;
 
-    public UnityAction<float> ExecutionTimeListener;
-
+    [SerializeField]
     private InGameSceneManager _sceneManager = null;
-    private InGameUIManager _uiManager = null;
-    private ExtractionUI extraction = null;
+    [SerializeField]
+    private ExtractionUI _extractionUI = null;
+    public Action<bool> Completed = null;
 
     private string _playerTag = "MyPlayer";
-    private bool canExtract = false;
-    private bool isExtracting = false;
-
-    private void OnEnable() {
-        _sceneManager = MSceneManager.GetManager<InGameSceneManager>();
-        _uiManager = UIManager.GetManager<InGameUIManager>();
-    }
+    private bool _isExtracting = false;
+    public bool IsExtracting { get => _isExtracting; }
 
     private void OnTriggerEnter(Collider other) {
         if(other.CompareTag(_playerTag) == false)
             return;
-        
-        if(_uiManager != null)
-            extraction = _uiManager.ExtracUI;
-        
-        isExtracting = true;
-        extractionRemaining = extractionLimit;
-        extraction.gameObject.SetActive(true);
+
+        if(_extractionUI != null)
+            _extractionUI.gameObject.SetActive(true);
+
+        _isExtracting = true;
+        _extractionRemaining = _extractionLimit;
         StartCoroutine(CoStartCountExtraction());
     }
 
-
     private void OnTriggerExit(Collider other) {
+        if(_isExtracting == false)
+            return;
+
         if(other.CompareTag(_playerTag) == false)
             return;
 
-        isExtracting = false;
-        extractionRemaining = 0.0f;
-        extraction.gameObject.SetActive(false);
+        _isExtracting = false;
+        _extractionRemaining = 0.0f;
+        if(_extractionUI != null)
+            _extractionUI.gameObject.SetActive(false);
         StopCoroutine(CoStartCountExtraction());
     }
 
     public IEnumerator CoStartCountExtraction() {
-        while(isExtracting) {
-            extractionRemaining -= Time.deltaTime;
-            extraction.SetExecTime(extractionRemaining);
+        while(_isExtracting) {
+            _extractionRemaining -= Time.deltaTime;
+            if(_extractionUI != null)
+                _extractionUI.SetExecTime(_extractionRemaining);
 
-            if(extractionRemaining <= 0.0f) {
+            if(_extractionRemaining <= 0.0f) {
                 ExecutionSuccess();
                 break;
             }
@@ -77,30 +77,21 @@ public class ExtractionArea : MonoBehaviour
     }
 
     private void ExecutionSuccess() {
+        C_Extract_To extPacket = new C_Extract_To();
+        extPacket.RoomCode = _destination == pAreaType.Hideout ? Managers.Network.RoomCode : -1;
+        extPacket.PrevArea = Managers.CurArea;
+        extPacket.DestArea = _destination;
 
-        //switch(destination) {
-        //    case SceneType.Fieldmap: {
-        //        C_Execute_To packet = new C_Execute_To(){Dest = SceneType.Fieldmap };
-        //        Managers.Network.Send(packet);
-        //        Debug.Log("Sended Execute To Fieldmap Packet");
-        //    }
-        //    break;
-        //    case SceneType.Hideout: {
-        //        C_Execute_To packet = new C_Execute_To(){Dest = SceneType.Hideout };
-        //        Managers.Network.Send(packet);
-        //        Debug.Log("Sended Execute To Hideout Packet");
-        //    }
-        //    break;
-        //    default: break;
-        //}
+        Managers.Network.Send(extPacket);
 
-        if(_sceneManager != null) {
-            Managers.PrevScene = _sceneManager.SceneType;
-            Managers.Scene.ChangeSceneTo(pSceneType.Hideout);
+        if(Completed != null) {
+            Completed.Invoke(false);
         }
 
-        if(_uiManager != null) {
-            _uiManager.Fade.FadeControlTo(true);
+        if(_sceneManager != null) {
+            Managers.CurArea = _sceneManager.AreaType;
+            Interlocked.MemoryBarrier();
+            Managers.Scene.ChangeSceneTo(_destination);
         }
     }
 }

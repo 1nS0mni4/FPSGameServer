@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Contents {
-    public class GameRoomManager {
+    public class GameRoomManager{
         #region Singleton
         private static GameRoomManager _instance;
         public static GameRoomManager Instance { get { return _instance; } }
@@ -15,6 +15,7 @@ namespace Server.Contents {
             _instance = new GameRoomManager();
         }
         #endregion
+        //TODO: 나중에 필드맵과 하이드아웃용 매니저를 따로 둬야 할 것임.
 
         private Dictionary<int, GameRoom> _rooms = new Dictionary<int, GameRoom>();
         private object l_rooms = new object();
@@ -24,11 +25,12 @@ namespace Server.Contents {
         public GameRoom Generate() {
             GameRoom room = null;
             lock(l_rooms) {
-                room = new GameRoom(){RoomID = _roomID++};
+                room = new GameRoom(){RoomCode = _roomID++};
                 room.Init();
-                _rooms.Add(room.RoomID, room);
+                _rooms.Add(room.RoomCode, room);
             }
 
+            
             return room;
         }
 
@@ -38,12 +40,12 @@ namespace Server.Contents {
             bool success = false;
 
             lock(l_rooms) {
-                success = _rooms.Remove(room.RoomID);
+                success = _rooms.Remove(room.RoomCode);
             }
-            Console.WriteLine($"GameRoom{room.RoomID} Removing Result: {success}");
+            Console.WriteLine($"GameRoom{room.RoomCode} Removing Result: {success}");
         }
 
-        public void TryEnterRoom(int roomID = -1, ClientSession session = null) {
+        public void TryEnterRoom(int roomID = -1, ClientSession session = null, pAreaType prevArea = pAreaType.Hideout, pAreaType destArea = pAreaType.Hideout) {
             if(session == null)
                 return;
 
@@ -56,21 +58,19 @@ namespace Server.Contents {
                             break;
                         }
                     }
-
+                    
                     if(tryable == null)
                         tryable = Generate();
                 }
 
-                tryable.Push(() => { tryable.EnterRoom(session); });
-                session.Room = tryable;
+                tryable.Push(() => { tryable.Enter(session, prevArea, destArea); });
             }
             else {
                 lock(l_rooms) {
                     GameRoom room = null;
 
                     if(_rooms.TryGetValue(roomID, out room)) {
-                        room.Push(() => room.EnterRoom(session));
-                        session.Room = room;
+                        room.Push(() => room.Enter(session, prevArea, destArea));
                     }
                 }
             }

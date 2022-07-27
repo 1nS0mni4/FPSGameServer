@@ -13,8 +13,8 @@ public class NetworkManager : Manager, IManagerStart, IManagerUpdate, IManagerOn
 {
     private bool onSystemPause = false;
     ServerSession _session = new ServerSession();
-    public int SessionID { get; set; }
-
+    public int AuthCode { get => _session.AuthCode; set => _session.AuthCode = value; }
+    public int RoomCode { get; set; } = -1;
     private void ServerConnection() {
         PacketManager.Instance.CustomHandler = PacketQueue.Instance.Push;
         string host = Dns.GetHostName();

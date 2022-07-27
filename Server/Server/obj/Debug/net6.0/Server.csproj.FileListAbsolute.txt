@@ -122,3 +122,4 @@ D:\Projects\GitHub\FPSGameServer\Server\Server\obj\Debug\net6.0\refint\Server.dl
 D:\Projects\GitHub\FPSGameServer\Server\Server\obj\Debug\net6.0\Server.pdb
 D:\Projects\GitHub\FPSGameServer\Server\Server\obj\Debug\net6.0\Server.genruntimeconfig.cache
 D:\Projects\GitHub\FPSGameServer\Server\Server\obj\Debug\net6.0\ref\Server.dll
+D:\Projects\GitHub\FPSGameServer\Server\Server\bin\Debug\net6.0\UnityEngine.dll

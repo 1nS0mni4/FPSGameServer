@@ -8,16 +8,20 @@ option csharp_namespace = "Google.Protobuf.Protocol";
 enum PacketID{
 	//option allow_alias = true;	//Other Enums can get same numerics
 	C_DEBUG				= 0;
-	S_DEBUG				= 1;
+	S_ERROR_PACKET		= 1;
 	C_ACCESS			= 2;
 	S_ACCESS_RESPONSE	= 3;
 	C_REGISTER			= 4;
 	S_REGISTER_RESPONSE = 5;
 	C_DISCONNECT		= 6;
-	C_CHANGED_SCENE_TO	= 7;
-	S_PLAYER_LIST		= 8;
-	S_SPAWN_INDEX		= 9;
-	C_SPAWN_POINT		= 10;
+	C_EXTRACT_TO		= 7;
+	S_SPAWN				= 8;
+	C_SPAWN_RESPONSE	= 9;
+	S_PLAYER_INTERPOL	= 10;
+	S_LOAD_PLAYERS		= 11;
+	S_LOAD_ITEMS		= 12;
+	S_LOAD_FIELDS		= 13;
+	S_PLAYER_LEAVE		= 14;
 }
 
 //----------------------------------------<Client Packet>---------------------------------------
@@ -38,44 +42,68 @@ message C_Register{
 message C_Disconnect{ 
 }
 
-message C_Changed_Scene_To{
-	pSceneType SceneType = 1;
+message C_Extract_To{
+	pAreaType prevArea = 1;
+	pAreaType destArea = 2;
+	int32 RoomCode = 3;
 }
 
-message C_Spawn_Point{
-	pVector3 position = 1;
+message C_Spawn_Response{
+	pTransform transform = 1;
 }
 
 //----------------------------------------<Server Packet>---------------------------------------
 
-message S_Debug{
-	int32 SessionID = 1;
-	string message = 2;
+message S_Error_Packet{
+	NetworkError errorCode = 1;
 }
 
 message S_Access_Response{
 	NetworkError ErrorCode = 1;
-	int32 SessionID = 2;
+	int32 authCode = 2;
 }
 
 message S_Register_Response{
 	bool ErrorCode = 1;
 }
 
-message S_Player_List{
-	repeated pUserInGameData userList = 1;
+message S_Spawn{
+	int32 AuthCode = 1;
+	pAreaType prevArea = 2;
+	pAreaType destArea = 3;
 }
 
-message S_Spawn_Index{
-	int32 sessionID = 1;
-	int32 spawnIndex = 2;
+message S_Player_Interpol{
+	int32 AuthCode = 1;
+	pTransform transform = 2;
+}
+
+message S_Load_Players{
+	repeated pObjectData objectList = 1;
+}
+
+message S_Load_Items{
+
+}
+
+message S_Load_Fields{
+
+}
+
+message S_Player_Leave{
+	int32 authCode = 1;
 }
 
 //---------------------------------------<Packet Data Model>------------------------------------
 
-message pUserInGameData{
-	int32 sessionID = 1;
-	pVector3 position = 2;
+message pObjectData{
+	int32 AuthCode = 1;
+	pTransform transform = 2;
+}
+
+message pItem{
+	int32 itemCode = 1;
+	int32 itemCount = 2;
 }
 
 message pVector3{
@@ -84,22 +112,26 @@ message pVector3{
 	float z = 3;
 }
 
+message pTransform{
+	pVector3 position = 1;
+	pVector3 rotation = 2;
+}
+
 message pAuthResult{
 	NetworkError ErrorCode = 1;
 	int32 AuthCode = 2;
 }
 
-enum pSceneType{
-	NONE = 0;
-	MAIN = 1;
-	LOGIN = 2;
-	LOBBY = 3;
-	LOADING = 4;
-	HIDEOUT = 5;
-	FIELDMAP = 6;
+enum pAreaType{
+	GAMESTART		= 0;
+	HIDEOUT			= 1;
+	CITYHALL		= 2;		//시청
+	RESIDENTIAL		= 3;		//주거지구
+	INDUSTRIAL		= 4;		//공업지구
+	COMMERCE		= 5;		//상업지구
 }
 
-enum pPlayerStance{
+enum pPlayerStance{	
 	NOSTANCE	= 0;
 	IDLE		= 1;
 	CROUCH		= 2;
@@ -120,4 +152,6 @@ enum NetworkError{
 	NOACCOUNT			= 1;
 	OVERLAP				= 2;
 	INVALID_PASSWORD	= 3;
+	INVALID_ROOM		= 4;
+	INVALID_ACCESS		= 5;
 }

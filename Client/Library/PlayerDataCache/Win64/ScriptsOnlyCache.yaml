@@ -1,10 +1,10 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
+    - ElevatorController
     - ExtractionArea
     - ExtractionUI
     - FadeUI
-    - FieldmapSceneManager
     - InGameSceneManager
     - InGameUIManager
     - LoginSceneManager
@@ -32,11 +32,8 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.StateMachineNode
-    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -53,10 +50,7 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.RectMask2D
   serializedClasses:
     Assembly-CSharp:
-    - FieldObjectFormat
-    - PlayerInSceneFormat
-    - PoolManager`1[Google.Protobuf.Protocol.pObjectType]
-    - PoolableFormat`1[Google.Protobuf.Protocol.pObjectType]
+    - SpawnPointFormat
     Unity.TextMeshPro:
     - TMPro.FaceInfo_Legacy
     - TMPro.FontAssetCreationSettings
@@ -109,23 +103,93 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 4
       Script: {instanceID: 0}
+    - Class: 20
+      Script: {instanceID: 0}
     - Class: 21
+      Script: {instanceID: 0}
+    - Class: 23
       Script: {instanceID: 0}
     - Class: 28
       Script: {instanceID: 0}
+    - Class: 33
+      Script: {instanceID: 0}
+    - Class: 43
+      Script: {instanceID: 0}
     - Class: 48
+      Script: {instanceID: 0}
+    - Class: 54
+      Script: {instanceID: 0}
+    - Class: 64
+      Script: {instanceID: 0}
+    - Class: 65
+      Script: {instanceID: 0}
+    - Class: 74
+      Script: {instanceID: 0}
+    - Class: 81
+      Script: {instanceID: 0}
+    - Class: 90
+      Script: {instanceID: 0}
+    - Class: 91
+      Script: {instanceID: 0}
+    - Class: 95
       Script: {instanceID: 0}
     - Class: 104
       Script: {instanceID: 0}
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 5228}
+      Script: {instanceID: 1590}
+    - Class: 114
+      Script: {instanceID: 1692}
+    - Class: 114
+      Script: {instanceID: 1704}
+    - Class: 114
+      Script: {instanceID: 1710}
+    - Class: 114
+      Script: {instanceID: 1870}
+    - Class: 114
+      Script: {instanceID: 1942}
+    - Class: 114
+      Script: {instanceID: 2024}
+    - Class: 114
+      Script: {instanceID: 2050}
+    - Class: 114
+      Script: {instanceID: 2238}
+    - Class: 114
+      Script: {instanceID: 2570}
+    - Class: 114
+      Script: {instanceID: 2680}
+    - Class: 114
+      Script: {instanceID: 2816}
+    - Class: 114
+      Script: {instanceID: 2862}
+    - Class: 114
+      Script: {instanceID: 2870}
+    - Class: 114
+      Script: {instanceID: 3026}
+    - Class: 114
+      Script: {instanceID: 3192}
+    - Class: 114
+      Script: {instanceID: 3262}
+    - Class: 114
+      Script: {instanceID: 3560}
     - Class: 115
+      Script: {instanceID: 0}
+    - Class: 137
+      Script: {instanceID: 0}
+    - Class: 143
       Script: {instanceID: 0}
     - Class: 157
       Script: {instanceID: 0}
     - Class: 196
+      Script: {instanceID: 0}
+    - Class: 213
+      Script: {instanceID: 0}
+    - Class: 222
+      Script: {instanceID: 0}
+    - Class: 223
+      Script: {instanceID: 0}
+    - Class: 224
       Script: {instanceID: 0}
     Assets/Scenes/Hideout.unity:
     - Class: 1
@@ -167,39 +231,41 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1590}
     - Class: 114
-      Script: {instanceID: 1696}
+      Script: {instanceID: 1692}
     - Class: 114
-      Script: {instanceID: 1702}
+      Script: {instanceID: 1704}
     - Class: 114
-      Script: {instanceID: 1872}
+      Script: {instanceID: 1710}
     - Class: 114
-      Script: {instanceID: 1944}
+      Script: {instanceID: 1870}
     - Class: 114
-      Script: {instanceID: 2026}
+      Script: {instanceID: 1942}
     - Class: 114
-      Script: {instanceID: 2052}
+      Script: {instanceID: 2024}
     - Class: 114
-      Script: {instanceID: 2240}
+      Script: {instanceID: 2050}
     - Class: 114
-      Script: {instanceID: 2572}
+      Script: {instanceID: 2238}
     - Class: 114
-      Script: {instanceID: 2682}
+      Script: {instanceID: 2570}
     - Class: 114
-      Script: {instanceID: 2818}
+      Script: {instanceID: 2680}
     - Class: 114
-      Script: {instanceID: 2864}
+      Script: {instanceID: 2816}
     - Class: 114
-      Script: {instanceID: 2872}
+      Script: {instanceID: 2862}
     - Class: 114
-      Script: {instanceID: 3028}
+      Script: {instanceID: 2870}
     - Class: 114
-      Script: {instanceID: 3194}
+      Script: {instanceID: 3026}
     - Class: 114
-      Script: {instanceID: 3264}
+      Script: {instanceID: 3192}
     - Class: 114
-      Script: {instanceID: 3562}
+      Script: {instanceID: 3262}
     - Class: 114
-      Script: {instanceID: 4310}
+      Script: {instanceID: 3560}
+    - Class: 114
+      Script: {instanceID: 4308}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 137
@@ -252,41 +318,41 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1590}
     - Class: 114
-      Script: {instanceID: 1672}
+      Script: {instanceID: 1668}
     - Class: 114
-      Script: {instanceID: 1780}
+      Script: {instanceID: 1778}
     - Class: 114
-      Script: {instanceID: 1944}
+      Script: {instanceID: 1942}
     - Class: 114
-      Script: {instanceID: 2298}
+      Script: {instanceID: 2296}
     - Class: 114
-      Script: {instanceID: 2682}
+      Script: {instanceID: 2680}
     - Class: 114
-      Script: {instanceID: 2818}
+      Script: {instanceID: 2816}
     - Class: 114
-      Script: {instanceID: 2872}
+      Script: {instanceID: 2870}
     - Class: 114
-      Script: {instanceID: 2934}
+      Script: {instanceID: 2932}
     - Class: 114
-      Script: {instanceID: 3028}
+      Script: {instanceID: 3026}
     - Class: 114
-      Script: {instanceID: 3264}
+      Script: {instanceID: 3262}
     - Class: 114
-      Script: {instanceID: 3360}
+      Script: {instanceID: 3358}
     - Class: 114
-      Script: {instanceID: 3388}
+      Script: {instanceID: 3386}
     - Class: 114
-      Script: {instanceID: 4044}
+      Script: {instanceID: 4042}
     - Class: 114
-      Script: {instanceID: 4074}
+      Script: {instanceID: 4072}
     - Class: 114
-      Script: {instanceID: 4458}
+      Script: {instanceID: 4456}
     - Class: 114
-      Script: {instanceID: 4566}
+      Script: {instanceID: 4564}
     - Class: 114
-      Script: {instanceID: 4580}
+      Script: {instanceID: 4578}
     - Class: 114
-      Script: {instanceID: 4898}
+      Script: {instanceID: 4896}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -342,10 +408,16 @@ ScriptsOnlyBuild:
     className: TMP_InputField
   - hash:
       serializedVersion: 2
-      Hash: 5802e421f8f5d4a4dadcdb23c5501b34
+      Hash: c53a07b92c630366d0ca939eb18a5d09
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ExtractionArea
+  - hash:
+      serializedVersion: 2
+      Hash: 02dc6484786c8dfe7bb37c86a38d3153
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ExtractionAreaController
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -354,10 +426,10 @@ ScriptsOnlyBuild:
     className: Poolable
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: e0f18281c8e2a41e11b54d354dc5597e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: EvelatorController
+    className: ElevatorController
   - hash:
       serializedVersion: 2
       Hash: 8bf14ea4c2573341442cfb01300f46e1
@@ -498,7 +570,7 @@ ScriptsOnlyBuild:
     className: PanelEventHandler
   - hash:
       serializedVersion: 2
-      Hash: 7a19505eb9c494b16069a7b42050ec3d
+      Hash: 8ff481d6fe49490bc8c801cc91510fe1
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: FadeUI
@@ -642,7 +714,7 @@ ScriptsOnlyBuild:
     className: TimelineAsset
   - hash:
       serializedVersion: 2
-      Hash: de3b7711bdbf9f83e91a3d42e0ec972f
+      Hash: 0241b7c058ac1f22eadfcb6a39975d65
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: InGameSceneManager
@@ -804,7 +876,7 @@ ScriptsOnlyBuild:
     className: BeforeAfterTestCommandState
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 990465907c601464f2fd474c114d42d4
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: LoginSceneManager
@@ -864,7 +936,7 @@ ScriptsOnlyBuild:
     className: AssaultRifle
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 990560b4ed3107fdf5acbc1abd4d690e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ExtractionUI
@@ -1122,7 +1194,7 @@ ScriptsOnlyBuild:
     className: PostProcessEffectSettings
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 990465907c601464f2fd474c114d42d4
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: HideoutSceneManager
@@ -1356,7 +1428,7 @@ ScriptsOnlyBuild:
     className: TMP_TextInfoDebugTool
   - hash:
       serializedVersion: 2
-      Hash: f405ce1c1d2b78eb72a0d39c5355a218
+      Hash: 2e2d3053080f481b3576525d4fa9352c
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: FieldmapSceneManager

@@ -5,13 +5,10 @@ using UnityEngine;
 using static Define;
 
 public abstract class UIManager : MonoBehaviour{
-    [SerializeField]
-    protected pSceneType _type;
-    public abstract pSceneType Type { get; protected set; }
     private static UIManager _instance = null;
 
     public virtual void Awake() {
-        if(_instance != null) 
+        if(_instance != null && _instance != this) 
             Destroy(_instance.gameObject);
 
         _instance = this;

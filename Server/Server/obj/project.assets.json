@@ -656,6 +656,15 @@
           }
         }
       },
+      "Unity3D.UnityEngine/2020.3.21": {
+        "type": "package",
+        "compile": {
+          "lib/UnityEngine.dll": {}
+        },
+        "runtime": {
+          "lib/UnityEngine.dll": {}
+        }
+      },
       "ServerCore/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
@@ -1917,6 +1926,19 @@
         "version.txt"
       ]
     },
+    "Unity3D.UnityEngine/2020.3.21": {
+      "sha512": "VkDOwJRbu7ktjXGMzGMUNzLBTwVQmw7Olv3QOhs1gw11zL3rcEWg/O5dUbk/7cF8P5uNCdxVKuhGVNXYNN0mug==",
+      "type": "package",
+      "path": "unity3d.unityengine/2020.3.21",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/UnityEngine.dll",
+        "lib/UnityEngine.xml",
+        "unity3d.unityengine.2020.3.21.nupkg.sha512",
+        "unity3d.unityengine.nuspec"
+      ]
+    },
     "ServerCore/1.0.0": {
       "type": "project",
       "path": "../ServerCore/ServerCore.csproj",
@@ -1931,7 +1953,8 @@
       "Microsoft.EntityFrameworkCore.Design >= 6.0.7",
       "Microsoft.EntityFrameworkCore.Relational >= 6.0.7",
       "Microsoft.EntityFrameworkCore.SqlServer >= 6.0.7",
-      "ServerCore >= 1.0.0"
+      "ServerCore >= 1.0.0",
+      "Unity3D.UnityEngine >= 2020.3.21"
     ]
   },
   "packageFolders": {
@@ -2007,6 +2030,10 @@
           "Microsoft.EntityFrameworkCore.SqlServer": {
             "target": "Package",
             "version": "[6.0.7, )"
+          },
+          "Unity3D.UnityEngine": {
+            "target": "Package",
+            "version": "[2020.3.21, )"
           }
         },
         "imports": [
@@ -2027,5 +2054,17 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "프로젝트 대상 프레임워크 'net6.0' 대신 '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8'을(를) 사용하여 패키지 'Unity3D.UnityEngine 2020.3.21'을(를) 복원했습니다. 이 패키지는 프로젝트와 완벽하게 호환되지 않을 수 있습니다.",
+      "libraryId": "Unity3D.UnityEngine",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
 }

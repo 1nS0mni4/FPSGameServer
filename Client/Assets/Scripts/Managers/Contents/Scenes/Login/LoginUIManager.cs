@@ -7,8 +7,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LoginUIManager : UIManager {
-    public override pSceneType Type { get; protected set; } = pSceneType.Login;
-
     [Header("UI Panels in Login Scene")]
     [SerializeField]
     private GameObject _loginPanel = null;

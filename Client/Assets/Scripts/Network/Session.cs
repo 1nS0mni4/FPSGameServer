@@ -35,7 +35,6 @@ namespace ServerCore {
         private Socket _socket;
         protected int _disconnected = 1;
         public bool Connected { get { return _disconnected == 0; } }
-        public int SessionID { get; set; }
 
         private SocketAsyncEventArgs _recvArgs = new SocketAsyncEventArgs();
         private RecvBuffer _recvBuffer = new RecvBuffer();
@@ -47,7 +46,7 @@ namespace ServerCore {
 
         public void Start(Socket socket) {
             _socket = socket;
-
+            
             _recvArgs.Completed += new EventHandler<SocketAsyncEventArgs>(OnRecvCompleted);
             _sendArgs.Completed += new EventHandler<SocketAsyncEventArgs>(OnSendCompleted);
 
