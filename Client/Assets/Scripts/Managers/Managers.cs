@@ -1,3 +1,4 @@
+using Google.Protobuf.Protocol;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,13 +38,19 @@ public class Managers : MonoBehaviour {
 
     public List<string> AddedManager = new List<string>();
     #endregion
+    #region Game Instances
+
+    private volatile pAreaType _prevScene = pAreaType.Hideout;
+    public static pAreaType CurArea { get => _instance._prevScene; set => _instance._prevScene = value; }
+
+    #endregion
 
     #region Primitive Managers
     private NetworkManager _network = new NetworkManager();
-    public static NetworkManager Network { get => Instance._network; }
+    public static NetworkManager Network { get => _instance._network; }
 
     private InputManager _input = new InputManager();
-    public static InputManager Input { get => Instance._input; }
+    public static InputManager Input { get => _instance._input; }
 
     #endregion
 
@@ -55,21 +62,7 @@ public class Managers : MonoBehaviour {
 
     #region MonoBehaviour Managers
     private SceneController _scene;
-    public static SceneController Scene { get => Instance._scene; }
-
-    //private BaseUI _ui;
-    //public static BaseUI UI { get => Instance._ui;
-    //    set {
-    //        Instance._ui = value;
-    //    }
-    //}
-
-    //private ObjectManager _object;
-    //public static ObjectManager Object { get => Instance._object; set {
-    //        Instance._object = value;
-    //    }
-    //}
-
+    public static SceneController Scene { get => _instance._scene; }
     #endregion
 
 

@@ -7,7 +7,6 @@ using Server.Contents;
 using Server.DB;
 
 public static class PacketHandler {
-
     public static void C_DebugHandler(PacketSession s, IMessage packet) {
         C_Debug parsedPacket = (C_Debug)packet;
         ClientSession session = (ClientSession)s;
@@ -19,81 +18,109 @@ public static class PacketHandler {
         C_Access parsedPacket = (C_Access)packet;
         ClientSession session = (ClientSession)s;
 
-        UserAccount res = null;
-
-        Task<pAuthResult> accountAsync = DbCommands.AccountValidationCheck(parsedPacket);
-
-        //TODO: DB에서 계정 존재여부 확인
-        pAuthResult result = await accountAsync;
+        pAuthResult result = await Task.Run(() => DbCommands.AccountValidationCheck(parsedPacket));
         session.AuthCode = result.AuthCode;
 
         S_Access_Response response = new S_Access_Response(){};
         response.ErrorCode = result.ErrorCode;
-        response.SessionID = session.SessionID;
+        response.AuthCode = result.AuthCode;
 
-        switch(response.ErrorCode) {
-            case NetworkError.Noaccount:        { Console.WriteLine("No Account");          }break;
-            case NetworkError.InvalidPassword:  { Console.WriteLine("Invalid Password");    }break;
-            case NetworkError.Overlap:          { Console.WriteLine("Overlap");             }break;
-            case NetworkError.Success:          { Console.WriteLine("Success");             }break;
-        }
-        
         session.Send(response);
+
+        if(response.ErrorCode == NetworkError.Success) {
+            S_Spawn spawn = new S_Spawn();
+            spawn.AuthCode = session.AuthCode;
+            spawn.PrevArea = pAreaType.Gamestart;
+            spawn.DestArea = pAreaType.Hideout;
+
+            session.Send(spawn);
+        }
     }
 
     public static async void C_RegisterHandler(PacketSession s, IMessage packet) {
         C_Register parsedPacket = (C_Register)packet;
         ClientSession session = (ClientSession)s;
 
-        Task<bool> accRegister = DbCommands.AccountCreate(parsedPacket);
-
-        bool result = await accRegister;
+        bool result = await Task<bool>.Run(() => DbCommands.AccountCreate(parsedPacket));
 
         S_Register_Response response = new S_Register_Response();
-
         response.ErrorCode = result;
         session.Send(response);
     }
-    
+
     public static async void C_DisconnectHandler(PacketSession s, IMessage packet) {
         C_Disconnect parsedPacket = (C_Disconnect)packet;
         ClientSession session = (ClientSession)s;
 
-        Task<bool> accDisconnect = DbCommands.Disconnect(session.AuthCode);
-
-        bool result = await accDisconnect;
+        bool result = await Task<bool>.Run(() => DbCommands.Disconnect(session.AuthCode));
     }
 
-    public static void C_Changed_Scene_ToHandler(PacketSession s, IMessage packet) {
-        C_Changed_Scene_To parsedPacket = (C_Changed_Scene_To)packet;
+    public static async void C_Extract_ToHandler(PacketSession s, IMessage packet) {
+        C_Extract_To parsedPacket = (C_Extract_To)packet;
         ClientSession session = (ClientSession)s;
 
-        switch(parsedPacket.SceneType) {
-            case pSceneType.Hideout: {
+        bool result = true;
 
+        switch(parsedPacket.DestArea) {
+            case pAreaType.Hideout: {
+                GameRoom section = session.Section;
+                if(section != null) {
+                    section.Push(() => section.Leave(session));
+                    section = null;
+                }
+
+                if(parsedPacket.RoomCode != 0) {   //방 코드가 있을 경우
+                    result = await Task<bool>.Run(() => { 
+                        return HideoutManager.Instance.TryEnterRoom(parsedPacket.RoomCode, session, parsedPacket.PrevArea, parsedPacket.DestArea); 
+                    });
+                }
+                else {
+                    S_Spawn spawn = new S_Spawn();
+                    spawn.AuthCode = session.AuthCode;
+                    spawn.PrevArea = parsedPacket.PrevArea;
+                    spawn.DestArea = parsedPacket.DestArea;
+                }
+
+                //TODO: 개인 창고 데이터 전송
             }break;
 
-            case pSceneType.Fieldmap: {
-                GameRoom room = session.Room;
+            case pAreaType.Cityhall:
+            case pAreaType.Residential:
+            case pAreaType.Industrial:
+            case pAreaType.Commerce: {
+                result = parsedPacket.PrevArea == pAreaType.Hideout ?
+                    await Task<bool>.Run(() => {
+                        GameRoom section = session.Section;
+                        if(section != null)
+                            section.Push(() => section.Leave(session));
 
-                if(room == null)
-                    return;
-
-                //TODO: 필드맵 오브젝트 구현 시 해당 방에 존재하는 오브젝트들에 대한 데이터도 전송 필요
-                room.Push(() => room.SendUserObjectSynch());
+                        return FieldmapManager.Instance.TryEnterField(session, parsedPacket.PrevArea, parsedPacket.DestArea);
+                    }):
+                    await Task<bool>.Run(() => {
+                        GameRoom section = session.Section;
+                        if(section == null)
+                            return false;
+                        return true;
+                    });
             }break;
+        }
+
+        if(result == false) {
+            S_Error_Packet errPacket = new S_Error_Packet();
+            errPacket.ErrorCode = NetworkError.InvalidAccess;
+            session.Send(errPacket);
+            session.Disconnect();
         }
     }
 
-    public static void C_Spawn_PointHandler(PacketSession s, IMessage packet) {
-        C_Spawn_Point parsedPacket = (C_Spawn_Point)packet;
+    public static void C_Spawn_ResponseHandler(PacketSession s, IMessage packet) {
+        C_Spawn_Response parsedPacket = (C_Spawn_Response)packet;
         ClientSession session = (ClientSession)s;
 
-        GameRoom room = session.Room;
-        if(room == null)
+        GameRoom section = session.Section;
+        if(section == null)
             return;
 
-        room.Push(() => room.UserInterpolation(session.SessionID, parsedPacket.Position));
+        section.Push(() => section.UserInterpolation(session.AuthCode, parsedPacket.Transform));
     }
-
 }

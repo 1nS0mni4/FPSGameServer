@@ -12,6 +12,8 @@ public class PlayerMovement : MonoBehaviour {
 
     private Vector3 moveForce;
     private pPlayerStance _curStance = pPlayerStance.Walk;
+
+    public bool IsGrounded { get => _controller.isGrounded; }
     public pPlayerStance Stance {
         get => _curStance;
         set {
@@ -41,8 +43,6 @@ public class PlayerMovement : MonoBehaviour {
     
 
     private void Awake() {
-        //_rigid = GetComponent<Rigidbody>();
-        //_collider = GetComponent<CapsuleCollider>();
         _controller = GetComponent<CharacterController>();
         _stat = GetComponent<PlayerStat>();
         _animator = GetComponentInChildren<Animator>();
@@ -53,13 +53,10 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     public void MoveTo(Vector3 direction, pPlayerStance stance = pPlayerStance.Idle) {
-        //if(stance != Google.Protobuf.Protocol.PlayerStance.None)
-        //    Stance = stance;
-
         direction = transform.rotation * new Vector3(direction.x, 0, direction.z);
         moveForce = new Vector3(direction.x * _stat.CurrentSpeed, moveForce.y, direction.z * _stat.CurrentSpeed);
 
-        _controller.Move(moveForce * Time.deltaTime);
+        _controller.Move(moveForce * Time.smoothDeltaTime);
     }
 
     public void MoveTo(pVector3 direction, pPlayerStance stance = pPlayerStance.Idle) {
@@ -76,7 +73,7 @@ public class PlayerMovement : MonoBehaviour {
         if(_controller.isGrounded == false)
             return;
         moveForce += new Vector3(0, _stat.JumpForce, 0);
-        _controller.Move(moveForce * Time.deltaTime);
+        _controller.Move(moveForce * Time.smoothDeltaTime);
     }
 
     public void RotateTo(Vector3 direction, bool deadReckoning = false) {
@@ -97,7 +94,8 @@ public class PlayerMovement : MonoBehaviour {
                 moveForce.y = 0;
             }
             else {
-                moveForce = new Vector3(moveForce.x, moveForce.y - (float)( 9.8 * Time.deltaTime ), moveForce.z);
+                moveForce += new Vector3(0, -9.8f * Time.smoothDeltaTime, 0);
+                _controller.Move(moveForce * Time.smoothDeltaTime);
             }
             yield return null;
         }

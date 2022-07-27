@@ -8,9 +8,6 @@ using UnityEngine.SceneManagement;
 using static Define;
 
 public class HideoutSceneManager : MSceneManager {
-    public override pSceneType SceneType { get; protected set; } = pSceneType.Hideout;
-
-
     //TODO: 오브젝트풀, 플레이어풀등 GameScene에만 존재하는 오브젝트 부모객체 저장
 
     public override void InitScene() {
@@ -20,5 +17,9 @@ public class HideoutSceneManager : MSceneManager {
 
     public override void ClearScene() {
 
+    }
+
+    public override void LoadCompleted() {
+        throw new NotImplementedException();
     }
 }

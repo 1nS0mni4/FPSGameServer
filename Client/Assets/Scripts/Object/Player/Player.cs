@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //[RequireComponent(typeof(Rigidbody))]
+//[RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(PlayerStat))]
 [RequireComponent(typeof(PlayerMovement))]

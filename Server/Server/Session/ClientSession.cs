@@ -13,16 +13,16 @@ using System.Threading.Tasks;
 namespace Server.Session {
     public class ClientSession : PacketSession {
         public int AuthCode { get; set; }
-        public GameRoom Room { get; set; }
+        public GameRoom Section { get; set; }
         public override void OnConnect(EndPoint endPoint) {
             Console.WriteLine($"Connected To: {endPoint}");
         }
 
         public override void OnDisconnect(EndPoint endPoint) {
             Console.WriteLine($"Disconnected: {endPoint}");
-            if(Room != null) {
-                GameRoom room = Room;
-                room.Push(() => { room.LeaveRoom(this); });
+            if(Section != null) {
+                GameRoom section = Section;
+                section.Push(() => { section.Leave(this); });
             }
         }
 

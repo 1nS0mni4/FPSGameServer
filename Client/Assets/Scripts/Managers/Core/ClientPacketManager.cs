@@ -18,16 +18,24 @@ public class PacketManager {
     public Action<ushort, IMessage> CustomHandler { get; set; } = null;
 
     private void Register() {
-      _makeFunc.Add((ushort)PacketID.SDebug, MakePacket<S_Debug>);
-        _handler.Add((ushort)PacketID.SDebug, PacketHandler.S_DebugHandler);
+      _makeFunc.Add((ushort)PacketID.SErrorPacket, MakePacket<S_Error_Packet>);
+        _handler.Add((ushort)PacketID.SErrorPacket, PacketHandler.S_Error_PacketHandler);
       _makeFunc.Add((ushort)PacketID.SAccessResponse, MakePacket<S_Access_Response>);
         _handler.Add((ushort)PacketID.SAccessResponse, PacketHandler.S_Access_ResponseHandler);
       _makeFunc.Add((ushort)PacketID.SRegisterResponse, MakePacket<S_Register_Response>);
         _handler.Add((ushort)PacketID.SRegisterResponse, PacketHandler.S_Register_ResponseHandler);
-      _makeFunc.Add((ushort)PacketID.SPlayerList, MakePacket<S_Player_List>);
-        _handler.Add((ushort)PacketID.SPlayerList, PacketHandler.S_Player_ListHandler);
-      _makeFunc.Add((ushort)PacketID.SSpawnIndex, MakePacket<S_Spawn_Index>);
-        _handler.Add((ushort)PacketID.SSpawnIndex, PacketHandler.S_Spawn_IndexHandler);
+      _makeFunc.Add((ushort)PacketID.SSpawn, MakePacket<S_Spawn>);
+        _handler.Add((ushort)PacketID.SSpawn, PacketHandler.S_SpawnHandler);
+      _makeFunc.Add((ushort)PacketID.SPlayerInterpol, MakePacket<S_Player_Interpol>);
+        _handler.Add((ushort)PacketID.SPlayerInterpol, PacketHandler.S_Player_InterpolHandler);
+      _makeFunc.Add((ushort)PacketID.SLoadPlayers, MakePacket<S_Load_Players>);
+        _handler.Add((ushort)PacketID.SLoadPlayers, PacketHandler.S_Load_PlayersHandler);
+      _makeFunc.Add((ushort)PacketID.SLoadItems, MakePacket<S_Load_Items>);
+        _handler.Add((ushort)PacketID.SLoadItems, PacketHandler.S_Load_ItemsHandler);
+      _makeFunc.Add((ushort)PacketID.SLoadFields, MakePacket<S_Load_Fields>);
+        _handler.Add((ushort)PacketID.SLoadFields, PacketHandler.S_Load_FieldsHandler);
+      _makeFunc.Add((ushort)PacketID.SPlayerLeave, MakePacket<S_Player_Leave>);
+        _handler.Add((ushort)PacketID.SPlayerLeave, PacketHandler.S_Player_LeaveHandler);
 
     }
 

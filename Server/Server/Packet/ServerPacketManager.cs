@@ -26,10 +26,10 @@ public class PacketManager {
         _handler.Add((ushort)PacketID.CRegister, PacketHandler.C_RegisterHandler);
       _makeFunc.Add((ushort)PacketID.CDisconnect, MakePacket<C_Disconnect>);
         _handler.Add((ushort)PacketID.CDisconnect, PacketHandler.C_DisconnectHandler);
-      _makeFunc.Add((ushort)PacketID.CChangedSceneTo, MakePacket<C_Changed_Scene_To>);
-        _handler.Add((ushort)PacketID.CChangedSceneTo, PacketHandler.C_Changed_Scene_ToHandler);
-      _makeFunc.Add((ushort)PacketID.CSpawnPoint, MakePacket<C_Spawn_Point>);
-        _handler.Add((ushort)PacketID.CSpawnPoint, PacketHandler.C_Spawn_PointHandler);
+      _makeFunc.Add((ushort)PacketID.CExtractTo, MakePacket<C_Extract_To>);
+        _handler.Add((ushort)PacketID.CExtractTo, PacketHandler.C_Extract_ToHandler);
+      _makeFunc.Add((ushort)PacketID.CSpawnResponse, MakePacket<C_Spawn_Response>);
+        _handler.Add((ushort)PacketID.CSpawnResponse, PacketHandler.C_Spawn_ResponseHandler);
 
     }
 

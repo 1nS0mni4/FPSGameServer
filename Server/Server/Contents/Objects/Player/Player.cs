@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
+using Server.Utils;
 
 namespace Server.Contents.Objects.Player {
-    public class Player {
+    public class Player : MonoBehaviour{
+        public int AuthCode { get; set; } = -1;
         public bool isInterpolated = false;
-        public pVector3 position = Utils.Define.Vector3.zero.TopVector3();
-        public pVector3 direction = new pVector3(){ X = 0, Y = 0, Z = 0 };
+        public pTransform transform = new pTransform().Default();
+        public pVector3 direction = new pVector3().Default();
         public pPlayerStance stance = pPlayerStance.Idle;
         public float speed = 5.0f;
 
@@ -28,8 +31,9 @@ namespace Server.Contents.Objects.Player {
                 return;
 
             float tickCount = System.Environment.TickCount;
-            pVector3 moveForce = new pVector3(){X = position.X + (direction.X * speed * tickCount), Y = position.Y + (direction.Y * speed * tickCount), Z = position.Z + (direction.Z * speed * tickCount) };
-            position = moveForce;
+
+
+            //transform.Position += moveForce;
         }
     }
 }

@@ -1,79 +1,136 @@
+using Extensions;
 using Google.Protobuf.Protocol;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
-[RequireComponent(typeof(ObjectPoolManager))]
 public class InGameSceneManager : MSceneManager {
-    public override pSceneType SceneType { get; protected set; }
-
-    [Header("Map Prefab")]
-    public Transform _mapParent = null;
     [SerializeField]
-    private GameObject _mapPrefab = null;
+    private InGameUIManager _uiManager = null;
 
-    [Header("Field Objects (ex. SpawnPoint, Door, Box...)")]
-    public Transform _fieldObjectParent = null;
+    [Header("Spawn Point")]
     [SerializeField]
-    private List<FIeldObjectFormat> _fieldObjects = new List<FIeldObjectFormat>();
+    private List<SpawnPointFormat> _spawnPoints = null;
 
-    [Space]
+    [Header("Player")]
     [SerializeField]
-    private ObjectPoolManager _objectPool = new ObjectPoolManager();
-    public ObjectPoolManager Pool { get => _objectPool; }
-    public List<PoolableFormat> _poolableObjects = new List<PoolableFormat>();
+    private GameObject _myPlayer = null;
+    public Dictionary<int, GameObject> _players = new Dictionary<int, GameObject>();
+    public ObjectPooler _playerPooler = null;
 
-    private void LoadScene() {
-        Instantiate(_mapPrefab);
+    private WaitForSeconds loadWaitTime = new WaitForSeconds(0.5f);
 
-        for(int i = 0; i < _fieldObjects.Count; i++) {
-            GameObject fo = Instantiate(_fieldObjects[i].obj);
-            fo.transform.position = _fieldObjects[i].position;
-            fo.transform.rotation = Quaternion.Euler(_fieldObjects[i].rotation);
-            fo.transform.localScale = _fieldObjects[i].scale;
-        }
+    /****************************************************
+     *                  Loading Flags                   *
+     ****************************************************/
 
-        Pool.RegisterPoolObject(_poolableObjects);
+    [HideInInspector]public bool f_Loaded_Player    = true;
+    [HideInInspector]public bool f_Loaded_Item      = true;
+    [HideInInspector]public bool f_Loaded_Field     = true;
 
-        GameObject go = Instantiate(new GameObject());
-        go.AddComponent<Camera>();
-        go.name = name;
-        go.tag = name;
-        go.transform.position = new Vector3(0, 8.5f, -10);
-        go.transform.rotation = Quaternion.Euler(new Vector3(25, 0, 0));
-    }
 
     public override void InitScene() {
-        string name = "MainCamera";
+        Managers.Scene.IsLoading = false;
+    }
 
-
-        StartCoroutine(CoStartInitializing());
+    private void Start() {
+        StartCoroutine(CoCheckDataLoaded());
     }
 
     public override void ClearScene() {
-
-
+        
     }
 
-    private IEnumerator CoStartInitializing() {
-        IsInitialized = false;
+    public void SpawnPlayerInSpawnPoint(int authID, pAreaType prevArea) {
+        Vector3 pos = new Vector3(0, 0, 0);
+        Quaternion rot = Quaternion.EulerAngles(new Vector3(0, 0, 0));
 
-        LoadScene();
+        for(int i = 0; i < _spawnPoints.Count; i++) {
+            if(prevArea != _spawnPoints[i]._playerInScene)
+                continue;
 
+            pos = _spawnPoints[i].transform.position;
+            rot = _spawnPoints[i].transform.rotation;
+            break;
+        }
+
+        if(authID == Managers.Network.AuthCode) {
+            _myPlayer.transform.position = pos;
+            _myPlayer.transform.rotation = rot;
+            Managers.CurArea = AreaType;
+
+            {
+                C_Spawn_Response spawn = new C_Spawn_Response();
+                spawn.Transform = _myPlayer.transform.TopTransform();
+                Managers.Network.Send(spawn);
+            }
+            _players.Add(authID, _myPlayer);
+            _myPlayer.SetActive(true);
+        }
+        else {
+            //TODO: 플레이어 풀러에서 객체를 하나 받아 AuthCode->Key의 _player 데이터 Add 후 초기화 및 SetActive(true);
+            GameObject player = _playerPooler.Get();
+            player.transform.position = pos;
+            player.transform.rotation = rot;
+
+            _players.Add(authID, player);
+        }
+    }
+
+    public void SpawnPlayerInPosition(int authID, pTransform tran) {
+        //TODO: 플레이어 풀러에서 객체를 하나 받아 AuthCode->Key의 _player 데이터 Add 후 초기화 및 SetActive(true);
+
+        GameObject player = _playerPooler.Get();
+        Vector3 pos = new Vector3(tran.Position.X, tran.Position.Y, tran.Position.Z);
+        Vector3 rot = new Vector3(tran.Rotation.X, tran.Rotation.Y, tran.Rotation.Z);
+        player.transform.position = pos;
+        player.transform.rotation = Quaternion.EulerAngles(rot);
+
+        _players.Add(authID, player);
+    }
+
+    public void SynchObjectInPosition(int authID, pTransform tran) {
+        GameObject player = null;
+
+        if(_players.TryGetValue(authID, out player)) {
+            Vector3 pos = new Vector3(tran.Position.X, tran.Position.Y, tran.Position.Z);
+            Vector3 rot = new Vector3(tran.Rotation.X, tran.Rotation.Y, tran.Rotation.Z);
+            player.transform.position = pos;
+            player.transform.rotation = Quaternion.EulerAngles(rot);
+        }
+        else {
+            SpawnPlayerInPosition(authID, tran);
+        }
+    }
+
+    public void RemovePlayer(int authCode) {
+        if(_players.ContainsKey(authCode)) {
+            _playerPooler.Destroy(_players[authCode]);
+        }
+    }
+
+    public override void LoadCompleted() {
+        Managers.Input.CanInput = true;
+        _uiManager.Fade.FadeControlTo(false);
+    }
+
+    private IEnumerator CoCheckDataLoaded() {
+        bool loading = true;
+        while(loading) {
+            loading = !(f_Loaded_Field  & f_Loaded_Item & _myPlayer.activeSelf);
+            yield return loadWaitTime;
+        }
+
+        LoadCompleted();
         yield break;
     }
 }
-[System.Serializable]
-public struct FIeldObjectFormat {
-    public GameObject obj;
-    public Vector3 position;
-    public Vector3 rotation;
-    public Vector3 scale;
-}
 
-[System.Serializable]
-public struct PoolableFormat {
-    public pObjectType _type;
-    public GameObject obj;
+[Serializable]
+public struct SpawnPointFormat {
+    public pAreaType _playerInScene;
+    public Transform transform;
 }

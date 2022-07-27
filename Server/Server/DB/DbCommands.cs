@@ -25,7 +25,7 @@ namespace Server.DB {
 
         #region Account Database Commands
 
-        public static async Task<pAuthResult> AccountValidationCheck(C_Access access) {
+        public static pAuthResult AccountValidationCheck(C_Access access) {
             Console.WriteLine($"AccountValidationCheck Started!");
             pAuthResult result = new pAuthResult();
 
@@ -62,7 +62,7 @@ namespace Server.DB {
             }
         }
 
-        public static async Task<bool> AccountCreate(C_Register register) {
+        public static bool AccountCreate(C_Register register) {
             Console.WriteLine($"AccountCreate Started!");
             using(AppDbContext db = new AppDbContext()) {
                 UserAccount regist = db.UserAccounts.SingleOrDefault(account => account.ID == register.Id);
@@ -82,7 +82,7 @@ namespace Server.DB {
             }
         }
 
-        public static async Task<bool> Disconnect(int authCode) {
+        public static bool Disconnect(int authCode) {
             using(AppDbContext db = new AppDbContext()) {
                 //UserAuth auth = db.UserAuths.SingleOrDefault(i => i.AuthCode == authCode);
                 UserAccount account = db.UserAccounts.SingleOrDefault(i => i.AuthCode == authCode);

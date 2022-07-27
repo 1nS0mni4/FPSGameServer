@@ -7,8 +7,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LoginUIManager : UIManager {
-    public override pSceneType Type { get; protected set; } = pSceneType.Login;
-
     [Header("UI Panels in Login Scene")]
     [SerializeField]
     private GameObject _loginPanel = null;
@@ -76,18 +74,16 @@ public class LoginUIManager : UIManager {
     }
 
     public void ButtonEnterPushed() {
-        //Debug.Log("ButtonEnterPushed!");
-        //idInput = _textID.text;
-        //pwInput = _textPW.text;
+        Debug.Log("ButtonEnterPushed!");
+        idInput = _textID.text;
+        pwInput = _textPW.text;
 
-        //C_Access access = new C_Access();
-        //access.Id = idInput;
-        //access.Pw = pwInput;
+        C_Access access = new C_Access();
+        access.Id = idInput;
+        access.Pw = pwInput;
 
-        //Managers.Network.Send(access);
-        //idInput = pwInput = null;
-
-        Managers.Scene.ChangeSceneTo(pSceneType.Hideout);
+        Managers.Network.Send(access);
+        idInput = pwInput = null;
     }
 
     public void ButtonRegisterPushed() {
