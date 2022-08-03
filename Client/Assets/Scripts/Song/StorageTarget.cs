@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class StorageTarget : MonoBehaviour
 {
+    private StorageUI storageUI;
+
     public bool isTarget = false;
+
+    private void Awake()
+    {
+        storageUI = FindObjectOfType<StorageUI>();   
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -19,6 +26,8 @@ public class StorageTarget : MonoBehaviour
         if(other.tag == "Player")
         {
             isTarget = false;
+            storageUI.activeStroage = false;
+            storageUI.storagePanel.SetActive(false);
         }
     }
 }

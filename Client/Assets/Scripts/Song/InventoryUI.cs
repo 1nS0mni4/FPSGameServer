@@ -18,7 +18,6 @@ public class InventoryUI : MonoBehaviour
     {
         activeInventory = !activeInventory;
         inventoryPanel.SetActive(activeInventory);
-
-        playerController.CursorState(activeInventory);
+        playerController.CursorState();
     }
 }

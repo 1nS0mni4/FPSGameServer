@@ -76,7 +76,8 @@ public class PlayerController : MonoBehaviour {
 
         eulerAngleX = ClampAngle(eulerAngleX, limitMinX, limitMaxX);
 
-        _movement.RotateTo(new UnityEngine.Vector3(eulerAngleX, eulerAngleY, 0));
+        if (isInventory == false && isStorage == false) // 창고, 인벤토리 모두 꺼져있을 시에 실행
+            _movement.RotateTo(new UnityEngine.Vector3(eulerAngleX, eulerAngleY, 0));
 
         if(_mouseListener > 0) {
             if(Input.GetMouseButtonDown(0)) {
@@ -175,18 +176,17 @@ public class PlayerController : MonoBehaviour {
         Managers.Input.RemoveKeyInputHandler(KeyboardInputHandler);
     }
 
-    // -----------마우스 커서 움직임, 보임----------- 마우스 회전이랑, 클릭은 방식을 몰라 인벤토리 아이템 클릭 적용 못했습니다.
-    public void CursorState(bool point)
+    // -----------마우스 커서 움직임, 보임----------- 
+    public void CursorState()
     {
-        if(point == false)
+        if(isInventory == false && isStorage == false) //창고 닫았을 때
         {
-            Cursor.visible = point;
+            Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
-        
-        if(point == true)
+        else                                           //창고 열었을 때
         {
-            Cursor.visible = point;
+            Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
         }
     }
@@ -203,8 +203,8 @@ public class PlayerController : MonoBehaviour {
     {
         if(Input.GetKeyDown(KeyCode.X))
         {
-            inventory.Inventory();
             isInventory = !isInventory;
+            inventory.Inventory();           
         }
     }
 
@@ -214,8 +214,8 @@ public class PlayerController : MonoBehaviour {
         {
             if(Input.GetKeyDown(KeyCode.Z))
             {
-                storage.Storage();
                 isStorage = !isStorage;
+                storage.Storage();               
             }
         }
     }

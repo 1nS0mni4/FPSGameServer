@@ -6,7 +6,7 @@ public class StorageUI : MonoBehaviour
 {
     public GameObject storagePanel;    
     private PlayerController playerController;
-    bool activeStroage = false;
+    public bool activeStroage = false;
 
     private void Start()
     {
@@ -18,7 +18,6 @@ public class StorageUI : MonoBehaviour
     {
         activeStroage = !activeStroage;
         storagePanel.SetActive(activeStroage);
-
-        playerController.CursorState(activeStroage);
+        playerController.CursorState();
     }
 }

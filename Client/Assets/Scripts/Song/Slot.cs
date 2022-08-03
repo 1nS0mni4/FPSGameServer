@@ -13,6 +13,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler
 {
     private Container container;
     private Image image;
+    private StorageUI storageUI;
     public SlotItem item;
     public SlotType slotType;
 
@@ -58,6 +59,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler
     {
         container = FindObjectOfType<Container>();
         image = GetComponent<Image>();
+        storageUI = FindObjectOfType<StorageUI>();
         UpdateImage(gameObject);
     }
 
@@ -82,6 +84,8 @@ public class Slot : MonoBehaviour, IPointerClickHandler
 
         if (slotType == SlotType.Inventory)
         {
+            if (storageUI.activeStroage == false) return;
+
             for (int i = 0; i < container.slotsParent.childCount; i++)
             {
                 if (container.otherSlots[i].item.itemType == ItemType.none)
