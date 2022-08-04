@@ -26,7 +26,6 @@ public class InputManager : Manager, IManagerStart, IManagerUpdate {
     }
 
     public void Start() {
-        //TODO: KeySetting°ª FILE.IO
         //_keySetting = new KeyOption();
     }
 

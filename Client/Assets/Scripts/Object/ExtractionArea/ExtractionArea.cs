@@ -7,11 +7,15 @@ using UnityEngine;
 using UnityEngine.Events;
 using static Define;
 
-public class ExtractionArea : MonoBehaviour
-{
-    [Header("Elevator Destination")]
+public class ExtractionArea : MonoBehaviour {
+    [Header("ExtractionArea Controller Object")]
+    public ExtractionObjectController _controller;
+
+    [Header("Extraction Destination")]
     [SerializeField]
     private pAreaType _destination;
+    [HideInInspector]
+    public int _roomCode = -1;
 
     [Header("Extraction Check Collider")]
     [SerializeField]
@@ -27,11 +31,11 @@ public class ExtractionArea : MonoBehaviour
     private InGameSceneManager _sceneManager = null;
     [SerializeField]
     private ExtractionUI _extractionUI = null;
-    public Action<bool> Completed = null;
+    public Action<bool> ExtractionProgress = null;
 
     private string _playerTag = "MyPlayer";
     private bool _isExtracting = false;
-    public bool IsExtracting { get => _isExtracting; }
+    public bool IsExtracting { get => _isExtracting && _collider.enabled; }
 
     private void OnTriggerEnter(Collider other) {
         if(other.CompareTag(_playerTag) == false)
@@ -66,7 +70,7 @@ public class ExtractionArea : MonoBehaviour
                 _extractionUI.SetExecTime(_extractionRemaining);
 
             if(_extractionRemaining <= 0.0f) {
-                ExecutionSuccess();
+                ExtractionSucess();
                 break;
             }
 
@@ -76,22 +80,22 @@ public class ExtractionArea : MonoBehaviour
         yield break;
     }
 
-    private void ExecutionSuccess() {
+    private void ExtractionSucess() {
         C_Extract_To extPacket = new C_Extract_To();
-        extPacket.RoomCode = _destination == pAreaType.Hideout ? Managers.Network.RoomCode : -1;
+        extPacket.RoomCode = _roomCode;
         extPacket.PrevArea = Managers.CurArea;
         extPacket.DestArea = _destination;
 
         Managers.Network.Send(extPacket);
 
-        if(Completed != null) {
-            Completed.Invoke(false);
+        if(ExtractionProgress != null) {
+            ExtractionProgress.Invoke(false);
         }
 
         if(_sceneManager != null) {
             Managers.CurArea = _sceneManager.AreaType;
             Interlocked.MemoryBarrier();
-            Managers.Scene.ChangeSceneTo(_destination);
+            Managers.Scene.ChangeSceneTo(_destination == pAreaType.Hideout ? pAreaType.Hideout : pAreaType.Fieldmap);
         }
     }
 }

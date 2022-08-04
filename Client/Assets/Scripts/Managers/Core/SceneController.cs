@@ -9,7 +9,7 @@ using static Define;
 
 public class SceneController : MonoBehaviour
 {
-    public pAreaType CurrentScene { get; private set; }
+    public pAreaType CurAreaType { get; private set; }
     public float progress;
     public MSceneManager Manager { get; set; }
     private int _isLoading = 0;
@@ -54,7 +54,7 @@ public class SceneController : MonoBehaviour
             yield return null;
         }
         
-        CurrentScene = type;
+        CurAreaType = type;
         progress = 1.0f;
 
         C_Extract_To scenePacket = new C_Extract_To();

@@ -36,6 +36,12 @@ public class PacketManager {
         _handler.Add((ushort)PacketID.SLoadFields, PacketHandler.S_Load_FieldsHandler);
       _makeFunc.Add((ushort)PacketID.SPlayerLeave, MakePacket<S_Player_Leave>);
         _handler.Add((ushort)PacketID.SPlayerLeave, PacketHandler.S_Player_LeaveHandler);
+      _makeFunc.Add((ushort)PacketID.SRequestOnlineResponse, MakePacket<S_Request_Online_Response>);
+        _handler.Add((ushort)PacketID.SRequestOnlineResponse, PacketHandler.S_Request_Online_ResponseHandler);
+      _makeFunc.Add((ushort)PacketID.SMoveBroadcast, MakePacket<S_Move_Broadcast>);
+        _handler.Add((ushort)PacketID.SMoveBroadcast, PacketHandler.S_Move_BroadcastHandler);
+      _makeFunc.Add((ushort)PacketID.SJumpBroadcast, MakePacket<S_Jump_Broadcast>);
+        _handler.Add((ushort)PacketID.SJumpBroadcast, PacketHandler.S_Jump_BroadcastHandler);
 
     }
 

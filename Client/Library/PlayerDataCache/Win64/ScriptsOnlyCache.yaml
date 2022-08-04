@@ -7,6 +7,7 @@ ScriptsOnlyBuild:
     - FadeUI
     - InGameSceneManager
     - InGameUIManager
+    - InteractableUI
     - LoginSceneManager
     - LoginUIManager
     - Managers
@@ -17,6 +18,11 @@ ScriptsOnlyBuild:
     - PlayerStat
     - Poolable
     - SceneController
+    - SessionPanel
+    - SessionPanelPooler
+    - TrainController
+    - Transmitter
+    - TransmitterUI
     ColoredHeaderCreator.Editor.dll:
     - Baedrick.ColoredHeaders.ColoredHeaderCreator
     Unity.Rider.Editor.dll:
@@ -32,8 +38,11 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.StateMachineNode
+    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -47,9 +56,14 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.Image
     - UnityEngine.UI.LayoutElement
+    - UnityEngine.UI.Mask
     - UnityEngine.UI.RectMask2D
+    - UnityEngine.UI.ScrollRect
+    - UnityEngine.UI.VerticalLayoutGroup
   serializedClasses:
     Assembly-CSharp:
+    - InteractUIFormat
+    - OnAccessClicked
     - SpawnPointFormat
     Unity.TextMeshPro:
     - TMPro.FaceInfo_Legacy
@@ -75,6 +89,7 @@ ScriptsOnlyBuild:
     - UnityEngine.Events.ArgumentCache
     - UnityEngine.Events.PersistentCallGroup
     - UnityEngine.Events.PersistentListenerMode
+    - UnityEngine.RectOffset
     UnityEngine.TextCoreFontEngineModule:
     - UnityEngine.TextCore.FaceInfo
     - UnityEngine.TextCore.Glyph
@@ -86,6 +101,7 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.ColorBlock
     - UnityEngine.UI.MaskableGraphic/CullStateChangedEvent
     - UnityEngine.UI.Navigation
+    - UnityEngine.UI.ScrollRect/ScrollRectEvent
     - UnityEngine.UI.SpriteState
   methodsToPreserve:
   - assembly: Assembly-CSharp
@@ -97,6 +113,66 @@ ScriptsOnlyBuild:
   - assembly: Assembly-CSharp
     fullTypeName: LoginUIManager
     methodName: ButtonRegisterPushed
+  - assembly: Assembly-CSharp
+    fullTypeName: SessionPanel
+    methodName: Button_Access
+  - assembly: Assembly-CSharp
+    fullTypeName: TransmitterUI
+    methodName: Button_TransmitAccess
+  - assembly: Assembly-CSharp
+    fullTypeName: SessionPanel
+    methodName: Button_Access
+  - assembly: Assembly-CSharp
+    fullTypeName: TransmitterUI
+    methodName: Button_TransmitAccess
+  - assembly: Assembly-CSharp
+    fullTypeName: SessionPanel
+    methodName: Button_Access
+  - assembly: Assembly-CSharp
+    fullTypeName: TransmitterUI
+    methodName: Button_TransmitAccess
+  - assembly: Assembly-CSharp
+    fullTypeName: SessionPanel
+    methodName: Button_Access
+  - assembly: Assembly-CSharp
+    fullTypeName: TransmitterUI
+    methodName: Button_TransmitAccess
+  - assembly: Assembly-CSharp
+    fullTypeName: SessionPanel
+    methodName: Button_Access
+  - assembly: Assembly-CSharp
+    fullTypeName: TransmitterUI
+    methodName: Button_TransmitAccess
+  - assembly: Assembly-CSharp
+    fullTypeName: SessionPanel
+    methodName: Button_Access
+  - assembly: Assembly-CSharp
+    fullTypeName: TransmitterUI
+    methodName: Button_TransmitAccess
+  - assembly: Assembly-CSharp
+    fullTypeName: SessionPanel
+    methodName: Button_Access
+  - assembly: Assembly-CSharp
+    fullTypeName: TransmitterUI
+    methodName: Button_TransmitAccess
+  - assembly: Assembly-CSharp
+    fullTypeName: SessionPanel
+    methodName: Button_Access
+  - assembly: Assembly-CSharp
+    fullTypeName: TransmitterUI
+    methodName: Button_TransmitAccess
+  - assembly: Assembly-CSharp
+    fullTypeName: SessionPanel
+    methodName: Button_Access
+  - assembly: Assembly-CSharp
+    fullTypeName: TransmitterUI
+    methodName: Button_TransmitAccess
+  - assembly: Assembly-CSharp
+    fullTypeName: SessionPanel
+    methodName: Button_Access
+  - assembly: Assembly-CSharp
+    fullTypeName: TransmitterUI
+    methodName: Button_TransmitAccess
   sceneClasses:
     Assets/Scenes/Fieldmap.unity:
     - Class: 1
@@ -140,39 +216,39 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1590}
     - Class: 114
-      Script: {instanceID: 1692}
+      Script: {instanceID: 1694}
     - Class: 114
-      Script: {instanceID: 1704}
+      Script: {instanceID: 1706}
     - Class: 114
-      Script: {instanceID: 1710}
+      Script: {instanceID: 1712}
     - Class: 114
-      Script: {instanceID: 1870}
+      Script: {instanceID: 1874}
     - Class: 114
-      Script: {instanceID: 1942}
+      Script: {instanceID: 1946}
     - Class: 114
-      Script: {instanceID: 2024}
+      Script: {instanceID: 2030}
     - Class: 114
-      Script: {instanceID: 2050}
+      Script: {instanceID: 2056}
     - Class: 114
-      Script: {instanceID: 2238}
+      Script: {instanceID: 2250}
     - Class: 114
-      Script: {instanceID: 2570}
+      Script: {instanceID: 2594}
     - Class: 114
-      Script: {instanceID: 2680}
+      Script: {instanceID: 2706}
     - Class: 114
-      Script: {instanceID: 2816}
+      Script: {instanceID: 2840}
     - Class: 114
-      Script: {instanceID: 2862}
+      Script: {instanceID: 2888}
     - Class: 114
-      Script: {instanceID: 2870}
+      Script: {instanceID: 2896}
     - Class: 114
-      Script: {instanceID: 3026}
+      Script: {instanceID: 3060}
     - Class: 114
-      Script: {instanceID: 3192}
+      Script: {instanceID: 3226}
     - Class: 114
-      Script: {instanceID: 3262}
+      Script: {instanceID: 3300}
     - Class: 114
-      Script: {instanceID: 3560}
+      Script: {instanceID: 3604}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 137
@@ -218,6 +294,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
+    - Class: 82
+      Script: {instanceID: 0}
     - Class: 90
       Script: {instanceID: 0}
     - Class: 91
@@ -231,41 +309,63 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1590}
     - Class: 114
-      Script: {instanceID: 1692}
+      Script: {instanceID: 1596}
     - Class: 114
-      Script: {instanceID: 1704}
+      Script: {instanceID: 1694}
     - Class: 114
-      Script: {instanceID: 1710}
+      Script: {instanceID: 1706}
     - Class: 114
-      Script: {instanceID: 1870}
+      Script: {instanceID: 1712}
     - Class: 114
-      Script: {instanceID: 1942}
+      Script: {instanceID: 1874}
     - Class: 114
-      Script: {instanceID: 2024}
+      Script: {instanceID: 1946}
     - Class: 114
-      Script: {instanceID: 2050}
+      Script: {instanceID: 1968}
     - Class: 114
-      Script: {instanceID: 2238}
+      Script: {instanceID: 2030}
     - Class: 114
-      Script: {instanceID: 2570}
+      Script: {instanceID: 2056}
     - Class: 114
-      Script: {instanceID: 2680}
+      Script: {instanceID: 2250}
     - Class: 114
-      Script: {instanceID: 2816}
+      Script: {instanceID: 2522}
     - Class: 114
-      Script: {instanceID: 2862}
+      Script: {instanceID: 2594}
     - Class: 114
-      Script: {instanceID: 2870}
+      Script: {instanceID: 2706}
     - Class: 114
-      Script: {instanceID: 3026}
+      Script: {instanceID: 2840}
     - Class: 114
-      Script: {instanceID: 3192}
+      Script: {instanceID: 2888}
     - Class: 114
-      Script: {instanceID: 3262}
+      Script: {instanceID: 2896}
     - Class: 114
-      Script: {instanceID: 3560}
+      Script: {instanceID: 3060}
     - Class: 114
-      Script: {instanceID: 4308}
+      Script: {instanceID: 3226}
+    - Class: 114
+      Script: {instanceID: 3300}
+    - Class: 114
+      Script: {instanceID: 3426}
+    - Class: 114
+      Script: {instanceID: 3498}
+    - Class: 114
+      Script: {instanceID: 3604}
+    - Class: 114
+      Script: {instanceID: 3758}
+    - Class: 114
+      Script: {instanceID: 3976}
+    - Class: 114
+      Script: {instanceID: 4032}
+    - Class: 114
+      Script: {instanceID: 4350}
+    - Class: 114
+      Script: {instanceID: 4362}
+    - Class: 114
+      Script: {instanceID: 4762}
+    - Class: 114
+      Script: {instanceID: 23332}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 137
@@ -318,41 +418,41 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1590}
     - Class: 114
-      Script: {instanceID: 1668}
+      Script: {instanceID: 1670}
     - Class: 114
-      Script: {instanceID: 1778}
+      Script: {instanceID: 1782}
     - Class: 114
-      Script: {instanceID: 1942}
+      Script: {instanceID: 1946}
     - Class: 114
-      Script: {instanceID: 2296}
+      Script: {instanceID: 2308}
     - Class: 114
-      Script: {instanceID: 2680}
+      Script: {instanceID: 2706}
     - Class: 114
-      Script: {instanceID: 2816}
+      Script: {instanceID: 2840}
     - Class: 114
-      Script: {instanceID: 2870}
+      Script: {instanceID: 2896}
     - Class: 114
-      Script: {instanceID: 2932}
+      Script: {instanceID: 2960}
     - Class: 114
-      Script: {instanceID: 3026}
+      Script: {instanceID: 3060}
     - Class: 114
-      Script: {instanceID: 3262}
+      Script: {instanceID: 3300}
     - Class: 114
-      Script: {instanceID: 3358}
+      Script: {instanceID: 3398}
     - Class: 114
-      Script: {instanceID: 3386}
+      Script: {instanceID: 3426}
     - Class: 114
-      Script: {instanceID: 4042}
+      Script: {instanceID: 4094}
     - Class: 114
-      Script: {instanceID: 4072}
+      Script: {instanceID: 4126}
     - Class: 114
-      Script: {instanceID: 4456}
+      Script: {instanceID: 4512}
     - Class: 114
-      Script: {instanceID: 4564}
+      Script: {instanceID: 4620}
     - Class: 114
-      Script: {instanceID: 4578}
+      Script: {instanceID: 4634}
     - Class: 114
-      Script: {instanceID: 4896}
+      Script: {instanceID: 4958}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -378,16 +478,22 @@ ScriptsOnlyBuild:
     className: Image
   - hash:
       serializedVersion: 2
+      Hash: 699619b86d9359741a4f58540298c80b
+    assemblyName: UnityEngine.UI.dll
+    namespaceName: UnityEngine.UI
+    className: Text
+  - hash:
+      serializedVersion: 2
       Hash: bcaee4c2a83047257b5f47d6ed264b75
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: Toggle
   - hash:
       serializedVersion: 2
-      Hash: 699619b86d9359741a4f58540298c80b
+      Hash: 040dd48e3a027d5424519a5fa2009df4
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
-    className: Text
+    className: ScrollRect
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -408,7 +514,7 @@ ScriptsOnlyBuild:
     className: TMP_InputField
   - hash:
       serializedVersion: 2
-      Hash: c53a07b92c630366d0ca939eb18a5d09
+      Hash: 8467bce9aed48ceaa66f6f2f26b96e01
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ExtractionArea
@@ -417,7 +523,7 @@ ScriptsOnlyBuild:
       Hash: 02dc6484786c8dfe7bb37c86a38d3153
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: ExtractionAreaController
+    className: ExtractionObjectController
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -426,7 +532,7 @@ ScriptsOnlyBuild:
     className: Poolable
   - hash:
       serializedVersion: 2
-      Hash: e0f18281c8e2a41e11b54d354dc5597e
+      Hash: 32b3ad370c0e04267e85ad9b52444e04
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ElevatorController
@@ -528,6 +634,12 @@ ScriptsOnlyBuild:
     className: SimpleScript
   - hash:
       serializedVersion: 2
+      Hash: 654f765af43e27c50510e27c25fe9ee4
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: SessionPanel
+  - hash:
+      serializedVersion: 2
       Hash: e82c0521cdfe8cb6a168ef7208a98d4a
     assemblyName: Unity.Postprocessing.Runtime.dll
     namespaceName: UnityEngine.Rendering.PostProcessing
@@ -552,7 +664,13 @@ ScriptsOnlyBuild:
     className: GrenadeScript
   - hash:
       serializedVersion: 2
-      Hash: e43a49c4b89afc49cf455141078832f6
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UI_Panel
+  - hash:
+      serializedVersion: 2
+      Hash: e18b8baff95bfb33756f04384cd4c32e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: InGameUIManager
@@ -624,7 +742,7 @@ ScriptsOnlyBuild:
     className: PostProcessLayer
   - hash:
       serializedVersion: 2
-      Hash: 6d41ab8fa66c21da2b4aefcc78ae5133
+      Hash: df5fe56b1ba335238b952cc14b7ab1c6
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerController
@@ -640,12 +758,6 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: CanvasScaler
-  - hash:
-      serializedVersion: 2
-      Hash: 20efa0ef6d4d5aec05fb14008a0bfa48
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: LobbyUIManager
   - hash:
       serializedVersion: 2
       Hash: 1264318873c977ce783e3cc8dc561d16
@@ -666,16 +778,10 @@ ScriptsOnlyBuild:
     className: CasingScript
   - hash:
       serializedVersion: 2
-      Hash: ebda77e1718ea8cd84ddc051fc006beb
+      Hash: d2ccf75805c098e51f3a0494abe2d691
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: LoadingUIManager
-  - hash:
-      serializedVersion: 2
-      Hash: 7641aa87f8471bb51525d7ef163921ed
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: RoomListUI
   - hash:
       serializedVersion: 2
       Hash: 27e5341178f188b89bdc6495710b590c
@@ -714,7 +820,7 @@ ScriptsOnlyBuild:
     className: TimelineAsset
   - hash:
       serializedVersion: 2
-      Hash: 0241b7c058ac1f22eadfcb6a39975d65
+      Hash: 3d02596af14eb35630e6f1c72a2e6a9c
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: InGameSceneManager
@@ -876,7 +982,7 @@ ScriptsOnlyBuild:
     className: BeforeAfterTestCommandState
   - hash:
       serializedVersion: 2
-      Hash: 990465907c601464f2fd474c114d42d4
+      Hash: d8a7bcc34e58737ad94a4bbc2a902e7c
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: LoginSceneManager
@@ -916,6 +1022,12 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BulletScript
+  - hash:
+      serializedVersion: 2
+      Hash: 5bccb2bf077b9ee949c28bfb60ac258e
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Transmitter
   - hash:
       serializedVersion: 2
       Hash: 4fd8bf02e3089425d3502e26c44ba31a
@@ -1080,6 +1192,12 @@ ScriptsOnlyBuild:
     className: PositionAsUV1
   - hash:
       serializedVersion: 2
+      Hash: 6e681ad16c567965398040c473198c37
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: TransmitterUI
+  - hash:
+      serializedVersion: 2
       Hash: 87ff43d2baf3385cba327d8f803a4ebb
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
@@ -1092,10 +1210,10 @@ ScriptsOnlyBuild:
     className: TMP_TextEventHandler
   - hash:
       serializedVersion: 2
-      Hash: 8b07fa30b72e7318f1337e660695814b
+      Hash: 51c36f6de142b1c09ab39937d881f24f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: RoomInfo
+    className: TrainController
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -1116,7 +1234,7 @@ ScriptsOnlyBuild:
     className: SceneController
   - hash:
       serializedVersion: 2
-      Hash: 78e9fa176e1613503a0cec0eb7cd74eb
+      Hash: b86a86ec7851e8db2b79ff9b1a7b1420
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: LoginUIManager
@@ -1194,12 +1312,6 @@ ScriptsOnlyBuild:
     className: PostProcessEffectSettings
   - hash:
       serializedVersion: 2
-      Hash: 990465907c601464f2fd474c114d42d4
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: HideoutSceneManager
-  - hash:
-      serializedVersion: 2
       Hash: c3d3430df9e3ea95e3e3d587961390fb
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
@@ -1234,12 +1346,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: SignalReceiver
-  - hash:
-      serializedVersion: 2
-      Hash: 040dd48e3a027d5424519a5fa2009df4
-    assemblyName: UnityEngine.UI.dll
-    namespaceName: UnityEngine.UI
-    className: ScrollRect
   - hash:
       serializedVersion: 2
       Hash: 88095e22d9e4be3b7e57d4eda7bef234
@@ -1288,6 +1394,12 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: HandgunScriptLPFP
+  - hash:
+      serializedVersion: 2
+      Hash: a3c656bdecb00c5285e11e5f955d3562
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: InteractableUI
   - hash:
       serializedVersion: 2
       Hash: a8bad63dc38d5729e38889649e4ee034
@@ -1428,12 +1540,6 @@ ScriptsOnlyBuild:
     className: TMP_TextInfoDebugTool
   - hash:
       serializedVersion: 2
-      Hash: 2e2d3053080f481b3576525d4fa9352c
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: FieldmapSceneManager
-  - hash:
-      serializedVersion: 2
       Hash: 8220b46879dc5e37db1b940c938f5744
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
@@ -1492,6 +1598,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Postprocessing.Runtime.dll
     namespaceName: UnityEngine.Rendering.PostProcessing
     className: AmbientOcclusion
+  - hash:
+      serializedVersion: 2
+      Hash: 89c91d46b0d8f765f75f3b2c57b586b3
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: SessionPanelPooler
   platform: 19
   scenePathNames:
   - Assets/Scenes/Login.unity

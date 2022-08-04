@@ -20,38 +20,53 @@ public class KeyOption {
     public KeyCode Inventory        = KeyCode.Tab;
 }
 
+[RequireComponent(typeof(PlayerMovement))]
 public class PlayerController : MonoBehaviour {
-    private PlayerMovement _movement = null;
-    KeyOption _keyOption = new KeyOption();
+    [Header("Interaction Ray Implements")]
+    public  float               _interactDistance       = 5.0f;
+    private Ray                 _interactRay;
+    public  LayerMask           _interactLayerMask;
+    public  InteractableUI      _interactUI             = null;
+    private InteractableObject  _curInteracting         = null;
 
-    private Action<int, bool> MouseAction;
-    private ushort _mouseListener = 0;
+    private PlayerMovement      _movement               = null;
+    private KeyOption           _keyOption              = new KeyOption();
 
-    public void AddMouseListener(Action<int, bool> action) {
-        MouseAction -= action;
-        MouseAction += action;
-        _mouseListener++;
+    private Action<int, bool>   MouseClickAction;
+    private ushort              _mouseClickListener     = 0;
+    private Action<int>         MouseWheelAction;
+    private ushort              _mouseWheelListener     = 0;
+
+    public void AddMouseClickListener(Action<int, bool> action) {
+        MouseClickAction -= action;
+        MouseClickAction += action;
+        _mouseClickListener++;
     }
-    public void RemoveMouseListener(Action<int, bool> action) {
-        MouseAction -= action;
-        _mouseListener--;
+    public void RemoveMouseClickListener(Action<int, bool> action) {
+        MouseClickAction -= action;
+        _mouseClickListener--;
+    }
+    public void AddMouseWheelListener(Action<int> action) {
+        MouseWheelAction -= action;
+        MouseWheelAction += action;
+        _mouseWheelListener++;
+    }
+    public void RemoveMouseWheelListener(Action<int> action) {
+        MouseWheelAction -= action;
+        _mouseWheelListener--;
     }
 
-    [SerializeField]
-    private float rotCamXAxisSpeed = 5;
-    [SerializeField]
-    private float rotCamYAxisSpeed = 3;
+    [SerializeField] private float rotCamXAxisSpeed = 5;
+    [SerializeField] private float rotCamYAxisSpeed = 3;
 
-    private float limitMinX = -80;
-    private float limitMaxX = 50;
-    private float eulerAngleX;
-    private float eulerAngleY;
-
-    private bool isCrouch = false;
-
-    private bool isUIControl = false;
-
-    private UnityEngine.Vector3 moveDir = UnityEngine.Vector3.zero;
+                     private float limitMinX = -80;
+                     private float limitMaxX = 50;
+                     private float eulerAngleX;
+                     private float eulerAngleY;
+                     
+                     private bool isCrouch = false;
+                                          
+                     private UnityEngine.Vector3 moveDir = UnityEngine.Vector3.zero;
 
     private void Awake() {
         Managers.Input.AddMouseInputHandler(MouseInputHandler);
@@ -62,9 +77,6 @@ public class PlayerController : MonoBehaviour {
     }
 
     public void MouseInputHandler() {
-        if(isUIControl)
-            return;
-
         eulerAngleX -= Input.GetAxis("Mouse Y") * rotCamXAxisSpeed;
         eulerAngleY += Input.GetAxis("Mouse X") * rotCamYAxisSpeed;
 
@@ -72,33 +84,66 @@ public class PlayerController : MonoBehaviour {
 
         _movement.RotateTo(new UnityEngine.Vector3(eulerAngleX, eulerAngleY, 0));
 
-        if(_mouseListener > 0) {
+        if(_mouseClickListener > 0) {
             if(Input.GetMouseButtonDown(0)) {
-                MouseAction.Invoke(0, true);
+                MouseClickAction.Invoke(0, true);
             }
             else if(Input.GetMouseButtonUp(0)) {
-                MouseAction.Invoke(0, false);
+                MouseClickAction.Invoke(0, false);
             }
             if(Input.GetMouseButtonDown(1)) {
-                MouseAction.Invoke(1, true);
+                MouseClickAction.Invoke(1, true);
             }
             else if(Input.GetMouseButtonUp(1)) {
-                MouseAction.Invoke(1, false);
+                MouseClickAction.Invoke(1, false);
             }
         }
+
+        Vector2 mouseScroll = Input.mouseScrollDelta;
+        if(mouseScroll != Vector2.zero) {
+            int direction = mouseScroll.y > 0 ? 1 : -1;
+
+            if(_interactUI.IsOpen) {
+                _interactUI.ScrollInteractType(direction);
+            }
+            else {
+
+            }
+        }
+
+        RaycastHit hit;
+        _interactRay = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f));
+        Debug.DrawRay(_interactRay.origin, _interactRay.direction, Color.red, _interactDistance);
+        if(Physics.Raycast(_interactRay, out hit, _interactDistance, _interactLayerMask)) {
+            if(_curInteracting != null && _curInteracting.CompareTag(hit.collider.tag))
+                return;
+
+            _curInteracting = hit.collider.GetComponent<InteractableObject>();
+            _curInteracting.ShowInteractType();
+        }
+        else {
+            if(_interactUI.IsOpen) {
+                _interactUI.CloseInteractType();
+                _curInteracting = null;
+            }
+        }
+        
     }
     public void KeyboardInputHandler() {
-        if(isUIControl)
-            return;
-
         #region Action Input Handler
         if(Input.GetKeyDown(_keyOption.Inventory)) {
-            isUIControl = !isUIControl;
             //TODO: UI창 띄우기 등 각종 필요한 액션들 작성 필요
         }
 
         if(Input.GetKeyDown(_keyOption.Interact)) {
             //TODO: 상호작용 시 필요한 액션 작성 필요
+            if(_interactUI == null)
+                return;
+
+            if(_curInteracting == null)
+                return;
+
+            _interactUI.Interact();
         }
 
         #endregion
@@ -139,22 +184,20 @@ public class PlayerController : MonoBehaviour {
             _movement.Stance = pPlayerStance.Idle;
         }
 
-        Vector3 direction = new Vector3(moveX, 0, moveZ).normalized;
+        Vector3 direction = new Vector3(moveX, moveDir.y, moveZ).normalized;
 
         if(moveDir.Equals(direction) == false) {
             moveDir = direction;
-            //C_Move movePacket = new C_Move(){Dir = new Google.Protobuf.Protocol.Vector3()};
-            //movePacket.Dir.X = moveDir.x;
-            //movePacket.Dir.Z = moveDir.z;
-            //movePacket.Stance = _movement.Stance;
-            //입력 누르고 있는 시간 += Time.deltaTime;
+            C_Move movePacket = new C_Move();
+            movePacket.Dir = new pVector3();
 
-            //Managers.Network.Send(movePacket);
+            movePacket.Dir.X = moveDir.x;
+            movePacket.Dir.Z = moveDir.z;
+            movePacket.Stance = _movement.Stance;
+
+            Managers.Network.Send(movePacket);
         }
-        //else if(입력 누르고 있는 시간 >= 이동 주기){
-        //    Managers.Network.Send(movePacket);
-        //    입력 누르고 있는 시간 = 0.0f;
-        //}
+
         _movement.MoveTo(moveDir);
         #endregion
     }

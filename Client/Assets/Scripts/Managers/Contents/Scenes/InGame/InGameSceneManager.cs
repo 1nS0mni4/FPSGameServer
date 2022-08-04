@@ -8,20 +8,17 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 public class InGameSceneManager : MSceneManager {
-    [SerializeField]
-    private InGameUIManager _uiManager = null;
+    [SerializeField] private InGameUIManager _uiManager = null;
 
     [Header("Spawn Point")]
-    [SerializeField]
-    private List<SpawnPointFormat> _spawnPoints = null;
+    [SerializeField] private List<SpawnPointFormat> _spawnPoints = null;
 
     [Header("Player")]
-    [SerializeField]
-    private GameObject _myPlayer = null;
-    public Dictionary<int, GameObject> _players = new Dictionary<int, GameObject>();
-    public ObjectPooler _playerPooler = null;
+    [SerializeField] private MyPlayer _myPlayer = null;
+                     public Dictionary<int, Player> _players = new Dictionary<int, Player>();
+                     public ObjectPooler<Player> _playerPooler = null;
 
-    private WaitForSeconds loadWaitTime = new WaitForSeconds(0.5f);
+                     private WaitForSeconds loadWaitTime = new WaitForSeconds(0.5f);
 
     /****************************************************
      *                  Loading Flags                   *
@@ -49,7 +46,7 @@ public class InGameSceneManager : MSceneManager {
         Quaternion rot = Quaternion.EulerAngles(new Vector3(0, 0, 0));
 
         for(int i = 0; i < _spawnPoints.Count; i++) {
-            if(prevArea != _spawnPoints[i]._playerInScene)
+            if(prevArea != _spawnPoints[i].areaType)
                 continue;
 
             pos = _spawnPoints[i].transform.position;
@@ -67,12 +64,12 @@ public class InGameSceneManager : MSceneManager {
                 spawn.Transform = _myPlayer.transform.TopTransform();
                 Managers.Network.Send(spawn);
             }
-            _players.Add(authID, _myPlayer);
-            _myPlayer.SetActive(true);
+            //_players.Add(authID, _myPlayer);
+            _myPlayer.gameObject.SetActive(true);
         }
         else {
             //TODO: 플레이어 풀러에서 객체를 하나 받아 AuthCode->Key의 _player 데이터 Add 후 초기화 및 SetActive(true);
-            GameObject player = _playerPooler.Get();
+            Player player = _playerPooler.Get();
             player.transform.position = pos;
             player.transform.rotation = rot;
 
@@ -83,7 +80,7 @@ public class InGameSceneManager : MSceneManager {
     public void SpawnPlayerInPosition(int authID, pTransform tran) {
         //TODO: 플레이어 풀러에서 객체를 하나 받아 AuthCode->Key의 _player 데이터 Add 후 초기화 및 SetActive(true);
 
-        GameObject player = _playerPooler.Get();
+        Player player = _playerPooler.Get();
         Vector3 pos = new Vector3(tran.Position.X, tran.Position.Y, tran.Position.Z);
         Vector3 rot = new Vector3(tran.Rotation.X, tran.Rotation.Y, tran.Rotation.Z);
         player.transform.position = pos;
@@ -93,7 +90,7 @@ public class InGameSceneManager : MSceneManager {
     }
 
     public void SynchObjectInPosition(int authID, pTransform tran) {
-        GameObject player = null;
+        Player player = null;
 
         if(_players.TryGetValue(authID, out player)) {
             Vector3 pos = new Vector3(tran.Position.X, tran.Position.Y, tran.Position.Z);
@@ -120,7 +117,7 @@ public class InGameSceneManager : MSceneManager {
     private IEnumerator CoCheckDataLoaded() {
         bool loading = true;
         while(loading) {
-            loading = !(f_Loaded_Field  & f_Loaded_Item & _myPlayer.activeSelf);
+            loading = !(f_Loaded_Field  & f_Loaded_Item & _myPlayer.gameObject.activeSelf);
             yield return loadWaitTime;
         }
 
@@ -131,6 +128,6 @@ public class InGameSceneManager : MSceneManager {
 
 [Serializable]
 public struct SpawnPointFormat {
-    public pAreaType _playerInScene;
+    public pAreaType areaType;
     public Transform transform;
 }

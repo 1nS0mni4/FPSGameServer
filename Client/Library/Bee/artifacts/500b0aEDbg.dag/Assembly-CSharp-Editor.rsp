@@ -335,6 +335,7 @@
 -r:"Library/Bee/artifacts/500b0aEDbg.dag/Assembly-CSharp.ref.dll"
 -r:"Library/Bee/artifacts/500b0aEDbg.dag/ColoredHeaderCreator.Editor.ref.dll"
 -r:"Library/Bee/artifacts/500b0aEDbg.dag/ColoredHeaderCreator.ref.dll"
+-r:"Library/Bee/artifacts/500b0aEDbg.dag/Unity.2D.Sprite.Editor.ref.dll"
 -r:"Library/Bee/artifacts/500b0aEDbg.dag/Unity.PlasticSCM.Editor.ref.dll"
 -r:"Library/Bee/artifacts/500b0aEDbg.dag/Unity.Postprocessing.Editor.ref.dll"
 -r:"Library/Bee/artifacts/500b0aEDbg.dag/Unity.Postprocessing.Runtime.ref.dll"

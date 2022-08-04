@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
-public class MyPlayer : Player
-{
+public class MyPlayer : MonoBehaviour, NetworkObject {
+    public int AuthCode { get; set; }
 
-    protected override void Awake() {
-        
-    }
+
 }

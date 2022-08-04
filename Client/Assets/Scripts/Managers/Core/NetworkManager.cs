@@ -15,6 +15,9 @@ public class NetworkManager : Manager, IManagerStart, IManagerUpdate, IManagerOn
     ServerSession _session = new ServerSession();
     public int AuthCode { get => _session.AuthCode; set => _session.AuthCode = value; }
     public int RoomCode { get; set; } = -1;
+
+    public Dictionary<Type, Action<object>> MessageWait = new Dictionary<Type, Action<object>>();
+
     private void ServerConnection() {
         PacketManager.Instance.CustomHandler = PacketQueue.Instance.Push;
         string host = Dns.GetHostName();

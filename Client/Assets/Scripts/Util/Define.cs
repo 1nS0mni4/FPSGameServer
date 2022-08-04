@@ -24,4 +24,20 @@ public static class Define
         Hideout,
         Fieldmap
     }
+
+    public enum InteractType {
+        None,
+
+        Chest_Open,
+        Chest_Close,
+
+        Door_Open,
+        Door_Close,
+        Door_Breach,
+
+        Item_Take,
+        Item_Search,
+
+        Object_Use,
+    }
 }

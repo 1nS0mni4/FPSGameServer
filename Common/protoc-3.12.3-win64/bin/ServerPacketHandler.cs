@@ -35,5 +35,20 @@ public static class PacketHandler {
         ClientSession session = (ClientSession)s;
 
         throw new NotImplementedException();
+    }public static void C_Request_OnlineHandler(PacketSession s, IMessage packet) {
+        C_Request_Online parsedPacket = (C_Request_Online)packet;
+        ClientSession session = (ClientSession)s;
+
+        throw new NotImplementedException();
+    }public static void C_MoveHandler(PacketSession s, IMessage packet) {
+        C_Move parsedPacket = (C_Move)packet;
+        ClientSession session = (ClientSession)s;
+
+        throw new NotImplementedException();
+    }public static void C_JumpHandler(PacketSession s, IMessage packet) {
+        C_Jump parsedPacket = (C_Jump)packet;
+        ClientSession session = (ClientSession)s;
+
+        throw new NotImplementedException();
     }
 }

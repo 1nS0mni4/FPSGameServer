@@ -31,4 +31,10 @@ namespace Extensions {
             return res;
         }
     }
+
+    public static class pVector3Ex {
+        public static Vector3 toVector3(this pVector3 vector) {
+            return new Vector3(vector.X, vector.Y, vector.Z);
+        }
+    }
 }

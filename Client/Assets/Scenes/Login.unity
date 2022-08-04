@@ -1240,7 +1240,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d840713280bd544192dbd3aaab982f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _type: 0
   _loginPanel: {fileID: 352187515}
   _registerPanel: {fileID: 1734023119}
   _errorPanel: {fileID: 106282848}
@@ -3518,6 +3517,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62a0dace3c9f61f4dbc5722c8df21eb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _areaType: 0
 --- !u!1001 &5505548142606900390
 PrefabInstance:
   m_ObjectHideFlags: 0
