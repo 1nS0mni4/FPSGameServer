@@ -4,14 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(PlayerStat))]
+[RequireComponent(typeof(PlayerMovement))]
+[RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour {
-    //private Rigidbody _rigid = null;
     private CharacterController _controller = null;
-    private PlayerStat _stat = null;
-    private Animator _animator = null;
+    private PlayerStat          _stat       = null;
+    private Animator            _animator   = null;
 
-    private Vector3 moveForce;
-    private pPlayerStance _curStance = pPlayerStance.Walk;
+    private Vector3       moveForce;
+    private pPlayerStance _curStance        = pPlayerStance.Walk;
 
     public bool IsGrounded { get => _controller.isGrounded; }
     public pPlayerStance Stance {
@@ -40,8 +42,6 @@ public class PlayerMovement : MonoBehaviour {
         }
     }
 
-    
-
     private void Awake() {
         _controller = GetComponent<CharacterController>();
         _stat = GetComponent<PlayerStat>();
@@ -49,16 +49,21 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void Start() {
-        StartCoroutine("CoEffectGravity");
+        StartCoroutine(CoEffectGravity());
     }
 
     public void MoveTo(Vector3 direction, pPlayerStance stance = pPlayerStance.Idle) {
         direction = transform.rotation * new Vector3(direction.x, 0, direction.z);
         moveForce = new Vector3(direction.x * _stat.CurrentSpeed, moveForce.y, direction.z * _stat.CurrentSpeed);
 
-        _controller.Move(moveForce * Time.smoothDeltaTime);
+        _controller.Move(moveForce * Time.deltaTime);
     }
 
+    /// <summary>
+    /// 서버 패킷 수신용
+    /// </summary>
+    /// <param name="direction"></param>
+    /// <param name="stance"></param>
     public void MoveTo(pVector3 direction, pPlayerStance stance = pPlayerStance.Idle) {
         Vector3 dir = new Vector3(direction.X, direction.Y, direction.Z);
         MoveTo(dir, stance);
@@ -73,31 +78,33 @@ public class PlayerMovement : MonoBehaviour {
         if(_controller.isGrounded == false)
             return;
         moveForce += new Vector3(0, _stat.JumpForce, 0);
-        _controller.Move(moveForce * Time.smoothDeltaTime);
+        _controller.Move(moveForce * Time.deltaTime);
     }
 
     public void RotateTo(Vector3 direction, bool deadReckoning = false) {
         transform.rotation = Quaternion.Euler(direction.x, direction.y, 0);
-        
     }
 
-    public IEnumerator CoStartRotate(Vector3 direction) {
-        while(true) {
-            RotateTo(direction);
-            yield return null;
-        }
-    }
+    //public IEnumerator CoStartRotate(Vector3 direction) {
+    //    while(true) {
+    //        RotateTo(direction);
+    //        yield return null;
+    //    }
+    //}
 
     public IEnumerator CoEffectGravity() {
         while(true) {
-            if(_controller.isGrounded) {
+            if(_controller.isGrounded) 
                 moveForce.y = 0;
-            }
-            else {
-                moveForce += new Vector3(0, -9.8f * Time.smoothDeltaTime, 0);
-                _controller.Move(moveForce * Time.smoothDeltaTime);
-            }
+            else 
+                moveForce += new Vector3(0, -9.8f * Time.deltaTime, 0);
+
+            _controller.Move(moveForce * Time.deltaTime);
             yield return null;
         }
+    }
+
+    private void OnDestroy() {
+        StopCoroutine(CoEffectGravity());
     }
 }

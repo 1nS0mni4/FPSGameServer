@@ -7,21 +7,27 @@ option csharp_namespace = "Google.Protobuf.Protocol";
 
 enum PacketID{
 	//option allow_alias = true;	//Other Enums can get same numerics
-	C_DEBUG				= 0;
-	S_ERROR_PACKET		= 1;
-	C_ACCESS			= 2;
-	S_ACCESS_RESPONSE	= 3;
-	C_REGISTER			= 4;
-	S_REGISTER_RESPONSE = 5;
-	C_DISCONNECT		= 6;
-	C_EXTRACT_TO		= 7;
-	S_SPAWN				= 8;
-	C_SPAWN_RESPONSE	= 9;
-	S_PLAYER_INTERPOL	= 10;
-	S_LOAD_PLAYERS		= 11;
-	S_LOAD_ITEMS		= 12;
-	S_LOAD_FIELDS		= 13;
-	S_PLAYER_LEAVE		= 14;
+	C_DEBUG						= 0;
+	S_ERROR_PACKET				= 1;
+	C_ACCESS					= 2;
+	S_ACCESS_RESPONSE			= 3;
+	C_REGISTER					= 4;
+	S_REGISTER_RESPONSE			= 5;
+	C_DISCONNECT				= 6;
+	C_EXTRACT_TO				= 7;
+	S_SPAWN						= 8;
+	C_SPAWN_RESPONSE			= 9;
+	S_PLAYER_INTERPOL			= 10;
+	S_LOAD_PLAYERS				= 11;
+	S_LOAD_ITEMS				= 12;
+	S_LOAD_FIELDS				= 13;
+	S_PLAYER_LEAVE				= 14;
+	C_REQUEST_ONLINE			= 15;
+	S_REQUEST_ONLINE_RESPONSE	= 16;
+	C_MOVE						= 17;
+	S_MOVE_BROADCAST			= 18;
+	C_JUMP						= 19;
+	S_JUMP_BROADCAST			= 20;
 }
 
 //----------------------------------------<Client Packet>---------------------------------------
@@ -52,6 +58,18 @@ message C_Spawn_Response{
 	pTransform transform = 1;
 }
 
+message C_Request_Online{
+
+}
+
+message C_Move{
+	pVector3	  dir	 = 1;
+	pPlayerStance stance = 2;
+}
+
+message C_Jump{
+}
+
 //----------------------------------------<Server Packet>---------------------------------------
 
 message S_Error_Packet{
@@ -59,8 +77,8 @@ message S_Error_Packet{
 }
 
 message S_Access_Response{
-	NetworkError ErrorCode = 1;
-	int32 authCode = 2;
+	NetworkError	ErrorCode	= 1;
+	int32			authCode	= 2;
 }
 
 message S_Register_Response{
@@ -68,14 +86,14 @@ message S_Register_Response{
 }
 
 message S_Spawn{
-	int32 AuthCode = 1;
-	pAreaType prevArea = 2;
-	pAreaType destArea = 3;
+	int32		AuthCode = 1;
+	pAreaType	prevArea = 2;
+	pAreaType	destArea = 3;
 }
 
 message S_Player_Interpol{
-	int32 AuthCode = 1;
-	pTransform transform = 2;
+	int32		AuthCode	= 1;
+	pTransform	transform	= 2;
 }
 
 message S_Load_Players{
@@ -83,14 +101,26 @@ message S_Load_Players{
 }
 
 message S_Load_Items{
-
 }
 
 message S_Load_Fields{
-
 }
 
 message S_Player_Leave{
+	int32 authCode = 1;
+}
+
+message S_Request_Online_Response{
+	repeated pOnlineUser onlineUsers = 1;
+}
+
+message S_Move_Broadcast{
+	int32		  authCode = 1;
+	pPlayerStance stance   = 2;
+	pVector3	  dir	   = 3;
+}
+
+message S_Jump_Broadcast{
 	int32 authCode = 1;
 }
 
@@ -125,10 +155,11 @@ message pAuthResult{
 enum pAreaType{
 	GAMESTART		= 0;
 	HIDEOUT			= 1;
-	CITYHALL		= 2;		//시청
-	RESIDENTIAL		= 3;		//주거지구
-	INDUSTRIAL		= 4;		//공업지구
-	COMMERCE		= 5;		//상업지구
+	FIELDMAP		= 2;
+	CITYHALL		= 3;		//시청
+	RESIDENTIAL		= 4;		//주거지구
+	INDUSTRIAL		= 5;		//공업지구
+	COMMERCE		= 6;		//상업지구
 }
 
 enum pPlayerStance{	
@@ -154,4 +185,11 @@ enum NetworkError{
 	INVALID_PASSWORD	= 3;
 	INVALID_ROOM		= 4;
 	INVALID_ACCESS		= 5;
+}
+
+message pOnlineUser{
+	string name = 1;
+	int32 authCode = 2;
+	pAreaType whereAt = 3;
+	bool canAccess = 4;
 }

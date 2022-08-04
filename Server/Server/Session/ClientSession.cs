@@ -1,6 +1,6 @@
 ﻿using Google.Protobuf;
 using Google.Protobuf.Protocol;
-using Server.Contents;
+using Server.Contents.Sessions.Base;
 using Server.DB;
 using ServerCore;
 using System;

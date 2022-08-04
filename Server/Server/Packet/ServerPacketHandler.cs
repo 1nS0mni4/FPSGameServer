@@ -3,8 +3,9 @@ using Server.Session;
 using ServerCore;
 using Google.Protobuf.Protocol;
 using System;
-using Server.Contents;
 using Server.DB;
+using Server.Contents.Sessions;
+using Server.Contents.Sessions.Base;
 
 public static class PacketHandler {
     public static void C_DebugHandler(PacketSession s, IMessage packet) {
@@ -89,19 +90,21 @@ public static class PacketHandler {
             case pAreaType.Industrial:
             case pAreaType.Commerce: {
                 result = parsedPacket.PrevArea == pAreaType.Hideout ?
-                    await Task<bool>.Run(() => {
+                    await Task.Run(() => {
                         GameRoom section = session.Section;
                         if(section != null)
                             section.Push(() => section.Leave(session));
 
                         return FieldmapManager.Instance.TryEnterField(session, parsedPacket.PrevArea, parsedPacket.DestArea);
                     }):
-                    await Task<bool>.Run(() => {
+                    await Task.Run(() => {
                         GameRoom section = session.Section;
                         if(section == null)
                             return false;
                         return true;
                     });
+
+                //TODO: 인벤토리 데이터 전송
             }break;
         }
 
@@ -123,4 +126,31 @@ public static class PacketHandler {
 
         section.Push(() => section.UserInterpolation(session.AuthCode, parsedPacket.Transform));
     }
+
+    public static void C_Request_OnlineHandler(PacketSession s, IMessage packet) {
+        C_Request_Online parsedPacket = (C_Request_Online)packet;
+        ClientSession session = (ClientSession)s;
+
+        throw new NotImplementedException();
+    }
+
+    public static void C_MoveHandler(PacketSession s, IMessage packet) {
+        C_Move parsedPacket = (C_Move)packet;
+        ClientSession session = (ClientSession)s;
+
+        GameRoom section = session.Section;
+
+        if(section == null)
+            return;
+
+        section.Push(() => section.HandleMove(session, parsedPacket));
+    }
+
+    public static void C_JumpHandler(PacketSession s, IMessage packet) {
+        C_Move parsedPacket = (C_Move)packet;
+        ClientSession session = (ClientSession)s;
+
+        throw new NotImplementedException();
+    }
+    
 }

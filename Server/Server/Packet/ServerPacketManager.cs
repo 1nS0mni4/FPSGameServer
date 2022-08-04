@@ -30,6 +30,12 @@ public class PacketManager {
         _handler.Add((ushort)PacketID.CExtractTo, PacketHandler.C_Extract_ToHandler);
       _makeFunc.Add((ushort)PacketID.CSpawnResponse, MakePacket<C_Spawn_Response>);
         _handler.Add((ushort)PacketID.CSpawnResponse, PacketHandler.C_Spawn_ResponseHandler);
+      _makeFunc.Add((ushort)PacketID.CRequestOnline, MakePacket<C_Request_Online>);
+        _handler.Add((ushort)PacketID.CRequestOnline, PacketHandler.C_Request_OnlineHandler);
+      _makeFunc.Add((ushort)PacketID.CMove, MakePacket<C_Move>);
+        _handler.Add((ushort)PacketID.CMove, PacketHandler.C_MoveHandler);
+      _makeFunc.Add((ushort)PacketID.CJump, MakePacket<C_Jump>);
+        _handler.Add((ushort)PacketID.CJump, PacketHandler.C_JumpHandler);
 
     }
 

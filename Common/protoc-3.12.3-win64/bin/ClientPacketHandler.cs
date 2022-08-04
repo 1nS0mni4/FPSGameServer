@@ -50,5 +50,20 @@ public static class PacketHandler {
         ServerSession session = (ServerSession)s;
 
         throw new NotImplementedException();
+    }public static void S_Request_Online_ResponseHandler(PacketSession s, IMessage packet) {
+        S_Request_Online_Response parsedPacket = (S_Request_Online_Response)packet;
+        ServerSession session = (ServerSession)s;
+
+        throw new NotImplementedException();
+    }public static void S_Move_BroadcastHandler(PacketSession s, IMessage packet) {
+        S_Move_Broadcast parsedPacket = (S_Move_Broadcast)packet;
+        ServerSession session = (ServerSession)s;
+
+        throw new NotImplementedException();
+    }public static void S_Jump_BroadcastHandler(PacketSession s, IMessage packet) {
+        S_Jump_Broadcast parsedPacket = (S_Jump_Broadcast)packet;
+        ServerSession session = (ServerSession)s;
+
+        throw new NotImplementedException();
     }
 }

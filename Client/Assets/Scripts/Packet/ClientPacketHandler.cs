@@ -7,6 +7,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using static Define;
+using Extensions;
 
 public static class PacketHandler {
     public static void S_Error_PacketHandler(PacketSession s, IMessage packet) {
@@ -94,8 +95,6 @@ public static class PacketHandler {
         if(manager == null)
             return;
 
-
-
         manager.f_Loaded_Field = true;
     }
 
@@ -110,7 +109,6 @@ public static class PacketHandler {
 
         manager.SynchObjectInPosition(response.AuthCode, response.Transform);
 
-
         manager.f_Loaded_Player = true;
     }
 
@@ -120,7 +118,7 @@ public static class PacketHandler {
 
         if(Managers.Scene.IsLoading) {
             Managers.Scene.Completed.Enqueue(() => {
-                InGameSceneManager manager = MSceneManager.GetManager<InGameSceneManager>();
+                InGameSceneManager manager = Managers.Scene.GetManager<InGameSceneManager>();
 
                 if(manager == null)
                     return;
@@ -128,21 +126,67 @@ public static class PacketHandler {
                 manager.SpawnPlayerInSpawnPoint(response.AuthCode, response.PrevArea);
             });
         }
-        //TODO: 이건 무슨 코드였지?
-        //manager.SpawnPlayerWithPoint(response.SessionID, response.SpawnIndex);
     }
-
 
     public static void S_Player_LeaveHandler(PacketSession s, IMessage packet) {
         ServerSession session = (ServerSession)s;
         S_Player_Leave response = (S_Player_Leave)packet;
 
-        InGameSceneManager manager = MSceneManager.GetManager<InGameSceneManager>();
+        InGameSceneManager manager = Managers.Scene.GetManager<InGameSceneManager>();
 
         if(manager == null)
             return;
 
         manager.RemovePlayer(response.AuthCode);
     }
-    
+
+
+    public static void S_Request_Online_ResponseHandler(PacketSession s, IMessage packet) {
+        ServerSession session = (ServerSession)s;
+        S_Request_Online_Response response = (S_Request_Online_Response)packet;
+
+        Action<object> requester = null;
+
+        if(Managers.Network.MessageWait.TryGetValue(typeof(S_Request_Online_Response), out requester)) {
+            requester.Invoke(response);
+            Managers.Network.MessageWait.Remove(typeof(S_Request_Online_Response));
+        }
+    }
+
+
+    public static void S_Move_BroadcastHandler(PacketSession s, IMessage packet) {
+        ServerSession session = (ServerSession)s;
+        S_Move_Broadcast response = (S_Move_Broadcast)packet;
+
+        if(Managers.Network.AuthCode == response.AuthCode)
+            return;
+
+        InGameSceneManager manager = Managers.Scene.Manager as InGameSceneManager;
+        if(manager == null)
+            return;
+
+        Player player = null;
+        if(manager._players.TryGetValue(response.AuthCode, out player)){
+            //player.Movement.MoveTo(response.Dir, response.Stance);
+            player.MoveDir = response.Dir.toVector3();
+            player.Stance = response.Stance;
+        }
+    }
+
+    public static void S_Jump_BroadcastHandler(PacketSession s, IMessage packet) {
+        ServerSession session = (ServerSession)s;
+        S_Jump_Broadcast response = (S_Jump_Broadcast)packet;
+
+        if(Managers.Network.AuthCode == response.AuthCode)
+            return;
+
+        InGameSceneManager manager = Managers.Scene.Manager as InGameSceneManager;
+        if(manager == null)
+            return;
+
+        Player player = null;
+        if(manager._players.TryGetValue(response.AuthCode, out player)) {
+            player.Jump();
+        }
+    }
 }

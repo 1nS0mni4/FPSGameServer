@@ -63,6 +63,9 @@ public class Managers : MonoBehaviour {
     #region MonoBehaviour Managers
     private SceneController _scene;
     public static SceneController Scene { get => _instance._scene; }
+
+    private InGameSceneManager _inGame = null;
+    public static InGameSceneManager InGame { get => _instance._inGame; }
     #endregion
 
 
