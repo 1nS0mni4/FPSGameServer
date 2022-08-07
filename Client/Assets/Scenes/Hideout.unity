@@ -179,13 +179,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 391359732}
+  - component: {fileID: 391359733}
   m_Layer: 0
   m_Name: ObjectPooler_Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &391359732
 Transform:
   m_ObjectHideFlags: 0
@@ -205,6 +206,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &391359733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 391359731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc8e1309a73f0254c945244d55ab15c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _transform: {fileID: 391359732}
 --- !u!1001 &540389250
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -216,6 +230,10 @@ PrefabInstance:
       propertyPath: _uiManager
       value: 
       objectReference: {fileID: 1473308079}
+    - target: {fileID: 4516700309351779578, guid: 58d511deb7b402f4ab535bca59033015, type: 3}
+      propertyPath: _controller
+      value: 
+      objectReference: {fileID: 540389251}
     - target: {fileID: 4516700309351779578, guid: 58d511deb7b402f4ab535bca59033015, type: 3}
       propertyPath: _extraction
       value: 
@@ -284,8 +302,23 @@ PrefabInstance:
       propertyPath: m_Name
       value: ExtractionArea_Elevator
       objectReference: {fileID: 0}
+    - target: {fileID: 7001736212249427109, guid: 58d511deb7b402f4ab535bca59033015, type: 3}
+      propertyPath: _interactableUI
+      value: 
+      objectReference: {fileID: 1188166324842917570}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58d511deb7b402f4ab535bca59033015, type: 3}
+--- !u!114 &540389251 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3899607519034962442, guid: 58d511deb7b402f4ab535bca59033015, type: 3}
+  m_PrefabInstance: {fileID: 540389250}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6c402f494017f240bdde7da73641f57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &705898188
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -610,7 +643,7 @@ PrefabInstance:
       objectReference: {fileID: 1188166324842917570}
     - target: {fileID: 6750578968563626742, guid: 478de9cd7c32693489ac64d9fb02deb8, type: 3}
       propertyPath: _interactTypes.Array.size
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6750578968563626742, guid: 478de9cd7c32693489ac64d9fb02deb8, type: 3}
       propertyPath: _interactTypes.Array.data[0]
@@ -618,7 +651,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6750578968563626742, guid: 478de9cd7c32693489ac64d9fb02deb8, type: 3}
       propertyPath: _interactTypes.Array.data[1]
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6750578968563626742, guid: 478de9cd7c32693489ac64d9fb02deb8, type: 3}
       propertyPath: _interactTypes.Array.data[2]
@@ -1020,7 +1053,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4537649370059190577, guid: 8ab94aa9770298049b804c9bab3eec60, type: 3}
       propertyPath: m_Name
-      value: TransmeterUI
+      value: TransmitterUI
       objectReference: {fileID: 0}
     - target: {fileID: 4537649370059190577, guid: 8ab94aa9770298049b804c9bab3eec60, type: 3}
       propertyPath: m_IsActive
@@ -1425,20 +1458,17 @@ MonoBehaviour:
   _areaType: 1
   _uiManager: {fileID: 1473308079}
   _spawnPoints:
-  - areaType: 0
+  - fromArea: 0
+    toArea: 1
     transform: {fileID: 961901334}
-  - areaType: 1
+  - fromArea: 1
+    toArea: 1
     transform: {fileID: 873563051}
-  - areaType: 3
-    transform: {fileID: 252528110}
-  - areaType: 4
-    transform: {fileID: 252528110}
-  - areaType: 5
-    transform: {fileID: 252528110}
-  - areaType: 6
+  - fromArea: 2
+    toArea: 1
     transform: {fileID: 252528110}
   _myPlayer: {fileID: 1751838934}
-  _playerPooler: {fileID: 0}
+  _characterPooler: {fileID: 391359733}
   f_Loaded_Player: 0
   f_Loaded_Item: 1
   f_Loaded_Field: 1

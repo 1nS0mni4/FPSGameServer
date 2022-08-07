@@ -15,8 +15,8 @@ public class InGameSceneManager : MSceneManager {
 
     [Header("Player")]
     [SerializeField] private MyPlayer _myPlayer = null;
-                     public Dictionary<int, Player> _players = new Dictionary<int, Player>();
-                     public ObjectPooler<Player> _playerPooler = null;
+                     public Dictionary<int, Character> _players = new Dictionary<int, Character>();
+                     public CharacterPooler _characterPooler = null;
 
                      private WaitForSeconds loadWaitTime = new WaitForSeconds(0.5f);
 
@@ -28,12 +28,12 @@ public class InGameSceneManager : MSceneManager {
     [HideInInspector]public bool f_Loaded_Item      = true;
     [HideInInspector]public bool f_Loaded_Field     = true;
 
-
     public override void InitScene() {
-        Managers.Scene.IsLoading = false;
+
     }
 
-    private void Start() {
+    protected override void Start() {
+        base.Start();
         StartCoroutine(CoCheckDataLoaded());
     }
 
@@ -41,12 +41,18 @@ public class InGameSceneManager : MSceneManager {
         
     }
 
-    public void SpawnPlayerInSpawnPoint(int authID, pAreaType prevArea) {
-        Vector3 pos = new Vector3(0, 0, 0);
-        Quaternion rot = Quaternion.EulerAngles(new Vector3(0, 0, 0));
+    public void SpawnPlayerInSpawnPoint(int authID, pAreaType prevArea, pAreaType destArea) {
+        if(_players.ContainsKey(authID))
+            return;
+
+        Vector3 pos = Vector3.zero;
+        Quaternion rot = Quaternion.Euler(Vector3.zero);
 
         for(int i = 0; i < _spawnPoints.Count; i++) {
-            if(prevArea != _spawnPoints[i].areaType)
+            if(prevArea != _spawnPoints[i].fromArea)
+                continue;
+
+            if(destArea != _spawnPoints[i].toArea)
                 continue;
 
             pos = _spawnPoints[i].transform.position;
@@ -55,57 +61,70 @@ public class InGameSceneManager : MSceneManager {
         }
 
         if(authID == Managers.Network.AuthCode) {
-            _myPlayer.transform.position = pos;
-            _myPlayer.transform.rotation = rot;
-            Managers.CurArea = AreaType;
+            _myPlayer.gameObject.transform.position = pos;
+            _myPlayer.gameObject.transform.rotation = rot;
 
             {
                 C_Spawn_Response spawn = new C_Spawn_Response();
-                spawn.Transform = _myPlayer.transform.TopTransform();
+                spawn.Transform = _myPlayer.gameObject.transform.TopTransform();
                 Managers.Network.Send(spawn);
             }
-            //_players.Add(authID, _myPlayer);
+
+            _players.Add(authID, _myPlayer);
             _myPlayer.gameObject.SetActive(true);
         }
         else {
-            //TODO: 플레이어 풀러에서 객체를 하나 받아 AuthCode->Key의 _player 데이터 Add 후 초기화 및 SetActive(true);
-            Player player = _playerPooler.Get();
-            player.transform.position = pos;
-            player.transform.rotation = rot;
+            Character player  = _characterPooler.Get();
+            player.gameObject.transform.position = pos;
+            player.gameObject.transform.rotation = rot;
+            player.gameObject.SetActive(true);
 
             _players.Add(authID, player);
         }
     }
 
     public void SpawnPlayerInPosition(int authID, pTransform tran) {
-        //TODO: 플레이어 풀러에서 객체를 하나 받아 AuthCode->Key의 _player 데이터 Add 후 초기화 및 SetActive(true);
+        if(authID == Managers.Network.AuthCode)
+            return;
 
-        Player player = _playerPooler.Get();
+        if(_players.ContainsKey(authID))
+            return;
+
+        Character player = _characterPooler.Get();
+        if(player == null)
+            return;
+
         Vector3 pos = new Vector3(tran.Position.X, tran.Position.Y, tran.Position.Z);
         Vector3 rot = new Vector3(tran.Rotation.X, tran.Rotation.Y, tran.Rotation.Z);
-        player.transform.position = pos;
-        player.transform.rotation = Quaternion.EulerAngles(rot);
+        player.Position = pos;
+        player.RotateDir = rot;
+        player.gameObject.SetActive(true);
 
         _players.Add(authID, player);
     }
 
-    public void SynchObjectInPosition(int authID, pTransform tran) {
-        Player player = null;
+    public void SyncObjectInPosition(int authID, pTransform tran) {
+        Character player = null;
 
         if(_players.TryGetValue(authID, out player)) {
             Vector3 pos = new Vector3(tran.Position.X, tran.Position.Y, tran.Position.Z);
             Vector3 rot = new Vector3(tran.Rotation.X, tran.Rotation.Y, tran.Rotation.Z);
-            player.transform.position = pos;
-            player.transform.rotation = Quaternion.EulerAngles(rot);
+            player.Position = pos;
+            player.RotateDir = rot;
         }
-        else {
-            SpawnPlayerInPosition(authID, tran);
+    }
+
+    public void SyncPlayerRotation(int authID, pVector3 rot) {
+        Character player = null;
+
+        if(_players.TryGetValue(authID, out player)) {
+            player.RotateDir = rot.toVector3();
         }
     }
 
     public void RemovePlayer(int authCode) {
         if(_players.ContainsKey(authCode)) {
-            _playerPooler.Destroy(_players[authCode]);
+            _characterPooler.Destroy(_players[authCode]);
         }
     }
 
@@ -128,6 +147,7 @@ public class InGameSceneManager : MSceneManager {
 
 [Serializable]
 public struct SpawnPointFormat {
-    public pAreaType areaType;
+    public pAreaType fromArea;
+    public pAreaType toArea;
     public Transform transform;
 }

@@ -20,9 +20,10 @@ namespace Server.Session {
 
         public override void OnDisconnect(EndPoint endPoint) {
             Console.WriteLine($"Disconnected: {endPoint}");
-            if(Section != null) {
-                GameRoom section = Section;
-                section.Push(() => { section.Leave(this); });
+            GameRoom section = Section;
+
+            if(section != null) {
+                section.Push(() => section.Leave(this.AuthCode));
             }
         }
 

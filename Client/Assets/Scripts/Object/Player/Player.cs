@@ -4,23 +4,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMovement))]
-public class Player : MonoBehaviour, DynamicObject {
-    private PlayerMovement _movement = null;
-    public pPlayerStance Stance { get => _movement.Stance; set {
-            _movement.Stance = value;
-        }
-    }
-
-    public Vector3 MoveDir { get; set; }
-    public int AuthCode { get; set; }
+public class Player : Character, CharacterObject {
+    [SerializeField]
+    private GameObject _arm = null;
 
     protected virtual void Awake() {
         _movement = GetComponent<PlayerMovement>();
+    }
+    private void Update() {
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(new Vector3(0, RotateDir.y, 0)), 5.0f * Time.deltaTime);
+        _arm.transform.rotation = Quaternion.Slerp(_arm.transform.rotation, Quaternion.Euler(new Vector3(RotateDir.x, 0, 0)), 5.0f * Time.deltaTime);
+    }
+
+    public void FixedUpdate() {
+        _movement.MoveTo(MoveDir);
     }
 
     public void Jump() {
         _movement.Jump();
     }
-
-    //2022-08-02 해야할 것들 : Stance 코드 위치, MoveDir과 MoveForce 코드 위치, PlayerController와 PlayerMovement코드 정리 필요
 }

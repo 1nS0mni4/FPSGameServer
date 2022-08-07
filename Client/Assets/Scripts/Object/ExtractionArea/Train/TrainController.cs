@@ -35,7 +35,7 @@ public class TrainController : ExtractionObjectController {
     }
 
     #region Override Functions
-    protected override sealed void ExtractionAccess(bool isStart) {
+    public override sealed void ExtractionEffects(bool isStart) {
         _rDoorTargetPos = isStart ? _originRPos + _doorRight.transform.right.normalized : _originRPos;
         _lDoorTargetPos = isStart ? _originLPos - _doorLeft.transform.right.normalized : _originLPos;
 
@@ -61,7 +61,7 @@ public class TrainController : ExtractionObjectController {
         }
 
         //TODO: isActivate == true일 때 기차 정차 소리 및 세팅
-        OnExtractionObjectActivate(isActivate);
+        ActivateExtraction(isActivate);
         yield break;
     }
 

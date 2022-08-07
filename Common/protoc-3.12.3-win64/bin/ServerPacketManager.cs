@@ -36,6 +36,10 @@ public class PacketManager {
         _handler.Add((ushort)PacketID.CMove, PacketHandler.C_MoveHandler);
       _makeFunc.Add((ushort)PacketID.CJump, MakePacket<C_Jump>);
         _handler.Add((ushort)PacketID.CJump, PacketHandler.C_JumpHandler);
+      _makeFunc.Add((ushort)PacketID.CTransformSync, MakePacket<C_Transform_Sync>);
+        _handler.Add((ushort)PacketID.CTransformSync, PacketHandler.C_Transform_SyncHandler);
+      _makeFunc.Add((ushort)PacketID.CLookRotation, MakePacket<C_Look_Rotation>);
+        _handler.Add((ushort)PacketID.CLookRotation, PacketHandler.C_Look_RotationHandler);
 
     }
 

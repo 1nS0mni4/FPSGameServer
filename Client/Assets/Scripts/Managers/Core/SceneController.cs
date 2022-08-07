@@ -7,23 +7,29 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using static Define;
 
-public class SceneController : MonoBehaviour
-{
-    public pAreaType CurAreaType { get; private set; }
-    public float progress;
+public class SceneController : MonoBehaviour {
     public MSceneManager Manager { get; set; }
-    private int _isLoading = 0;
-    public bool IsLoading { get { return _isLoading == 1; } set { 
-            Interlocked.Exchange(ref _isLoading, 0); 
+    private bool _isLoading = false;
+    private float _fakeLoadingTime = 3.0f;
+
+    private WaitForSeconds loadingWaitSeconds = new WaitForSeconds(0.1f);
+    public bool IsLoading {
+        get { return _isLoading == true; }
+        set {
+            if(value != false)
+                return;
+
+            _isLoading = value;
 
             while(Completed.Count > 0) {
                 Action action = Completed.Dequeue();
                 action.Invoke();
             }
-        } 
+        }
     }
     public Queue<Action> Completed = new Queue<Action>();
     public void ChangeSceneTo(pAreaType type) {
+        _isLoading = true;
         Managers.Input.CanInput = false;
 
         InGameUIManager uiManager = UIManager.GetManager<InGameUIManager>();
@@ -39,35 +45,28 @@ public class SceneController : MonoBehaviour
     }
 
     private IEnumerator CoStartChangeSceneTo(pAreaType type) {
-        Interlocked.Exchange(ref _isLoading, 1);
-        Scene prevScene = SceneManager.GetActiveScene();
-
         AsyncOperation task = SceneManager.LoadSceneAsync(type.ToString());
         task.allowSceneActivation = false;
+        float realLoadingTime = 0.0f;
 
         while(task.isDone == false) {
-            progress = task.progress + 0.1f;
+            float progress = task.progress + 0.1f;
+            realLoadingTime += 0.1f;
 
-            if(progress >= 1.0f)
+            Debug.Log($"Progress: {progress}");
+            Debug.Log($"LoadingTime: {realLoadingTime}");
+
+            if(progress >= 1.0f && realLoadingTime >= _fakeLoadingTime)
                 break;
 
-            yield return null;
+            yield return loadingWaitSeconds;
         }
-        
-        CurAreaType = type;
-        progress = 1.0f;
 
-        C_Extract_To scenePacket = new C_Extract_To();
-        scenePacket.PrevArea = Managers.CurArea;
-        scenePacket.DestArea = type;
-
-        Managers.Network.Send(scenePacket);
         task.allowSceneActivation = true;
-        //SceneManager.UnloadSceneAsync(prevScene);
-                
+
         yield break;
     }
-    public T GetManager<T>() where T: MSceneManager {
+    public T GetManager<T>() where T : MSceneManager {
         return Manager as T;
     }
 }

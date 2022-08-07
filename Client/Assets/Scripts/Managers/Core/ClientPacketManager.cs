@@ -42,6 +42,10 @@ public class PacketManager {
         _handler.Add((ushort)PacketID.SMoveBroadcast, PacketHandler.S_Move_BroadcastHandler);
       _makeFunc.Add((ushort)PacketID.SJumpBroadcast, MakePacket<S_Jump_Broadcast>);
         _handler.Add((ushort)PacketID.SJumpBroadcast, PacketHandler.S_Jump_BroadcastHandler);
+      _makeFunc.Add((ushort)PacketID.SSyncPlayerTransform, MakePacket<S_Sync_Player_Transform>);
+        _handler.Add((ushort)PacketID.SSyncPlayerTransform, PacketHandler.S_Sync_Player_TransformHandler);
+      _makeFunc.Add((ushort)PacketID.SBroadcastLookRotation, MakePacket<S_Broadcast_Look_Rotation>);
+        _handler.Add((ushort)PacketID.SBroadcastLookRotation, PacketHandler.S_Broadcast_Look_RotationHandler);
 
     }
 

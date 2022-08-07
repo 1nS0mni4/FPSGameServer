@@ -2,12 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Pooling Object는 컴포넌트를 대상으로 사용한다.
-/// Pooling Object를 가지는 오브젝트의 Transform을 가져와야한다.
-/// </summary>
-/// <typeparam name="T"></typeparam>
-[System.Serializable]
 public class ObjectPooler<T> : MonoBehaviour where T: MonoBehaviour {
     public Transform _transform = null;
     private List<T> _objects = new List<T>();
@@ -30,7 +24,6 @@ public class ObjectPooler<T> : MonoBehaviour where T: MonoBehaviour {
 
             for(int i = 0; i < _objects.Count; i++) {
                 if(_objects[i].gameObject.activeSelf == false) {
-                    _objects[i].gameObject.SetActive(true);
                     go = _objects[i];
                     break;
                 }

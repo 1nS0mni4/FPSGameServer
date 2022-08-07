@@ -28,6 +28,10 @@ enum PacketID{
 	S_MOVE_BROADCAST			= 18;
 	C_JUMP						= 19;
 	S_JUMP_BROADCAST			= 20;
+	C_TRANSFORM_SYNC			= 21;
+	S_SYNC_PLAYER_TRANSFORM		= 22;
+	C_LOOK_ROTATION				= 23;
+	S_BROADCAST_LOOK_ROTATION	= 24;
 }
 
 //----------------------------------------<Client Packet>---------------------------------------
@@ -68,6 +72,14 @@ message C_Move{
 }
 
 message C_Jump{
+}
+
+message C_Transform_Sync{
+	pTransform transform = 1;
+}
+
+message C_Look_Rotation{
+	pVector3 rotation = 1;
 }
 
 //----------------------------------------<Server Packet>---------------------------------------
@@ -122,6 +134,15 @@ message S_Move_Broadcast{
 
 message S_Jump_Broadcast{
 	int32 authCode = 1;
+}
+
+message S_Sync_Player_Transform{
+	repeated pObjectData playerTransforms = 1;
+}
+
+message S_Broadcast_Look_Rotation{
+	int32 authCode = 1;
+	pVector3 rotation = 2;
 }
 
 //---------------------------------------<Packet Data Model>------------------------------------

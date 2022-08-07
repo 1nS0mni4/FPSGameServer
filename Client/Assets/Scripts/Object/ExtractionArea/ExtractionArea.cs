@@ -8,9 +8,6 @@ using UnityEngine.Events;
 using static Define;
 
 public class ExtractionArea : MonoBehaviour {
-    [Header("ExtractionArea Controller Object")]
-    public ExtractionObjectController _controller;
-
     [Header("Extraction Destination")]
     [SerializeField]
     private pAreaType _destination;
@@ -28,14 +25,12 @@ public class ExtractionArea : MonoBehaviour {
     private float _extractionRemaining = 0.0f;
 
     [SerializeField]
-    private InGameSceneManager _sceneManager = null;
-    [SerializeField]
     private ExtractionUI _extractionUI = null;
-    public Action<bool> ExtractionProgress = null;
+    public Action<bool> ExtractionSuccessEvent = null;
 
     private string _playerTag = "MyPlayer";
     private bool _isExtracting = false;
-    public bool IsExtracting { get => _isExtracting && _collider.enabled; }
+    public bool IsExtracting { get => _isExtracting && _collider.enabled; }  
 
     private void OnTriggerEnter(Collider other) {
         if(other.CompareTag(_playerTag) == false)
@@ -81,21 +76,21 @@ public class ExtractionArea : MonoBehaviour {
     }
 
     private void ExtractionSucess() {
+        if(ExtractionSuccessEvent != null) {
+            ExtractionSuccessEvent.Invoke(false);
+        }
+
+        InGameSceneManager manager = Managers.Scene.GetManager<InGameSceneManager>();
+
+        if(manager != null) {
+            Managers.Scene.ChangeSceneTo(_destination == pAreaType.Hideout ? pAreaType.Hideout : pAreaType.Fieldmap);
+        }
+
         C_Extract_To extPacket = new C_Extract_To();
         extPacket.RoomCode = _roomCode;
         extPacket.PrevArea = Managers.CurArea;
         extPacket.DestArea = _destination;
 
         Managers.Network.Send(extPacket);
-
-        if(ExtractionProgress != null) {
-            ExtractionProgress.Invoke(false);
-        }
-
-        if(_sceneManager != null) {
-            Managers.CurArea = _sceneManager.AreaType;
-            Interlocked.MemoryBarrier();
-            Managers.Scene.ChangeSceneTo(_destination == pAreaType.Hideout ? pAreaType.Hideout : pAreaType.Fieldmap);
-        }
     }
 }

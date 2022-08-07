@@ -8,23 +8,27 @@ public class ExtractionObjectController : MonoBehaviour {
 
     public bool IsActivated { get => _isActivated; }
 
-    protected virtual void Start() {
-        _extractionArea.ExtractionProgress = ExtractionAccess;
+    private void Awake() {
+        if(_extractionArea == null) throw new System.NotImplementedException();
     }
 
-    public virtual void OnExtractionObjectActivate(bool isActivate) {
+    protected virtual void Start() {
+        _extractionArea.ExtractionSuccessEvent = ExtractionEffects;
+    }
+
+    public virtual void ActivateExtraction(bool isActivate) {
         if(isActivate == true) {
             _extractionArea.Collider.enabled = true;
-            ExtractionAccess(true);
+            ExtractionEffects(true);
         }
         else {
             if(_extractionArea.IsExtracting)
                 return;
-            ExtractionAccess(false);
+            ExtractionEffects(false);
             _extractionArea.Collider.enabled = false;
         }
-
     }
 
-    protected virtual void ExtractionAccess(bool isStart) { }
+
+    public virtual void ExtractionEffects(bool isStart) { }
 }

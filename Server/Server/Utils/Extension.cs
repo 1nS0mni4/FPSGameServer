@@ -29,11 +29,15 @@ namespace Server.Utils {
     }
 
     public static class pVector3Ex {
-        public static pVector3 Default(this pVector3 vec) {
+        public static pVector3 Default() {
             pVector3 res = new pVector3();
             res.X = res.Y = res.Z = 0;
 
             return res;
+        }
+
+        public static float Magnitude(this pVector3 vec) {
+            return Mathf.Sqrt(vec.X * vec.X + vec.Y * vec.Y + vec.Z * vec.Z);
         }
     }
 }

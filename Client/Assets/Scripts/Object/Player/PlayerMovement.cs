@@ -52,7 +52,7 @@ public class PlayerMovement : MonoBehaviour {
         StartCoroutine(CoEffectGravity());
     }
 
-    public void MoveTo(Vector3 direction, pPlayerStance stance = pPlayerStance.Idle) {
+    public void MoveTo(Vector3 direction) {
         direction = transform.rotation * new Vector3(direction.x, 0, direction.z);
         moveForce = new Vector3(direction.x * _stat.CurrentSpeed, moveForce.y, direction.z * _stat.CurrentSpeed);
 
@@ -64,14 +64,15 @@ public class PlayerMovement : MonoBehaviour {
     /// </summary>
     /// <param name="direction"></param>
     /// <param name="stance"></param>
-    public void MoveTo(pVector3 direction, pPlayerStance stance = pPlayerStance.Idle) {
+    public void MoveTo(pVector3 direction, pPlayerStance stance) {
+        Stance = stance;
         Vector3 dir = new Vector3(direction.X, direction.Y, direction.Z);
-        MoveTo(dir, stance);
+        MoveTo(dir);
     }
 
     public void Interpolate(pVector3 position) {
         Vector3 pos = new Vector3(position.X, position.Y, position.Z);
-        transform.position = pos;
+        //transform.position = Vector3.Lerp(transform.position, pos, );
     }
 
     public void Jump() {
@@ -81,7 +82,7 @@ public class PlayerMovement : MonoBehaviour {
         _controller.Move(moveForce * Time.deltaTime);
     }
 
-    public void RotateTo(Vector3 direction, bool deadReckoning = false) {
+    public void RotateTo(Vector3 direction) {
         transform.rotation = Quaternion.Euler(direction.x, direction.y, 0);
     }
 

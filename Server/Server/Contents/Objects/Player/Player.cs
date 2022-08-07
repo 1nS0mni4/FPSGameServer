@@ -8,11 +8,11 @@ using UnityEngine;
 using Server.Utils;
 
 namespace Server.Contents.Objects.Player {
-    public class Player : MonoBehaviour{
+    public class Player{
         public int AuthCode { get; set; } = -1;
         public bool isInterpolated = false;
         public pTransform transform = new pTransform().Default();
-        public pVector3 direction = new pVector3().Default();
+        public pVector3 direction = pVector3Ex.Default();
         public pPlayerStance stance = pPlayerStance.Idle;
         public float speed = 5.0f;
 

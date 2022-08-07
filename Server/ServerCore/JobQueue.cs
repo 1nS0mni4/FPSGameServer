@@ -48,5 +48,11 @@ namespace ServerCore {
 
             _flushing = false;
         }
+
+        public void Clear() {
+            lock(l_jobQueue) {
+                _jobQueue.Clear();
+            }
+        }
     }
 }

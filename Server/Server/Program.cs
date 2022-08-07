@@ -13,7 +13,10 @@ namespace Server {
         private static Listener _listener = new Listener();
 
         public static void Main(string[] args) {
-            DbCommands.InitializeDB(false);
+            DbCommands.InitializeDB(true);
+            JobTimer.Instance.Push(() => {
+
+            });
             string host = Dns.GetHostName();
             IPHostEntry ipHost = Dns.GetHostEntry(host);
             IPAddress ipAddr = ipHost.AddressList[0];

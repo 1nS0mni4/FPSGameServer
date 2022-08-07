@@ -1,4 +1,5 @@
 using Google.Protobuf.Protocol;
+using Google.Protobuf.WellKnownTypes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -39,7 +40,6 @@ public class Managers : MonoBehaviour {
     public List<string> AddedManager = new List<string>();
     #endregion
     #region Game Instances
-
     private volatile pAreaType _prevScene = pAreaType.Hideout;
     public static pAreaType CurArea { get => _instance._prevScene; set => _instance._prevScene = value; }
 

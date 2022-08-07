@@ -50,5 +50,15 @@ public static class PacketHandler {
         ClientSession session = (ClientSession)s;
 
         throw new NotImplementedException();
+    }public static void C_Transform_SyncHandler(PacketSession s, IMessage packet) {
+        C_Transform_Sync parsedPacket = (C_Transform_Sync)packet;
+        ClientSession session = (ClientSession)s;
+
+        throw new NotImplementedException();
+    }public static void C_Look_RotationHandler(PacketSession s, IMessage packet) {
+        C_Look_Rotation parsedPacket = (C_Look_Rotation)packet;
+        ClientSession session = (ClientSession)s;
+
+        throw new NotImplementedException();
     }
 }

@@ -1228,7 +1228,6 @@ GameObject:
   - component: {fileID: 8809489228700957762}
   - component: {fileID: 7189875568099236394}
   - component: {fileID: 2784430793119933343}
-  - component: {fileID: 3728891319966671262}
   m_Layer: 0
   m_Name: MyPlayer
   m_TagString: MyPlayer
@@ -1316,6 +1315,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fea0e7bc84d31348bd34598c6722a55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactDistance: 5
+  _interactLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  _interactUI: {fileID: 0}
   rotCamXAxisSpeed: 5
   rotCamYAxisSpeed: 3
 --- !u!114 &7189875568099236394
@@ -1347,18 +1351,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6656023df35c25242a8c88dc7e63b4d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3728891319966671262
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7824235981259477478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5761131f8e63a4446970c2014d64ee43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7824235981259477480

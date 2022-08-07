@@ -25,7 +25,8 @@ namespace Server.Contents.Sessions.Base {
         public GameRoom Generate() {
             GameRoom room = null;
             lock(l_rooms) {
-                room = new GameRoom() { RoomCode = _roomID++ };
+                room = new GameRoom();
+                room.RoomCode = _roomID++;
                 room.Init();
                 _rooms.Add(room.RoomCode, room);
             }

@@ -82,7 +82,7 @@ public class PlayerController : MonoBehaviour {
 
         eulerAngleX = ClampAngle(eulerAngleX, limitMinX, limitMaxX);
 
-        _movement.RotateTo(new UnityEngine.Vector3(eulerAngleX, eulerAngleY, 0));
+        _movement.RotateTo(new Vector3(eulerAngleX, eulerAngleY, 0));
 
         if(_mouseClickListener > 0) {
             if(Input.GetMouseButtonDown(0)) {
@@ -192,6 +192,7 @@ public class PlayerController : MonoBehaviour {
             movePacket.Dir = new pVector3();
 
             movePacket.Dir.X = moveDir.x;
+            movePacket.Dir.Y = moveDir.y;
             movePacket.Dir.Z = moveDir.z;
             movePacket.Stance = _movement.Stance;
 

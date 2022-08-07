@@ -4,10 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider))]
 public class ElevatorController : ExtractionObjectController {
-    [SerializeField]
-    private BoxCollider _elevatorTrigger = null;
     [SerializeField]
     private GameObject _doorLeft = null;
     [SerializeField]
@@ -18,21 +15,16 @@ public class ElevatorController : ExtractionObjectController {
     Vector3 _rDoorTargetPos, _lDoorTargetPos;
 
     private void Awake() {
-        _elevatorTrigger = GetComponent<BoxCollider>();
+
     }
 
     protected override sealed void Start() {
-        if(_elevatorTrigger == null) {
-            Destroy(gameObject);
-            return;
-        }
-
         base.Start();
         _originLPos = _doorLeft.transform.position;
         _originRPos = _doorRight.transform.position;
     }
 
-    protected override sealed void ExtractionAccess(bool isStart) {
+    public override sealed void ExtractionEffects(bool isStart) {
         _rDoorTargetPos = isStart ? _originRPos + _doorRight.transform.right.normalized : _originRPos;
         _lDoorTargetPos = isStart ? _originLPos - _doorLeft.transform.right.normalized : _originLPos;
 

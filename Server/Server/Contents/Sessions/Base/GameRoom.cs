@@ -5,9 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Google.Protobuf;
 using Google.Protobuf.Protocol;
+using Google.Protobuf.WellKnownTypes;
 using Server.Contents.Objects.Player;
 using Server.Session;
+using Server.Utils;
 using ServerCore;
+using UnityEngine;
 
 namespace Server.Contents.Sessions.Base {
     //public struct GameRoomInfo {
@@ -19,39 +22,39 @@ namespace Server.Contents.Sessions.Base {
         protected const int max_capacity = 5;
         protected JobQueue _jobQueue = new JobQueue();
 
-        protected Dictionary<int, ClientSession> _sessions = new Dictionary<int, ClientSession>();
+        protected volatile Dictionary<int, ClientSession> _sessions = new Dictionary<int, ClientSession>();
 
         protected Dictionary<int, Player> _players = new Dictionary<int, Player>();
 
-        protected int SpawnIndexCount { get; set; } = 4;
+        protected List<System.Timers.Timer> _timerList = new List<System.Timers.Timer>();
 
-        protected System.Timers.Timer _timer = null;
+        private WaitForSeconds _timeSyncWait = new WaitForSeconds(1.0f);
+
 
         public int RoomCode { get; set; }
-        public int ConnectedCount { get => _sessions.Count; }
         public bool CanAccept { get { return max_capacity - _sessions.Count > 0; } }
 
         #region GameRoom Management Functions
 
         public virtual void Init() {
             AddJobTimer(Update, 250f);
-            AddJobTimer(SendUserObjectSynch, 500f);
+            AddJobTimer(SyncPlayerTransform, 500f);
         }
 
         protected void AddJobTimer(Action action, float times) {
             if(action == null)
                 return;
 
-            _timer = new System.Timers.Timer();
-            _timer.Interval = times;
-            _timer.Elapsed += (s, e) => action.Invoke();
-            _timer.AutoReset = true;
-            _timer.Enabled = true;
+            System.Timers.Timer timer = new System.Timers.Timer();
+            timer.Interval = times;
+            timer.Elapsed += (s, e) => action.Invoke();
+            timer.AutoReset = true;
+            timer.Enabled = true;
 
-            GameRoomManager.Instance.Timer.Add(_timer);
+            _timerList.Add(timer);
         }
 
-        public void Broadcast(IMessage packet) {
+        public virtual void Broadcast(IMessage packet) {
             if(_sessions.Count == 0)
                 return;
 
@@ -60,15 +63,23 @@ namespace Server.Contents.Sessions.Base {
             }
         }
 
-        public void DestroyRoom() {
+        public virtual void DestroyRoom() {
+            for(int i = 0; i < _timerList.Count; i++) {
+                _timerList[i].Stop();
+            }
+            _timerList.Clear();
             _sessions = null;
+            _jobQueue.Clear();
             _jobQueue = null;
-            GameRoomManager.Instance.Timer.Remove(_timer);
+            
             Console.WriteLine($"Try to Destory GameRoom {RoomCode}");
             GameRoomManager.Instance.DestroyRoom(this);
         }
 
         public void Push(Action action) {
+            if(_jobQueue == null)
+                return;
+
             _jobQueue.Push(action);
         }
 
@@ -101,15 +112,17 @@ namespace Server.Contents.Sessions.Base {
             Push(() => Broadcast(spawn));
         }
 
-        public virtual void Leave(ClientSession session) {
-            if(session == null)
+        public virtual void Leave(int authCode) {
+            Console.WriteLine($"Player {authCode} Try to Leave");
+            bool result = _sessions.Remove(authCode);
+            if(result == false) {
                 return;
+            }
 
-            _sessions.Remove(session.SessionID);
             //TODO: Broadcast Someone's Leave
 
             S_Player_Leave playerLeave = new S_Player_Leave();
-            playerLeave.AuthCode = session.AuthCode;
+            playerLeave.AuthCode = authCode;
 
             Push(() => Broadcast(playerLeave));
 
@@ -124,17 +137,30 @@ namespace Server.Contents.Sessions.Base {
 
             //TODO: 다른 Update가 필요한 오브젝트 컨테이너를 여기서 호출
         }
-
-
         #endregion
 
 
         #region User Management Functions
 
-        public void UserInterpolation(int authCode, pTransform transform) {
+        public void UserInterpolation(int authCode, pTransform transform, bool checkFlag) {
             Player player = null;
 
             if(_players.TryGetValue(authCode, out player)) {
+                Console.WriteLine($"Transform: {transform.Position.X}, {transform.Position.Y}, {transform.Position.Z}");
+                pTransform nextTransform = new pTransform();
+                nextTransform.Position = new pVector3();
+
+                nextTransform.Position.X = transform.Position.X - player.transform.Position.X;
+                nextTransform.Position.Y = transform.Position.Y - player.transform.Position.Y;
+                nextTransform.Position.Z = transform.Position.Z - player.transform.Position.Z;
+
+                if(checkFlag == true && nextTransform.Position.Magnitude() > ( player.speed * Environment.TickCount64 ) + 3.0f) {
+                    Push(() => Leave(player.AuthCode));
+                    Console.WriteLine($"Player{player.AuthCode} Disconnected Due to Irregular Moving {nextTransform.Position.Magnitude()}");
+                    Console.WriteLine($"Player Speed: {player.speed} TimeDelay: {Environment.TickCount64}");
+                    return;
+                }
+
                 player.transform = transform;
                 player.isInterpolated = true;
             }
@@ -142,31 +168,10 @@ namespace Server.Contents.Sessions.Base {
                 player = new Player();
                 player.AuthCode = authCode;
                 player.transform = transform;
+                player.isInterpolated = true;
+
                 _players.Add(player.AuthCode, player);
             }
-
-            S_Player_Interpol interpol = new S_Player_Interpol();
-            interpol.AuthCode = player.AuthCode;
-            interpol.Transform = player.transform;
-
-            Push(() => Broadcast(interpol));
-        }
-
-        public void SendUserObjectSynch() {
-            if(_players.Count == 0)
-                return;
-
-            S_Load_Players playerList = new S_Load_Players();
-
-            foreach(int key in _players.Keys) {
-                pObjectData data = new pObjectData();
-                data.AuthCode = _players[key].AuthCode;
-                data.Transform = _players[key].transform;
-
-                playerList.ObjectList.Add(data);
-            }
-
-            Push(() => Broadcast(playerList));
         }
 
         /// <summary>
@@ -177,12 +182,13 @@ namespace Server.Contents.Sessions.Base {
         public S_Load_Players GetpUserInGameDatas(int excAuthCode = -1) {
             S_Load_Players list = new S_Load_Players();
 
-            foreach(int authCode in _players.Keys) {
-                if(authCode == excAuthCode)
+            foreach(Player p in _players.Values) {
+                if(p.AuthCode == excAuthCode)
                     continue;
+
                 pObjectData data = new pObjectData();
-                data.AuthCode = _players[authCode].AuthCode;
-                data.Transform = _players[authCode].transform;
+                data.AuthCode = p.AuthCode;
+                data.Transform = p.transform;
                 list.ObjectList.Add(data);
             }
 
@@ -198,14 +204,33 @@ namespace Server.Contents.Sessions.Base {
             if(_players.TryGetValue(session.AuthCode, out player) == false)
                 return;
 
+            player.direction = move.Dir;
+            player.stance = move.Stance;
+
             //TODO: 이동 검사 필요
             //TODO: 시간당 이동 계산 후 Broadcast 필요
 
             S_Move_Broadcast moveBroad = new S_Move_Broadcast();
             moveBroad.AuthCode = session.AuthCode;
             moveBroad.Dir = move.Dir;
+            moveBroad.Stance = move.Stance;
 
             Push(() => Broadcast(moveBroad));
+        }
+
+        public void SyncPlayerTransform() {
+            S_Sync_Player_Transform sync = new S_Sync_Player_Transform();
+            pObjectData data = new pObjectData();
+
+            foreach(Player p in _players.Values) {
+                data = new pObjectData();
+                data.AuthCode = p.AuthCode;
+                data.Transform = p.transform;
+
+                sync.PlayerTransforms.Add(data);
+            }
+
+            Push(() => Broadcast(sync));
         }
 
         #endregion

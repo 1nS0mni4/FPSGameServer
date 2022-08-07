@@ -14,7 +14,13 @@ public abstract class MSceneManager : MonoBehaviour {
             manager.ClearScene();
 
         Managers.Scene.Manager = this;
+        Managers.CurArea = AreaType;
+        
         InitScene();
+    }
+
+    protected virtual void Start() {
+        Managers.Scene.IsLoading = false;
     }
 
     public abstract void InitScene();
