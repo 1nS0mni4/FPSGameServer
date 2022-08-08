@@ -6,7 +6,7 @@ using UnityEngine;
 public class Character : MonoBehaviour { 
     public int AuthCode { get; set; }
 
-    protected PlayerMovement _movement = null;
+    [SerializeField] protected PlayerMovement _movement = null;
 
     public virtual Vector3 MoveDir { get; set; }
     public virtual Vector3 RotateDir { get; set; }

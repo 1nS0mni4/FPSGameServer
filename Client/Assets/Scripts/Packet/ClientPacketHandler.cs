@@ -239,6 +239,4 @@ public static class PacketHandler {
 
         manager.SyncPlayerRotation(response.AuthCode, response.Rotation);
     }
-
-
 }

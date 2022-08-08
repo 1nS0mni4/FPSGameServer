@@ -8,7 +8,13 @@ public class Player : Character, CharacterObject {
     [SerializeField]
     private GameObject _arm = null;
 
-    protected virtual void Awake() {
+    public override Vector3 Position {
+        get => base.Position; set {
+            _movement.transform.position = value;
+        }
+    }
+
+    protected void Awake() {
         _movement = GetComponent<PlayerMovement>();
     }
     private void Update() {
@@ -18,6 +24,7 @@ public class Player : Character, CharacterObject {
 
     public void FixedUpdate() {
         _movement.MoveTo(MoveDir);
+
     }
 
     public void Jump() {

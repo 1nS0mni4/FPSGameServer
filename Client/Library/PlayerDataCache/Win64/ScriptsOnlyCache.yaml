@@ -924,7 +924,7 @@ ScriptsOnlyBuild:
     className: GraphicRaycaster
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: f698907fa31dbdf66d1bcd05eaf039e3
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Character
@@ -984,7 +984,7 @@ ScriptsOnlyBuild:
     className: ReporterMessageReceiver
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: f698907fa31dbdf66d1bcd05eaf039e3
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MyPlayer
@@ -1362,7 +1362,7 @@ ScriptsOnlyBuild:
     className: Mask
   - hash:
       serializedVersion: 2
-      Hash: aeb1f1f86216fc4baf06669778fe40b7
+      Hash: 9ae71d13463771206702a40fb7b9e5c8
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
