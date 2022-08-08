@@ -62,9 +62,8 @@ public class PlayerController : MonoBehaviour {
         this._movement = GetComponent<PlayerMovement>();
         Cursor.lockState = CursorLockMode.Locked;
 
-        inventory = FindObjectOfType<InventoryUI>(); //예비 추가---------------------
-        storageTarget = FindObjectOfType<StorageTarget>(); //예비 추가---------------------
-        storage = FindObjectOfType<StorageUI>(); //예비 추가---------------------
+        storage = FindObjectOfType<Storage>(); //////예비
+        container = FindObjectOfType<Container>(); //////예비
     }
 
     public void MouseInputHandler() {
@@ -76,8 +75,11 @@ public class PlayerController : MonoBehaviour {
 
         eulerAngleX = ClampAngle(eulerAngleX, limitMinX, limitMaxX);
 
-        if (isInventory == false && isStorage == false) // 창고, 인벤토리 모두 꺼져있을 시에 실행
-            _movement.RotateTo(new UnityEngine.Vector3(eulerAngleX, eulerAngleY, 0));
+        if(isPoint == false)
+        {
+            if (isInventory == false && isStorage == false) // 창고, 인벤토리 모두 꺼져있을 시에 실행
+                _movement.RotateTo(new UnityEngine.Vector3(eulerAngleX, eulerAngleY, 0));
+        }     
 
         if(_mouseListener > 0) {
             if(Input.GetMouseButtonDown(0)) {
@@ -100,12 +102,24 @@ public class PlayerController : MonoBehaviour {
 
         #region Action Input Handler
         if(Input.GetKeyDown(_keyOption.Inventory)) {
-            isUIControl = !isUIControl;
-            //TODO: UI창 띄우기 등 각종 필요한 액션들 작성 필요
+            //isUIControl = !isUIControl;
+            //TODO: UI창 띄우기 등 각종 필요한 액션들 작성 필요           
+                container.InventoryActive();
+                isInventory = !isInventory;                   
         }
 
-        if(Input.GetKeyDown(_keyOption.Interact)) {
+        if (Input.GetKeyDown(_keyOption.Interact)) {
             //TODO: 상호작용 시 필요한 액션 작성 필요
+            if (isInteract == false) return;
+
+            if(isInteract == true)
+            {
+                if (storage != null)
+                {
+                    container.StorageActive();
+                    isStorage = !isStorage;
+                }
+            }
         }
 
         #endregion
@@ -177,53 +191,31 @@ public class PlayerController : MonoBehaviour {
     }
 
     // -----------마우스 커서 움직임, 보임----------- 
-    public void CursorState()
+    public void CursorState(bool point)
     {
-        if(isInventory == false && isStorage == false) //창고 닫았을 때
+        if(point == false) //창고 닫았을 때
         {
-            Cursor.visible = false;
+            Cursor.visible = point;
             Cursor.lockState = CursorLockMode.Locked;
         }
-        else                                           //창고 열었을 때
+
+        if(point == true)                                           //창고 열었을 때
         {
-            Cursor.visible = true;
+            Cursor.visible = point;
             Cursor.lockState = CursorLockMode.None;
         }
+
+        isPoint = point;
     }
     // ----------------인벤토리, 창고----------------
-    private InventoryUI inventory;
-    private StorageTarget storageTarget;
-    private StorageUI storage;
+
+    static public Storage storage;
+    private Container container;
 
     private bool isPoint = false;
     private bool isInventory = false;
     private bool isStorage = false;
+    public bool isInteract = false;
 
-    private void UpdateInventory()
-    {
-        if(Input.GetKeyDown(KeyCode.X))
-        {
-            isInventory = !isInventory;
-            inventory.Inventory();           
-        }
-    }
 
-    private void UdateStorage()
-    {
-        if(storageTarget.isTarget == true)
-        {
-            if(Input.GetKeyDown(KeyCode.Z))
-            {
-                isStorage = !isStorage;
-                storage.Storage();               
-            }
-        }
-    }
-
-    // ----------------업데이트 문----------------
-    private void Update()
-    {
-        UdateStorage();
-        UpdateInventory();
-    }
 }

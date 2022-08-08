@@ -11,16 +11,18 @@ public enum SlotType
 // 기획상나오는 스롯들의 기능 함수를 적어 click, drag, drop
 public class Slot : MonoBehaviour, IPointerClickHandler
 {
-    private Container container;
+    private ItemContainer itemContainer;
     private Image image;
-    private StorageUI storageUI;
     public SlotItem item;
     public SlotType slotType;
+    private Container container;
 
     [SerializeField]
     private GameObject childImg;
     [SerializeField]
     private GameObject childNameText;
+    [SerializeField]
+    private GameObject childTypeText;
 
     public GameObject Childimg
     {
@@ -44,54 +46,71 @@ public class Slot : MonoBehaviour, IPointerClickHandler
         set
         {
             childNameText = value;
-            childNameText = this.gameObject.transform.GetChild(1).gameObject;
+            childNameText = this.gameObject.transform.GetChild(2).gameObject;
         }
     }
 
-    //UI Components
-    private void OnValidate()//유니티 라이프 사이클과 별개로 게임이 시작되기전에 실행되는 함수
+    public GameObject ChildTypeText
+    {
+        get
+        {
+            return childTypeText;
+        }
+        set
+        {
+            childTypeText = value;
+            childTypeText = this.gameObject.transform.GetChild(1).gameObject;
+        }
+    }
+
+    private void OnValidate()
     {
         Childimg = childImg;
         ChildNameText = childNameText;
+        ChildTypeText = childTypeText;
     }
 
     private void Awake()
     {
         container = FindObjectOfType<Container>();
         image = GetComponent<Image>();
-        storageUI = FindObjectOfType<StorageUI>();
+        itemContainer = FindObjectOfType<ItemContainer>();
         UpdateImage(gameObject);
     }
 
     private void UpdateImage(GameObject targetObject)
     {
-
-
         Slot target = targetObject.GetComponent<Slot>();
-
 
         target.Childimg.GetComponent<Image>().sprite = target.item.itemImage;
         target.ChildNameText.GetComponent<Text>().text = target.item.itemName;
 
+        if (target.item.itemType != ItemType.none)
+        {
+            target.ChildTypeText.GetComponent<Text>().text = target.item.itemType.ToString();
+        }
+
+        if (target.item.itemType == ItemType.none)
+        {
+            target.ChildTypeText.GetComponent<Text>().text = null;
+        }
     }
 
-    // 니가 넣을 슬롯이 빈칸이냐 , 아이템있냐 
-    // 갯수관련 , 드래그앤 드롭 , 클릭 먹을꺼냐? 창착할꺼냐  
-    //보통은 슬롯에서 드래그 , 드롭 , 클릭 .... 처리를 이벤토리 ui             
-
     public void OnPointerClick(PointerEventData eventData)
-    {//클릭에대한 함수구현 클릭했을때 돌아가는 로직
-
+    {
         if (slotType == SlotType.Inventory)
         {
-            if (storageUI.activeStroage == false) return;
-
-            for (int i = 0; i < container.slotsParent.childCount; i++)
+            if (container.isStorage == false)
             {
-                if (container.otherSlots[i].item.itemType == ItemType.none)
+                return;
+            }
+
+            for (int i = 0; i < container.inventorySlotParent.childCount; i++)
+            {
+                if (container.storageSlots[i].item.itemType == ItemType.none)
                 {
-                    container.otherSlots[i].item = item;
-                    UpdateImage(container.otherSlots[i].gameObject);
+                    container.storageSlots[i].item = item;
+                    UpdateImage(container.storageSlots[i].gameObject);
                     this.item.itemType = ItemType.none;
                     this.item.itemImage = null;
                     this.item.itemName = null;
@@ -103,12 +122,12 @@ public class Slot : MonoBehaviour, IPointerClickHandler
 
         if (slotType == SlotType.Storage)
         {
-            for (int i = 0; i < container.slotsParent.childCount; i++)
+            for (int i = 0; i < container.inventorySlotParent.childCount; i++)
             {
-                if (container.playerSlots[i].item.itemType == ItemType.none)
+                if (container.inventorySlots[i].item.itemType == ItemType.none)
                 {
-                    container.playerSlots[i].item = item;
-                    UpdateImage(container.playerSlots[i].gameObject);
+                    container.inventorySlots[i].item = item;
+                    UpdateImage(container.inventorySlots[i].gameObject);
                     this.item.itemType = ItemType.none;
                     this.item.itemImage = null;
                     this.item.itemName = null;
@@ -118,4 +137,5 @@ public class Slot : MonoBehaviour, IPointerClickHandler
             }
         }
     }
+
 }
