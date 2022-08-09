@@ -23,8 +23,6 @@ public static class PacketHandler {
         ServerSession session = (ServerSession)s;
         S_Access_Response response = (S_Access_Response)packet;
 
-        Debug.Log($"ErrorCode: {response.ErrorCode}, SessionID: {response.AuthCode}");
-
         LoginUIManager ui = UIManager.GetManager<LoginUIManager>();
         if(ui == null)
             return;
@@ -41,7 +39,6 @@ public static class PacketHandler {
             break;
 
             case NetworkError.Success: {
-                Debug.Log("Success!");
                 Managers.Network.AuthCode = response.AuthCode;
                 Managers.Scene.ChangeSceneTo(pAreaType.Hideout);
             }
@@ -56,19 +53,16 @@ public static class PacketHandler {
         S_Register_Response response = (S_Register_Response)packet;
 
         if(response.ErrorCode == false) {
-            Debug.Log("Register Failed!");
             return;
         }
 
         LoginUIManager ui = UIManager.GetManager<LoginUIManager>();
         if(ui == null)
             return;
-
-        Debug.Log("Register Success!");
     }
 
     public static void S_Load_PlayersHandler(PacketSession s, IMessage packet) {
-        Debug.Log("S_Load_Players Received!");
+        Debug.Log($"S_Load_Players Received!");
         ServerSession session = (ServerSession)s;
         S_Load_Players response = (S_Load_Players)packet;
 
@@ -80,7 +74,8 @@ public static class PacketHandler {
                     return;
 
                 for(int i = 0; i < response.ObjectList.Count; i++) {
-                    manager.SpawnPlayerInPosition(response.ObjectList[i].AuthCode, response.ObjectList[i].Transform);
+                    manager.SpawnPlayerInPosition(response.ObjectList[i].AuthCode, response.ObjectList[i].Position, response.ObjectList[i].Rotation);
+                    Debug.Log($"AuthCode: {response.ObjectList[i].AuthCode}");
                 }
 
                 manager.f_Loaded_Player = true;
@@ -121,7 +116,7 @@ public static class PacketHandler {
     }
 
     public static void S_Player_InterpolHandler(PacketSession s, IMessage packet) {
-        Debug.Log("S_Player_Interpol Received!");
+
         ServerSession session = (ServerSession)s;
         S_Player_Interpol response = (S_Player_Interpol)packet;
 
@@ -130,11 +125,11 @@ public static class PacketHandler {
         if(manager == null)
             return;
 
-        manager.SyncObjectInPosition(response.AuthCode, response.Transform);
+        manager.SyncObjectInPosition(response.AuthCode, response.Position, response.Rotation);
+        Debug.Log($"S_Player_Interpol Received! AuthCode: {response.AuthCode}");
     }
 
     public static void S_SpawnHandler(PacketSession s, IMessage packet) {
-        Debug.Log("S_Spawn Received!");
         ServerSession session = (ServerSession)s;
         S_Spawn response = (S_Spawn)packet;
 
@@ -151,10 +146,11 @@ public static class PacketHandler {
             Managers.Scene.Completed.Enqueue(spawnUser);
         else
             spawnUser.Invoke();
+
+        Debug.Log($"S_Spawn Received! {response.AuthCode}");
     }
 
     public static void S_Player_LeaveHandler(PacketSession s, IMessage packet) {
-        Debug.Log("S_Player_Leave Received!");
         ServerSession session = (ServerSession)s;
         S_Player_Leave response = (S_Player_Leave)packet;
 
@@ -164,6 +160,7 @@ public static class PacketHandler {
             return;
 
         manager.RemovePlayer(response.AuthCode);
+        Debug.Log($"S_Player_Leave Received! {response.AuthCode}");
     }
 
     public static void S_Request_Online_ResponseHandler(PacketSession s, IMessage packet) {
@@ -225,7 +222,8 @@ public static class PacketHandler {
             return;
 
         for(int i = 0; i < response.PlayerTransforms.Count; i++) {
-            manager.SyncObjectInPosition(response.PlayerTransforms[i].AuthCode, response.PlayerTransforms[i].Transform);
+            manager.SyncObjectInPosition(response.PlayerTransforms[i].AuthCode, response.PlayerTransforms[i].Position, response.PlayerTransforms[i].Rotation);
+            Debug.Log($"S_Sync_Player_Transform Received! {response.PlayerTransforms[i].AuthCode}");
         }
     }
 
@@ -238,5 +236,7 @@ public static class PacketHandler {
             return;
 
         manager.SyncPlayerRotation(response.AuthCode, response.Rotation);
+
+        Debug.Log($"S_Broadcast_Look_Rotation Received! {response.AuthCode}");
     }
 }

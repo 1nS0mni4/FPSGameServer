@@ -132,6 +132,10 @@
               "target": "Package",
               "version": "[6.0.7, )"
             },
+            "Microsoft.MixedReality.Toolkit.Foundation": {
+              "target": "Package",
+              "version": "[2.3.0, )"
+            },
             "Unity3D.UnityEngine": {
               "target": "Package",
               "version": "[2020.3.21, )"

@@ -17,6 +17,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.7" />
+    <PackageReference Include="Microsoft.MixedReality.Toolkit.Foundation" Version="2.3.0" />
     <PackageReference Include="Unity3D.UnityEngine" Version="2020.3.21" />
   </ItemGroup>
 

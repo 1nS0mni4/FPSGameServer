@@ -8,10 +8,16 @@ public class Player : Character, CharacterObject {
     [SerializeField]
     private GameObject _arm = null;
 
+    private float _damping = 10.0f;
+
+    private Vector3 _position = Vector3.zero;
+    private bool _posInterpolated = false;
     public override Vector3 Position {
         get => base.Position; set {
-            _movement.transform.position = value;
-        }
+            _position = value;
+            _posInterpolated = true;
+            //transform.position = value;
+        } 
     }
 
     protected void Awake() {
@@ -25,9 +31,14 @@ public class Player : Character, CharacterObject {
     public void FixedUpdate() {
         _movement.MoveTo(MoveDir);
 
+        if(_posInterpolated) {
+            transform.position = _position;
+            _posInterpolated = false;
+        }
     }
 
     public void Jump() {
         _movement.Jump();
+
     }
 }

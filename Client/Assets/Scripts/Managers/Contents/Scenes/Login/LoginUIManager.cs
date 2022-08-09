@@ -74,7 +74,6 @@ public class LoginUIManager : UIManager {
     }
 
     public void ButtonEnterPushed() {
-        Debug.Log("ButtonEnterPushed!");
         idInput = _textID.text;
         pwInput = _textPW.text;
 
@@ -87,7 +86,6 @@ public class LoginUIManager : UIManager {
     }
 
     public void ButtonRegisterPushed() {
-        Debug.Log("ButtonRegisterPushed!");
         idInput = _textID.text;
         pwInput = _textPW.text;
 

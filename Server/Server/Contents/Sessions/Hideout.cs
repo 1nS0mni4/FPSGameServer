@@ -19,7 +19,7 @@ namespace Server.Contents.Sessions {
         #region Hideout Management Functions
 
         public override void Init() {
-            AddJobTimer(Update, 250f);
+            base.Init();
         }
 
         public override void DestroyRoom() {

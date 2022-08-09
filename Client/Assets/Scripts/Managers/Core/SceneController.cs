@@ -2,10 +2,8 @@ using Google.Protobuf.Protocol;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static Define;
 
 public class SceneController : MonoBehaviour {
     public MSceneManager Manager { get; set; }
@@ -29,6 +27,7 @@ public class SceneController : MonoBehaviour {
     }
     public Queue<Action> Completed = new Queue<Action>();
     public void ChangeSceneTo(pAreaType type) {
+        Debug.Log($"ChangeSceneTo {type} Called!");
         _isLoading = true;
         Managers.Input.CanInput = false;
 
@@ -53,10 +52,8 @@ public class SceneController : MonoBehaviour {
             float progress = task.progress + 0.1f;
             realLoadingTime += 0.1f;
 
-            Debug.Log($"Progress: {progress}");
-            Debug.Log($"LoadingTime: {realLoadingTime}");
-
-            if(progress >= 1.0f && realLoadingTime >= _fakeLoadingTime)
+            Debug.Log("Loading...");
+            if(realLoadingTime >= _fakeLoadingTime)
                 break;
 
             yield return loadingWaitSeconds;

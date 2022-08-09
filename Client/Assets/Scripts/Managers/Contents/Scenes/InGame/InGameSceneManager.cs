@@ -66,7 +66,8 @@ public class InGameSceneManager : MSceneManager {
 
             {
                 C_Spawn_Response spawn = new C_Spawn_Response();
-                spawn.Transform = _myPlayer.gameObject.transform.TopTransform();
+                spawn.Position = pVector3Ex.UnityVector3(_myPlayer.gameObject.transform.position);
+                spawn.Rotation = pVector3Ex.UnityQuaternion(_myPlayer.gameObject.transform.rotation);
                 Managers.Network.Send(spawn);
             }
 
@@ -83,7 +84,7 @@ public class InGameSceneManager : MSceneManager {
         }
     }
 
-    public void SpawnPlayerInPosition(int authID, pTransform tran) {
+    public void SpawnPlayerInPosition(int authID, pVector3 position, pVector3 rotation) {
         if(authID == Managers.Network.AuthCode)
             return;
 
@@ -94,23 +95,19 @@ public class InGameSceneManager : MSceneManager {
         if(player == null)
             return;
 
-        Vector3 pos = new Vector3(tran.Position.X, tran.Position.Y, tran.Position.Z);
-        Vector3 rot = new Vector3(tran.Rotation.X, tran.Rotation.Y, tran.Rotation.Z);
-        player.Position = pos;
-        player.RotateDir = rot;
+        player.Position = position.ToUnityVector3();
+        player.RotateDir = rotation.ToUnityVector3();
         player.gameObject.SetActive(true);
 
         _players.Add(authID, player);
     }
 
-    public void SyncObjectInPosition(int authID, pTransform tran) {
+    public void SyncObjectInPosition(int authID, pVector3 position, pVector3 rotation) {
         Character player = null;
 
         if(_players.TryGetValue(authID, out player)) {
-            Vector3 pos = new Vector3(tran.Position.X, tran.Position.Y, tran.Position.Z);
-            Vector3 rot = new Vector3(tran.Rotation.X, tran.Rotation.Y, tran.Rotation.Z);
-            player.Position = pos;
-            player.RotateDir = rot;
+            player.Position = position.ToUnityVector3();
+            player.RotateDir = rotation.ToUnityVector3();
         }
     }
 

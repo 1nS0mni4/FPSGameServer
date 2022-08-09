@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Google.Protobuf;
+﻿using Google.Protobuf;
 using Google.Protobuf.Protocol;
-using Google.Protobuf.WellKnownTypes;
 using Server.Contents.Objects.Player;
 using Server.Session;
 using Server.Utils;
 using ServerCore;
-using UnityEngine;
+using System.Numerics;
 
 namespace Server.Contents.Sessions.Base {
     //public struct GameRoomInfo {
@@ -27,9 +21,6 @@ namespace Server.Contents.Sessions.Base {
         protected Dictionary<int, Player> _players = new Dictionary<int, Player>();
 
         protected List<System.Timers.Timer> _timerList = new List<System.Timers.Timer>();
-
-        private WaitForSeconds _timeSyncWait = new WaitForSeconds(1.0f);
-
 
         public int RoomCode { get; set; }
         public bool CanAccept { get { return max_capacity - _sessions.Count > 0; } }
@@ -71,7 +62,7 @@ namespace Server.Contents.Sessions.Base {
             _sessions = null;
             _jobQueue.Clear();
             _jobQueue = null;
-            
+
             Console.WriteLine($"Try to Destory GameRoom {RoomCode}");
             GameRoomManager.Instance.DestroyRoom(this);
         }
@@ -141,36 +132,48 @@ namespace Server.Contents.Sessions.Base {
 
 
         #region User Management Functions
+        public void Spawn_Player(int authCode, pVector3 position) {
+            if(_players.ContainsKey(authCode))
+                return;
 
-        public void UserInterpolation(int authCode, pTransform transform, bool checkFlag) {
+            Player player = new Player(authCode, position.ToVector3());
+            _players.Add(authCode, player);
+        }
+
+        public void Sync_PlayerPosition(int authCode, pVector3 position, bool checkFlag = true) {
+            Player player = null;
+
+            if(position == null)
+                return;
+
+            if(_players.TryGetValue(authCode, out player) == false)
+                return;
+
+            Vector3 nextPos = position.ToVector3() - player.position;
+
+            //TODO: 여기서도 해당 유저와의 RTT / 2로 Environment.TickCount64를 대체 해야함
+            if(checkFlag == true && nextPos.Length() > ( player.speed * Environment.TickCount64 ) + 3.0f) {
+                Push(() => Leave(player.AuthCode));
+                Console.WriteLine($"Player{player.AuthCode} Disconnected Due to Irregular Moving {nextPos.Length()}");
+                Console.WriteLine($"Player Speed: {player.speed} TimeDelay: {Environment.TickCount64}");
+                return;
+            }
+
+            player.position = position.ToVector3();
+            player.isSpawned = true;
+        }
+
+        public void Sync_PlayerRotation(int authCode, pVector3 rotation) {
             Player player = null;
 
             if(_players.TryGetValue(authCode, out player)) {
-                Console.WriteLine($"Transform: {transform.Position.X}, {transform.Position.Y}, {transform.Position.Z}");
-                pTransform nextTransform = new pTransform();
-                nextTransform.Position = new pVector3();
+                player.rotation = rotation.ToVector3();
 
-                nextTransform.Position.X = transform.Position.X - player.transform.Position.X;
-                nextTransform.Position.Y = transform.Position.Y - player.transform.Position.Y;
-                nextTransform.Position.Z = transform.Position.Z - player.transform.Position.Z;
+                S_Broadcast_Look_Rotation look = new S_Broadcast_Look_Rotation();
+                look.AuthCode = authCode;
+                look.Rotation = rotation;
 
-                if(checkFlag == true && nextTransform.Position.Magnitude() > ( player.speed * Environment.TickCount64 ) + 3.0f) {
-                    Push(() => Leave(player.AuthCode));
-                    Console.WriteLine($"Player{player.AuthCode} Disconnected Due to Irregular Moving {nextTransform.Position.Magnitude()}");
-                    Console.WriteLine($"Player Speed: {player.speed} TimeDelay: {Environment.TickCount64}");
-                    return;
-                }
-
-                player.transform = transform;
-                player.isInterpolated = true;
-            }
-            else {
-                player = new Player();
-                player.AuthCode = authCode;
-                player.transform = transform;
-                player.isInterpolated = true;
-
-                _players.Add(player.AuthCode, player);
+                Push(() => Broadcast(look));
             }
         }
 
@@ -188,7 +191,8 @@ namespace Server.Contents.Sessions.Base {
 
                 pObjectData data = new pObjectData();
                 data.AuthCode = p.AuthCode;
-                data.Transform = p.transform;
+                data.Position = pVector3Ex.Vector3(p.position);
+                data.Rotation = pVector3Ex.Vector3(p.rotation);
                 list.ObjectList.Add(data);
             }
 
@@ -198,17 +202,11 @@ namespace Server.Contents.Sessions.Base {
         public void HandleMove(ClientSession session, C_Move move) {
             Player player = null;
 
-            if(_sessions.ContainsKey(session.AuthCode) == false)
-                return;
-
             if(_players.TryGetValue(session.AuthCode, out player) == false)
                 return;
 
-            player.direction = move.Dir;
+            player.moveDir = new Vector3(move.Dir.X, move.Dir.Y, move.Dir.Z);
             player.stance = move.Stance;
-
-            //TODO: 이동 검사 필요
-            //TODO: 시간당 이동 계산 후 Broadcast 필요
 
             S_Move_Broadcast moveBroad = new S_Move_Broadcast();
             moveBroad.AuthCode = session.AuthCode;
@@ -225,15 +223,14 @@ namespace Server.Contents.Sessions.Base {
             foreach(Player p in _players.Values) {
                 data = new pObjectData();
                 data.AuthCode = p.AuthCode;
-                data.Transform = p.transform;
+                data.Position = pVector3Ex.Vector3(p.position);
+                data.Rotation = pVector3Ex.Vector3(p.rotation);
 
                 sync.PlayerTransforms.Add(data);
             }
 
             Push(() => Broadcast(sync));
         }
-
         #endregion
-
     }
 }

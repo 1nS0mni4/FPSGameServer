@@ -127,7 +127,7 @@ public static class PacketHandler {
         if(section == null)
             return;
 
-        section.Push(() => section.UserInterpolation(session.AuthCode, parsedPacket.Transform, false));
+        section.Push(() => section.Spawn_Player(session.AuthCode, parsedPacket.Position));
     }
 
     public static void C_Request_OnlineHandler(PacketSession s, IMessage packet) {
@@ -142,7 +142,6 @@ public static class PacketHandler {
         ClientSession session = (ClientSession)s;
 
         GameRoom section = session.Section;
-
         if(section == null)
             return;
 
@@ -164,7 +163,7 @@ public static class PacketHandler {
         if(section == null)
             return;
 
-        section.Push(() => section.UserInterpolation(session.AuthCode, parsedPacket.Transform, true));
+        section.Push(() => section.Sync_PlayerPosition(session.AuthCode, parsedPacket.Position, false));
     }
     public static void C_Look_RotationHandler(PacketSession s, IMessage packet) {
         C_Look_Rotation parsedPacket = (C_Look_Rotation)packet;
@@ -174,10 +173,6 @@ public static class PacketHandler {
         if(section == null)
             return;
 
-        S_Broadcast_Look_Rotation look = new S_Broadcast_Look_Rotation();
-        look.AuthCode = session.AuthCode;
-        look.Rotation = parsedPacket.Rotation;
-
-        section.Push(() => section.Broadcast(look));
+        section.Push(() => section.Sync_PlayerRotation(session.AuthCode, parsedPacket.Rotation));
     }
 }

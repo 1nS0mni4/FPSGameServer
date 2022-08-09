@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour {
                      
                      private bool isCrouch = false;
                                           
-                     private UnityEngine.Vector3 moveDir = UnityEngine.Vector3.zero;
+                     private Vector3 moveDir = Vector3.zero;
 
     private void Awake() {
         Managers.Input.AddMouseInputHandler(MouseInputHandler);

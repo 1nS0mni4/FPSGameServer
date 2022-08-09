@@ -14,27 +14,39 @@ namespace Extensions {
         }
     }
 
-    public static class TransformEx {
-        public static pTransform TopTransform(this Transform tran) {
-            pTransform res = new pTransform();
-            res.Position = new pVector3();
-            res.Rotation = new pVector3();
-
-            res.Position.X = tran.position.x;   
-            res.Position.Y = tran.position.y;   
-            res.Position.Z = tran.position.z;
-
-            res.Rotation.X = tran.rotation.x;   
-            res.Rotation.Y = tran.rotation.y;   
-            res.Rotation.Z = tran.rotation.z;
+    public static class pVector3Ex {
+        public static pVector3 Default() {
+            pVector3 res = new pVector3();
+            res.X = res.Y = res.Z = 0;
 
             return res;
         }
-    }
 
-    public static class pVector3Ex {
         public static Vector3 toVector3(this pVector3 vector) {
             return new Vector3(vector.X, vector.Y, vector.Z);
+        }
+
+        public static float Magnitude(this pVector3 vec) {
+            return Mathf.Sqrt(vec.X * vec.X + vec.Y * vec.Y + vec.Z * vec.Z);
+        }
+
+        public static Vector3 ToUnityVector3(this pVector3 vec) {
+            return new Vector3(vec.X, vec.Y, vec.Z);
+        }
+
+        public static Quaternion ToUnityQuaternion(this pVector3 vec) {
+            return Quaternion.Euler(vec.X, vec.Y, vec.Z);
+        }
+
+        public static pVector3 UnityVector3(Vector3 vec) {
+            pVector3 ret = new pVector3();
+            ret.X = vec.x; ret.Y = vec.y; ret.Z = vec.z;
+            return ret;
+        }
+
+        public static pVector3 UnityQuaternion(Quaternion quat) {
+            Vector3 vec = quat.eulerAngles;
+            return UnityVector3(vec);
         }
     }
 }

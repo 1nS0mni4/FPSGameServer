@@ -14,8 +14,23 @@
           "Microsoft.EntityFrameworkCore.Design": "6.0.7",
           "Microsoft.EntityFrameworkCore.Relational": "6.0.7",
           "Microsoft.EntityFrameworkCore.SqlServer": "6.0.7",
+          "Microsoft.MixedReality.Toolkit.Foundation": "2.3.0",
           "ServerCore": "1.0.0",
-          "Unity3D.UnityEngine": "2020.3.21"
+          "Unity3D.UnityEngine": "2020.3.21",
+          "Microsoft.MixedReality.Toolkit.Async": "2.3.0.0",
+          "Microsoft.MixedReality.Toolkit": "2.3.0.0",
+          "Microsoft.MixedReality.Toolkit.Gltf": "2.3.0.0",
+          "Microsoft.MixedReality.Toolkit.Providers.OpenVR": "2.3.0.0",
+          "Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput": "2.3.0.0",
+          "Microsoft.MixedReality.Toolkit.SDK": "2.3.0.0",
+          "Microsoft.MixedReality.Toolkit.Services.BoundarySystem": "2.3.0.0",
+          "Microsoft.MixedReality.Toolkit.Services.CameraSystem": "2.3.0.0",
+          "Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem": "2.3.0.0",
+          "Microsoft.MixedReality.Toolkit.Services.InputAnimation": "2.3.0.0",
+          "Microsoft.MixedReality.Toolkit.Services.InputSystem": "2.3.0.0",
+          "Microsoft.MixedReality.Toolkit.Services.SceneSystem": "2.3.0.0",
+          "Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem": "2.3.0.0",
+          "Microsoft.MixedReality.Toolkit.Services.TeleportSystem": "2.3.0.0"
         },
         "runtime": {
           "Server.dll": {}
@@ -339,7 +354,13 @@
           }
         }
       },
+      "Microsoft.MixedReality.Toolkit.Foundation/2.3.0": {
+        "dependencies": {
+          "Microsoft.Windows.MixedReality.DotNetWinRT": "0.5.1045"
+        }
+      },
       "Microsoft.NETCore.Platforms/3.1.0": {},
+      "Microsoft.NETCore.Targets/1.1.0": {},
       "Microsoft.Win32.Registry/4.7.0": {
         "dependencies": {
           "System.Security.AccessControl": "4.7.0",
@@ -362,6 +383,17 @@
             "assetType": "runtime",
             "assemblyVersion": "4.0.2.0",
             "fileVersion": "4.700.19.56404"
+          }
+        }
+      },
+      "Microsoft.Windows.MixedReality.DotNetWinRT/0.5.1045": {
+        "dependencies": {
+          "System.Drawing.Primitives": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Windows.MixedReality.DotNetWinRT.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
           }
         }
       },
@@ -413,6 +445,12 @@
           }
         }
       },
+      "System.Drawing.Primitives/4.3.0": {
+        "dependencies": {
+          "System.Runtime": "4.3.0",
+          "System.Runtime.Extensions": "4.3.0"
+        }
+      },
       "System.IdentityModel.Tokens.Jwt/6.8.0": {
         "dependencies": {
           "Microsoft.IdentityModel.JsonWebTokens": "6.8.0",
@@ -426,6 +464,12 @@
         }
       },
       "System.Memory/4.5.2": {},
+      "System.Runtime/4.3.0": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "3.1.0",
+          "Microsoft.NETCore.Targets": "1.1.0"
+        }
+      },
       "System.Runtime.Caching/4.7.0": {
         "dependencies": {
           "System.Configuration.ConfigurationManager": "4.7.0"
@@ -446,6 +490,13 @@
         }
       },
       "System.Runtime.CompilerServices.Unsafe/6.0.0": {},
+      "System.Runtime.Extensions/4.3.0": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "3.1.0",
+          "Microsoft.NETCore.Targets": "1.1.0",
+          "System.Runtime": "4.3.0"
+        }
+      },
       "System.Security.AccessControl/4.7.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "3.1.0",
@@ -517,6 +568,118 @@
       "ServerCore/1.0.0": {
         "runtime": {
           "ServerCore.dll": {}
+        }
+      },
+      "Microsoft.MixedReality.Toolkit.Async/2.3.0.0": {
+        "runtime": {
+          "Microsoft.MixedReality.Toolkit.Async.dll": {
+            "assemblyVersion": "2.3.0.0",
+            "fileVersion": "2.3.0.0"
+          }
+        }
+      },
+      "Microsoft.MixedReality.Toolkit/2.3.0.0": {
+        "runtime": {
+          "Microsoft.MixedReality.Toolkit.dll": {
+            "assemblyVersion": "2.3.0.0",
+            "fileVersion": "2.3.0.0"
+          }
+        }
+      },
+      "Microsoft.MixedReality.Toolkit.Gltf/2.3.0.0": {
+        "runtime": {
+          "Microsoft.MixedReality.Toolkit.Gltf.dll": {
+            "assemblyVersion": "2.3.0.0",
+            "fileVersion": "2.3.0.0"
+          }
+        }
+      },
+      "Microsoft.MixedReality.Toolkit.Providers.OpenVR/2.3.0.0": {
+        "runtime": {
+          "Microsoft.MixedReality.Toolkit.Providers.OpenVR.dll": {
+            "assemblyVersion": "2.3.0.0",
+            "fileVersion": "2.3.0.0"
+          }
+        }
+      },
+      "Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput/2.3.0.0": {
+        "runtime": {
+          "Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput.dll": {
+            "assemblyVersion": "2.3.0.0",
+            "fileVersion": "2.3.0.0"
+          }
+        }
+      },
+      "Microsoft.MixedReality.Toolkit.SDK/2.3.0.0": {
+        "runtime": {
+          "Microsoft.MixedReality.Toolkit.SDK.dll": {
+            "assemblyVersion": "2.3.0.0",
+            "fileVersion": "2.3.0.0"
+          }
+        }
+      },
+      "Microsoft.MixedReality.Toolkit.Services.BoundarySystem/2.3.0.0": {
+        "runtime": {
+          "Microsoft.MixedReality.Toolkit.Services.BoundarySystem.dll": {
+            "assemblyVersion": "2.3.0.0",
+            "fileVersion": "2.3.0.0"
+          }
+        }
+      },
+      "Microsoft.MixedReality.Toolkit.Services.CameraSystem/2.3.0.0": {
+        "runtime": {
+          "Microsoft.MixedReality.Toolkit.Services.CameraSystem.dll": {
+            "assemblyVersion": "2.3.0.0",
+            "fileVersion": "2.3.0.0"
+          }
+        }
+      },
+      "Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem/2.3.0.0": {
+        "runtime": {
+          "Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem.dll": {
+            "assemblyVersion": "2.3.0.0",
+            "fileVersion": "2.3.0.0"
+          }
+        }
+      },
+      "Microsoft.MixedReality.Toolkit.Services.InputAnimation/2.3.0.0": {
+        "runtime": {
+          "Microsoft.MixedReality.Toolkit.Services.InputAnimation.dll": {
+            "assemblyVersion": "2.3.0.0",
+            "fileVersion": "2.3.0.0"
+          }
+        }
+      },
+      "Microsoft.MixedReality.Toolkit.Services.InputSystem/2.3.0.0": {
+        "runtime": {
+          "Microsoft.MixedReality.Toolkit.Services.InputSystem.dll": {
+            "assemblyVersion": "2.3.0.0",
+            "fileVersion": "2.3.0.0"
+          }
+        }
+      },
+      "Microsoft.MixedReality.Toolkit.Services.SceneSystem/2.3.0.0": {
+        "runtime": {
+          "Microsoft.MixedReality.Toolkit.Services.SceneSystem.dll": {
+            "assemblyVersion": "2.3.0.0",
+            "fileVersion": "2.3.0.0"
+          }
+        }
+      },
+      "Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem/2.3.0.0": {
+        "runtime": {
+          "Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem.dll": {
+            "assemblyVersion": "2.3.0.0",
+            "fileVersion": "2.3.0.0"
+          }
+        }
+      },
+      "Microsoft.MixedReality.Toolkit.Services.TeleportSystem/2.3.0.0": {
+        "runtime": {
+          "Microsoft.MixedReality.Toolkit.Services.TeleportSystem.dll": {
+            "assemblyVersion": "2.3.0.0",
+            "fileVersion": "2.3.0.0"
+          }
         }
       }
     }
@@ -716,12 +879,26 @@
       "path": "microsoft.identitymodel.tokens/6.8.0",
       "hashPath": "microsoft.identitymodel.tokens.6.8.0.nupkg.sha512"
     },
+    "Microsoft.MixedReality.Toolkit.Foundation/2.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-qAQXOh+JLjNSxZdZE2aIuqs5FaWA+WctUf/lWOoNdBiQK1qTZ4nqg4w3/XE4Nqw9iKCC4Tw7PV72PQY/UvFfRg==",
+      "path": "microsoft.mixedreality.toolkit.foundation/2.3.0",
+      "hashPath": "microsoft.mixedreality.toolkit.foundation.2.3.0.nupkg.sha512"
+    },
     "Microsoft.NETCore.Platforms/3.1.0": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-z7aeg8oHln2CuNulfhiLYxCVMPEwBl3rzicjvIX+4sUuCwvXw5oXQEtbiU2c0z4qYL5L3Kmx0mMA/+t/SbY67w==",
       "path": "microsoft.netcore.platforms/3.1.0",
       "hashPath": "microsoft.netcore.platforms.3.1.0.nupkg.sha512"
+    },
+    "Microsoft.NETCore.Targets/1.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-aOZA3BWfz9RXjpzt0sRJJMjAscAUm3Hoa4UWAfceV9UTYxgwZ1lZt5nO2myFf+/jetYQo4uTP7zS8sJY67BBxg==",
+      "path": "microsoft.netcore.targets/1.1.0",
+      "hashPath": "microsoft.netcore.targets.1.1.0.nupkg.sha512"
     },
     "Microsoft.Win32.Registry/4.7.0": {
       "type": "package",
@@ -736,6 +913,13 @@
       "sha512": "sha512-mtVirZr++rq+XCDITMUdnETD59XoeMxSpLRIII7JRI6Yj0LEDiO1pPn0ktlnIj12Ix8bfvQqQDMMIF9wC98oCA==",
       "path": "microsoft.win32.systemevents/4.7.0",
       "hashPath": "microsoft.win32.systemevents.4.7.0.nupkg.sha512"
+    },
+    "Microsoft.Windows.MixedReality.DotNetWinRT/0.5.1045": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-C50JsGIrgWKya5A8mm7i2+Sfs7TdeIbdrXLSVqtrNBAGj1t+5VmyHl2dM70zGC7DPbO3sjBZlBXg5jFKKtTebw==",
+      "path": "microsoft.windows.mixedreality.dotnetwinrt/0.5.1045",
+      "hashPath": "microsoft.windows.mixedreality.dotnetwinrt.0.5.1045.nupkg.sha512"
     },
     "System.Collections.Immutable/6.0.0": {
       "type": "package",
@@ -765,6 +949,13 @@
       "path": "system.drawing.common/4.7.0",
       "hashPath": "system.drawing.common.4.7.0.nupkg.sha512"
     },
+    "System.Drawing.Primitives/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-1QU/c35gwdhvj77fkScXQQbjiVAqIL3fEYn/19NE0CV/ic5TN5PyWAft8HsrbRd4SBLEoErNCkWSzMDc0MmbRw==",
+      "path": "system.drawing.primitives/4.3.0",
+      "hashPath": "system.drawing.primitives.4.3.0.nupkg.sha512"
+    },
     "System.IdentityModel.Tokens.Jwt/6.8.0": {
       "type": "package",
       "serviceable": true,
@@ -779,6 +970,13 @@
       "path": "system.memory/4.5.2",
       "hashPath": "system.memory.4.5.2.nupkg.sha512"
     },
+    "System.Runtime/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-JufQi0vPQ0xGnAczR13AUFglDyVYt4Kqnz1AZaiKZ5+GICq0/1MH/mO/eAJHt/mHW1zjKBJd7kV26SrxddAhiw==",
+      "path": "system.runtime/4.3.0",
+      "hashPath": "system.runtime.4.3.0.nupkg.sha512"
+    },
     "System.Runtime.Caching/4.7.0": {
       "type": "package",
       "serviceable": true,
@@ -792,6 +990,13 @@
       "sha512": "sha512-/iUeP3tq1S0XdNNoMz5C9twLSrM/TH+qElHkXWaPvuNOt+99G75NrV0OS2EqHx5wMN7popYjpc8oTjC1y16DLg==",
       "path": "system.runtime.compilerservices.unsafe/6.0.0",
       "hashPath": "system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+    },
+    "System.Runtime.Extensions/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-guW0uK0fn5fcJJ1tJVXYd7/1h5F+pea1r7FLSOz/f8vPEqbR2ZAknuRDvTQ8PzAilDveOxNjSfr0CHfIQfFk8g==",
+      "path": "system.runtime.extensions/4.3.0",
+      "hashPath": "system.runtime.extensions.4.3.0.nupkg.sha512"
     },
     "System.Security.AccessControl/4.7.0": {
       "type": "package",
@@ -851,6 +1056,76 @@
     },
     "ServerCore/1.0.0": {
       "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.MixedReality.Toolkit.Async/2.3.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.MixedReality.Toolkit/2.3.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.MixedReality.Toolkit.Gltf/2.3.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.MixedReality.Toolkit.Providers.OpenVR/2.3.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput/2.3.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.MixedReality.Toolkit.SDK/2.3.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.MixedReality.Toolkit.Services.BoundarySystem/2.3.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.MixedReality.Toolkit.Services.CameraSystem/2.3.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem/2.3.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.MixedReality.Toolkit.Services.InputAnimation/2.3.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.MixedReality.Toolkit.Services.InputSystem/2.3.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.MixedReality.Toolkit.Services.SceneSystem/2.3.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem/2.3.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.MixedReality.Toolkit.Services.TeleportSystem/2.3.0.0": {
+      "type": "reference",
       "serviceable": false,
       "sha512": ""
     }

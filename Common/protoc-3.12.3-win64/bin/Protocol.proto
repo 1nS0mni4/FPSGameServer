@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package Protocol;
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/any.proto";
 option csharp_namespace = "Google.Protobuf.Protocol";
 
 
@@ -55,11 +56,12 @@ message C_Disconnect{
 message C_Extract_To{
 	pAreaType prevArea = 1;
 	pAreaType destArea = 2;
-	int32 RoomCode = 3;
+	int32 roomCode = 3;
 }
 
 message C_Spawn_Response{
-	pTransform transform = 1;
+	pVector3 position = 1;
+	pVector3 rotation = 2;
 }
 
 message C_Request_Online{
@@ -75,7 +77,7 @@ message C_Jump{
 }
 
 message C_Transform_Sync{
-	pTransform transform = 1;
+	pVector3 position = 1;
 }
 
 message C_Look_Rotation{
@@ -89,23 +91,24 @@ message S_Error_Packet{
 }
 
 message S_Access_Response{
-	NetworkError	ErrorCode	= 1;
+	NetworkError	errorCode	= 1;
 	int32			authCode	= 2;
 }
 
 message S_Register_Response{
-	bool ErrorCode = 1;
+	bool errorCode = 1;
 }
 
 message S_Spawn{
-	int32		AuthCode = 1;
+	int32		authCode = 1;
 	pAreaType	prevArea = 2;
 	pAreaType	destArea = 3;
 }
 
 message S_Player_Interpol{
-	int32		AuthCode	= 1;
-	pTransform	transform	= 2;
+	int32		authCode	= 1;
+	pVector3	position	= 2;
+	pVector3	rotation	= 3;
 }
 
 message S_Load_Players{
@@ -143,13 +146,15 @@ message S_Sync_Player_Transform{
 message S_Broadcast_Look_Rotation{
 	int32 authCode = 1;
 	pVector3 rotation = 2;
+	google.protobuf.Any test = 3;
 }
 
 //---------------------------------------<Packet Data Model>------------------------------------
 
 message pObjectData{
-	int32 AuthCode = 1;
-	pTransform transform = 2;
+	int32 authCode = 1;
+	pVector3 position = 2;
+	pVector3 rotation = 3;
 }
 
 message pItem{
@@ -163,14 +168,16 @@ message pVector3{
 	float z = 3;
 }
 
-message pTransform{
-	pVector3 position = 1;
-	pVector3 rotation = 2;
+message pAuthResult{
+	NetworkError errorCode = 1;
+	int32 authCode = 2;
 }
 
-message pAuthResult{
-	NetworkError ErrorCode = 1;
-	int32 AuthCode = 2;
+message pOnlineUser{
+	string name = 1;
+	int32 authCode = 2;
+	pAreaType whereAt = 3;
+	bool canAccess = 4;
 }
 
 enum pAreaType{
@@ -208,9 +215,3 @@ enum NetworkError{
 	INVALID_ACCESS		= 5;
 }
 
-message pOnlineUser{
-	string name = 1;
-	int32 authCode = 2;
-	pAreaType whereAt = 3;
-	bool canAccess = 4;
-}

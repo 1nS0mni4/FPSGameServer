@@ -1,44 +1,47 @@
+using Extensions;
 using Google.Protobuf.Protocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
-public class MyPlayer : Character, NetworkObject { 
-    private C_Transform_Sync _sync = new C_Transform_Sync();
-    private WaitForSeconds _syncSleep = new WaitForSeconds(0.25f);
+public class MyPlayer : Character, NetworkObject {
+    private C_Transform_Sync _sync;
+    private WaitForSeconds _posSyncSleep = new WaitForSeconds(0.25f);
+    private WaitForSeconds _rotSyncSleep = new WaitForSeconds(0.1f);
     private void Awake() {
-        _sync.Transform = new pTransform();
-        _sync.Transform.Position = new pVector3();
-        _sync.Transform.Rotation = new pVector3();
+
     }
 
     private void OnEnable() {
-        StartCoroutine(CoSendTransformSync());
+        StartCoroutine(CoSendPositionSync());
+        StartCoroutine(CoSendRotationSync());
     }
 
-    private IEnumerator CoSendTransformSync() {
+    private IEnumerator CoSendPositionSync() {
         while(true) {
             C_Transform_Sync sync = new C_Transform_Sync();
-            sync.Transform = new pTransform();
-            sync.Transform.Position = new pVector3();
-            sync.Transform.Rotation = new pVector3();
-
-            sync.Transform.Position.X = transform.position.x;
-            sync.Transform.Position.Y = transform.position.y;
-            sync.Transform.Position.Z = transform.position.z;
-
-            sync.Transform.Rotation.X = transform.rotation.eulerAngles.x;
-            sync.Transform.Rotation.Y = transform.rotation.eulerAngles.y;
-            sync.Transform.Rotation.Z = transform.rotation.eulerAngles.z;
+            sync.Position = pVector3Ex.UnityVector3(transform.position);
 
             Managers.Network.Send(sync);
 
-            yield return _syncSleep;
+            yield return _posSyncSleep;
+        }
+    }
+
+    private IEnumerator CoSendRotationSync() {
+        while(true) {
+            C_Look_Rotation rotSync = new C_Look_Rotation();
+            rotSync.Rotation = pVector3Ex.UnityQuaternion(transform.rotation);
+
+            Managers.Network.Send(rotSync);
+
+            yield return _rotSyncSleep;
         }
     }
 
     private void OnDestroy() {
-        StopCoroutine(CoSendTransformSync());
+        StopCoroutine(CoSendPositionSync());
+        StopCoroutine(CoSendRotationSync());
     }
 }

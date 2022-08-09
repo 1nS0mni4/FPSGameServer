@@ -51,7 +51,6 @@ public class FadeUI : MonoBehaviour {
         if(Completed != null)
             Completed.Invoke();
 
-        Debug.Log($"Fade {value} Finished! {_fadeImage.enabled}");
         yield break;
     }
 
