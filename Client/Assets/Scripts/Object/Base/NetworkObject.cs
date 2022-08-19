@@ -11,7 +11,7 @@ public interface DynamicObject : NetworkObject {
 }
 
 public interface CharacterObject : DynamicObject {
-    public abstract Vector3 RotateDir { get; set; }
+    public abstract Quaternion RotateDir { get; set; }
 }
 
 public interface StaticObject : NetworkObject {

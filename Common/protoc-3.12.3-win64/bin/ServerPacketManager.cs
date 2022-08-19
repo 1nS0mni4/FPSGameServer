@@ -40,6 +40,8 @@ public class PacketManager {
         _handler.Add((ushort)PacketID.CTransformSync, PacketHandler.C_Transform_SyncHandler);
       _makeFunc.Add((ushort)PacketID.CLookRotation, MakePacket<C_Look_Rotation>);
         _handler.Add((ushort)PacketID.CLookRotation, PacketHandler.C_Look_RotationHandler);
+      _makeFunc.Add((ushort)PacketID.CTimeCheckResponse, MakePacket<C_Time_Check_Response>);
+        _handler.Add((ushort)PacketID.CTimeCheckResponse, PacketHandler.C_Time_Check_ResponseHandler);
 
     }
 

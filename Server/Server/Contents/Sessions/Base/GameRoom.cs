@@ -123,7 +123,8 @@ namespace Server.Contents.Sessions.Base {
 
         public virtual void Update() {
             foreach(int key in _players.Keys) {
-                _players[key].Update();
+                if(_sessions.ContainsKey(key))
+                    _players[key].Update(_sessions[key].TimeDelay);
             }
 
             //TODO: 다른 Update가 필요한 오브젝트 컨테이너를 여기서 호출
@@ -138,6 +139,7 @@ namespace Server.Contents.Sessions.Base {
 
             Player player = new Player(authCode, position.ToVector3());
             _players.Add(authCode, player);
+            player.isSpawned = true;
         }
 
         public void Sync_PlayerPosition(int authCode, pVector3 position, bool checkFlag = true) {
@@ -149,27 +151,30 @@ namespace Server.Contents.Sessions.Base {
             if(_players.TryGetValue(authCode, out player) == false)
                 return;
 
-            Vector3 nextPos = position.ToVector3() - player.position;
+            double delayFloat = _sessions[authCode].TimeDelay;
 
+            Console.WriteLine($"DistanceSquared: {Vector3.Distance(position.ToVector3(), player.position)}");
             //TODO: 여기서도 해당 유저와의 RTT / 2로 Environment.TickCount64를 대체 해야함
-            if(checkFlag == true && nextPos.Length() > ( player.speed * Environment.TickCount64 ) + 3.0f) {
-                Push(() => Leave(player.AuthCode));
-                Console.WriteLine($"Player{player.AuthCode} Disconnected Due to Irregular Moving {nextPos.Length()}");
-                Console.WriteLine($"Player Speed: {player.speed} TimeDelay: {Environment.TickCount64}");
-                return;
+            if(checkFlag == true && Vector3.Distance(position.ToVector3(), player.position) > ( player.speed * delayFloat ) + 20.0f) {
+                //Push(() => Leave(player.AuthCode));
+                //Console.WriteLine($"Player{player.AuthCode} Disconnected Due to Irregular Moving Distance {Vector3.DistanceSquared(position.ToVector3(), player.position)}");
+                //Console.WriteLine($"Player's Position: {player.position}, Target Position: {position}");
+                //Console.WriteLine($"Player Speed: {player.speed} TimeDelay: { delayFloat }");
+                //Console.WriteLine($"Benchmarking Value: {( player.speed * delayFloat ) + 20.0f}");
+                //return;
             }
 
             player.position = position.ToVector3();
-            player.isSpawned = true;
         }
 
-        public void Sync_PlayerRotation(int authCode, pVector3 rotation) {
+        public void Sync_PlayerRotation(int authCode, pQuaternion rotation) {
             Player player = null;
 
             if(_players.TryGetValue(authCode, out player)) {
-                player.rotation = rotation.ToVector3();
+                player.rotation = new Quaternion(rotation.X, rotation.Y, rotation.Z, rotation.W);
 
                 S_Broadcast_Look_Rotation look = new S_Broadcast_Look_Rotation();
+
                 look.AuthCode = authCode;
                 look.Rotation = rotation;
 
@@ -185,14 +190,15 @@ namespace Server.Contents.Sessions.Base {
         public S_Load_Players GetpUserInGameDatas(int excAuthCode = -1) {
             S_Load_Players list = new S_Load_Players();
 
-            foreach(Player p in _players.Values) {
-                if(p.AuthCode == excAuthCode)
+            foreach(Player player in _players.Values) {
+                if(player.AuthCode == excAuthCode)
                     continue;
 
                 pObjectData data = new pObjectData();
-                data.AuthCode = p.AuthCode;
-                data.Position = pVector3Ex.Vector3(p.position);
-                data.Rotation = pVector3Ex.Vector3(p.rotation);
+                data.AuthCode = player.AuthCode;
+
+                data.Position = player.position.TopVector3();
+                data.Rotation = player.rotation.TopQuaternion();
                 list.ObjectList.Add(data);
             }
 
@@ -209,6 +215,7 @@ namespace Server.Contents.Sessions.Base {
             player.stance = move.Stance;
 
             S_Move_Broadcast moveBroad = new S_Move_Broadcast();
+
             moveBroad.AuthCode = session.AuthCode;
             moveBroad.Dir = move.Dir;
             moveBroad.Stance = move.Stance;
@@ -220,11 +227,11 @@ namespace Server.Contents.Sessions.Base {
             S_Sync_Player_Transform sync = new S_Sync_Player_Transform();
             pObjectData data = new pObjectData();
 
-            foreach(Player p in _players.Values) {
+            foreach(Player player in _players.Values) {
                 data = new pObjectData();
-                data.AuthCode = p.AuthCode;
-                data.Position = pVector3Ex.Vector3(p.position);
-                data.Rotation = pVector3Ex.Vector3(p.rotation);
+                data.AuthCode = player.AuthCode;
+                data.Position = player.position.TopVector3();
+                data.Rotation = player.rotation.TopQuaternion();
 
                 sync.PlayerTransforms.Add(data);
             }

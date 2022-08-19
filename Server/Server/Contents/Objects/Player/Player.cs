@@ -14,7 +14,7 @@ namespace Server.Contents.Objects.Player {
 
         public Vector3 position = Vector3.Zero;
         public Vector3 moveDir = Vector3.Zero;
-        public Vector3 rotation = Vector3.Zero;
+        public Quaternion rotation = Quaternion.Identity;
 
         public pPlayerStance stance = pPlayerStance.Idle;
         public float speed = 5.0f;
@@ -24,27 +24,26 @@ namespace Server.Contents.Objects.Player {
             this.isSpawned = false;
             this.position = position;
             this.moveDir = Vector3.Zero;
-            this.rotation = Vector3.Zero;
+            this.rotation = Quaternion.Identity;
             this.stance = pPlayerStance.Idle;
             this.speed = 0.0f;
         }
 
-        public void Update() {
-            Move();
+        public void Update(double timeDelay) {
+            Move(timeDelay);
         }
 
-        public void Move() {
+        public void Move(double timeDelay) {
             switch(stance) {
                 case pPlayerStance.Crouch:   { speed = 3.0f; } break;
                 case pPlayerStance.Walk:     { speed = 5.0f; } break;
                 case pPlayerStance.Run:      { speed = 8.0f; } break;
                 case pPlayerStance.Idle:     { speed = 0.0f; } break;
             }
-            if(speed == 0.0f)
-                return;
 
-            //TODO: 여기서 해당 유저와의 RTT / 2 체크해서 Environment.TickCOunt64 대신 곱셈
-            position = rotation * moveDir * speed * Environment.TickCount64;
+            //TODO: rotation * moveDir이 방향을 나타내도록 수정 필요
+            position += rotation.MultiplyVector3(moveDir)
+                                .Multiply(speed * ( timeDelay + 0.25f ));            
         }
     }
 }

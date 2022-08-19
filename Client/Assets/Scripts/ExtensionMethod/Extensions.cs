@@ -14,14 +14,23 @@ namespace Extensions {
         }
     }
 
-    public static class pVector3Ex {
-        public static pVector3 Default() {
-            pVector3 res = new pVector3();
-            res.X = res.Y = res.Z = 0;
-
-            return res;
+    public static class Vector3Ex {
+        public static pVector3 TopVector3(this Vector3 vec) {
+            pVector3 pVec = new pVector3();
+            pVec.X = vec.x; pVec.Y = vec.y; pVec.Z = vec.z;
+            return pVec;
         }
+    }
 
+    public static class QuaternionEx {
+        public static pQuaternion TopQuaternion(this Quaternion quat) {
+            pQuaternion pQuat = new pQuaternion();
+            pQuat.X = quat.x; pQuat.Y = quat.y; pQuat.Z = quat.z; pQuat.W = quat.w;
+            return pQuat;
+        }
+    }
+
+    public static class pVector3Ex {
         public static Vector3 toVector3(this pVector3 vector) {
             return new Vector3(vector.X, vector.Y, vector.Z);
         }
@@ -33,20 +42,15 @@ namespace Extensions {
         public static Vector3 ToUnityVector3(this pVector3 vec) {
             return new Vector3(vec.X, vec.Y, vec.Z);
         }
+    }
+
+    public static class pQuaternionEx {
+        public static Quaternion ToUnityQuaternion(this pQuaternion pQuat) {
+            return new Quaternion(pQuat.X, pQuat.Y, pQuat.Z, pQuat.W);
+        }
 
         public static Quaternion ToUnityQuaternion(this pVector3 vec) {
             return Quaternion.Euler(vec.X, vec.Y, vec.Z);
-        }
-
-        public static pVector3 UnityVector3(Vector3 vec) {
-            pVector3 ret = new pVector3();
-            ret.X = vec.x; ret.Y = vec.y; ret.Z = vec.z;
-            return ret;
-        }
-
-        public static pVector3 UnityQuaternion(Quaternion quat) {
-            Vector3 vec = quat.eulerAngles;
-            return UnityVector3(vec);
         }
     }
 }

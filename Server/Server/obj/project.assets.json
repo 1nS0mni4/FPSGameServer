@@ -454,6 +454,49 @@
           "build/Microsoft.Windows.MixedReality.DotNetWinRT.targets": {}
         }
       },
+      "PhysX.Net/3.0.0-alpha1": {
+        "type": "package",
+        "compile": {
+          "ref/net50/PhysX.Net.dll": {}
+        },
+        "runtime": {
+          "lib/net50/PhysX.Net.dll": {}
+        },
+        "runtimeTargets": {
+          "runtimes/win-x64/native/Ijwhost.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/PhysXCommon_64.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/PhysXCooking_64.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/PhysXDevice64.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/PhysXFoundation_64.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/PhysXGpu_64.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/PhysX_64.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/glut32.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          }
+        }
+      },
       "System.Collections.Immutable/6.0.0": {
         "type": "package",
         "dependencies": {
@@ -721,15 +764,6 @@
             "assetType": "runtime",
             "rid": "win"
           }
-        }
-      },
-      "Unity3D.UnityEngine/2020.3.21": {
-        "type": "package",
-        "compile": {
-          "lib/UnityEngine.dll": {}
-        },
-        "runtime": {
-          "lib/UnityEngine.dll": {}
         }
       },
       "ServerCore/1.0.0": {
@@ -3246,6 +3280,29 @@
         "microsoft.windows.mixedreality.dotnetwinrt.nuspec"
       ]
     },
+    "PhysX.Net/3.0.0-alpha1": {
+      "sha512": "JT0KrHi39xgv31DImDmVLkcX98h1hKJH5hc0EhauBIxdJcfMiFVjN2KBJ/R6O6eQE6VN/X265N6K/sHKWEXkuA==",
+      "type": "package",
+      "path": "physx.net/3.0.0-alpha1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/RuntimeFiles.targets",
+        "lib/net50/PhysX.Net.dll",
+        "lib/net50/PhysX.Net.pdb",
+        "physx.net.3.0.0-alpha1.nupkg.sha512",
+        "physx.net.nuspec",
+        "ref/net50/PhysX.Net.dll",
+        "runtimes/win-x64/native/Ijwhost.dll",
+        "runtimes/win-x64/native/PhysXCommon_64.dll",
+        "runtimes/win-x64/native/PhysXCooking_64.dll",
+        "runtimes/win-x64/native/PhysXDevice64.dll",
+        "runtimes/win-x64/native/PhysXFoundation_64.dll",
+        "runtimes/win-x64/native/PhysXGpu_64.dll",
+        "runtimes/win-x64/native/PhysX_64.dll",
+        "runtimes/win-x64/native/glut32.dll"
+      ]
+    },
     "System.Collections.Immutable/6.0.0": {
       "sha512": "l4zZJ1WU2hqpQQHXz1rvC3etVZN+2DLmQMO79FhOTZHMn8tDRr+WU287sbomD0BETlmKDn0ygUgVy9k5xkkJdA==",
       "type": "package",
@@ -3953,19 +4010,6 @@
         "version.txt"
       ]
     },
-    "Unity3D.UnityEngine/2020.3.21": {
-      "sha512": "VkDOwJRbu7ktjXGMzGMUNzLBTwVQmw7Olv3QOhs1gw11zL3rcEWg/O5dUbk/7cF8P5uNCdxVKuhGVNXYNN0mug==",
-      "type": "package",
-      "path": "unity3d.unityengine/2020.3.21",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/UnityEngine.dll",
-        "lib/UnityEngine.xml",
-        "unity3d.unityengine.2020.3.21.nupkg.sha512",
-        "unity3d.unityengine.nuspec"
-      ]
-    },
     "ServerCore/1.0.0": {
       "type": "project",
       "path": "../ServerCore/ServerCore.csproj",
@@ -3981,8 +4025,8 @@
       "Microsoft.EntityFrameworkCore.Relational >= 6.0.7",
       "Microsoft.EntityFrameworkCore.SqlServer >= 6.0.7",
       "Microsoft.MixedReality.Toolkit.Foundation >= 2.3.0",
-      "ServerCore >= 1.0.0",
-      "Unity3D.UnityEngine >= 2020.3.21"
+      "PhysX.Net >= 3.0.0-alpha1",
+      "ServerCore >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -4063,9 +4107,10 @@
             "target": "Package",
             "version": "[2.3.0, )"
           },
-          "Unity3D.UnityEngine": {
+          "PhysX.Net": {
             "target": "Package",
-            "version": "[2020.3.21, )"
+            "version": "[3.0.0-alpha1, )",
+            "generatePathProperty": true
           }
         },
         "imports": [
@@ -4086,17 +4131,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1701",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "프로젝트 대상 프레임워크 'net6.0' 대신 '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8'을(를) 사용하여 패키지 'Unity3D.UnityEngine 2020.3.21'을(를) 복원했습니다. 이 패키지는 프로젝트와 완벽하게 호환되지 않을 수 있습니다.",
-      "libraryId": "Unity3D.UnityEngine",
-      "targetGraphs": [
-        "net6.0"
-      ]
-    }
-  ]
+  }
 }

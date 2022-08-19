@@ -66,8 +66,8 @@ public class InGameSceneManager : MSceneManager {
 
             {
                 C_Spawn_Response spawn = new C_Spawn_Response();
-                spawn.Position = pVector3Ex.UnityVector3(_myPlayer.gameObject.transform.position);
-                spawn.Rotation = pVector3Ex.UnityQuaternion(_myPlayer.gameObject.transform.rotation);
+                spawn.Position = _myPlayer.gameObject.transform.position.TopVector3();
+                spawn.Rotation = _myPlayer.gameObject.transform.rotation.TopQuaternion();
                 Managers.Network.Send(spawn);
             }
 
@@ -84,7 +84,7 @@ public class InGameSceneManager : MSceneManager {
         }
     }
 
-    public void SpawnPlayerInPosition(int authID, pVector3 position, pVector3 rotation) {
+    public void SpawnPlayerInPosition(int authID, pVector3 position, pQuaternion rotation) {
         if(authID == Managers.Network.AuthCode)
             return;
 
@@ -96,26 +96,27 @@ public class InGameSceneManager : MSceneManager {
             return;
 
         player.Position = position.ToUnityVector3();
-        player.RotateDir = rotation.ToUnityVector3();
+        player.RotateDir = rotation.ToUnityQuaternion();
+
         player.gameObject.SetActive(true);
 
         _players.Add(authID, player);
     }
 
-    public void SyncObjectInPosition(int authID, pVector3 position, pVector3 rotation) {
+    public void SyncObjectInPosition(int authID, pVector3 position, pQuaternion rotation) {
         Character player = null;
 
         if(_players.TryGetValue(authID, out player)) {
             player.Position = position.ToUnityVector3();
-            player.RotateDir = rotation.ToUnityVector3();
+            player.RotateDir = rotation.ToUnityQuaternion();
         }
     }
 
-    public void SyncPlayerRotation(int authID, pVector3 rot) {
+    public void SyncPlayerRotation(int authID, pQuaternion rot) {
         Character player = null;
 
         if(_players.TryGetValue(authID, out player)) {
-            player.RotateDir = rot.toVector3();
+            player.RotateDir = rot.ToUnityQuaternion();
         }
     }
 

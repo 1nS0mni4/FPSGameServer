@@ -60,5 +60,10 @@ public static class PacketHandler {
         ClientSession session = (ClientSession)s;
 
         throw new NotImplementedException();
+    }public static void C_Time_Check_ResponseHandler(PacketSession s, IMessage packet) {
+        C_Time_Check_Response parsedPacket = (C_Time_Check_Response)packet;
+        ClientSession session = (ClientSession)s;
+
+        throw new NotImplementedException();
     }
 }

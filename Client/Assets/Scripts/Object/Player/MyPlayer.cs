@@ -7,8 +7,9 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerController))]
 public class MyPlayer : Character, NetworkObject {
     private C_Transform_Sync _sync;
-    private WaitForSeconds _posSyncSleep = new WaitForSeconds(0.25f);
-    private WaitForSeconds _rotSyncSleep = new WaitForSeconds(0.1f);
+    private WaitForSeconds _posSyncSleep = new WaitForSeconds(1f);
+    private WaitForSeconds _rotSyncSleep = new WaitForSeconds(0.25f);
+
     private void Awake() {
 
     }
@@ -21,7 +22,7 @@ public class MyPlayer : Character, NetworkObject {
     private IEnumerator CoSendPositionSync() {
         while(true) {
             C_Transform_Sync sync = new C_Transform_Sync();
-            sync.Position = pVector3Ex.UnityVector3(transform.position);
+            sync.Position = transform.position.TopVector3();
 
             Managers.Network.Send(sync);
 
@@ -32,7 +33,7 @@ public class MyPlayer : Character, NetworkObject {
     private IEnumerator CoSendRotationSync() {
         while(true) {
             C_Look_Rotation rotSync = new C_Look_Rotation();
-            rotSync.Rotation = pVector3Ex.UnityQuaternion(transform.rotation);
+            rotSync.Rotation = transform.rotation.TopQuaternion();
 
             Managers.Network.Send(rotSync);
 

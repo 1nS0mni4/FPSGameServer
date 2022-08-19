@@ -15,8 +15,8 @@
           "Microsoft.EntityFrameworkCore.Relational": "6.0.7",
           "Microsoft.EntityFrameworkCore.SqlServer": "6.0.7",
           "Microsoft.MixedReality.Toolkit.Foundation": "2.3.0",
+          "PhysX.Net": "3.0.0-alpha1",
           "ServerCore": "1.0.0",
-          "Unity3D.UnityEngine": "2020.3.21",
           "Microsoft.MixedReality.Toolkit.Async": "2.3.0.0",
           "Microsoft.MixedReality.Toolkit": "2.3.0.0",
           "Microsoft.MixedReality.Toolkit.Gltf": "2.3.0.0",
@@ -397,6 +397,56 @@
           }
         }
       },
+      "PhysX.Net/3.0.0-alpha1": {
+        "runtime": {
+          "lib/net50/PhysX.Net.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "2.0.0.0"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win-x64/native/Ijwhost.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "5.0.220.61120"
+          },
+          "runtimes/win-x64/native/PhysXCommon_64.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "4.1.1.0"
+          },
+          "runtimes/win-x64/native/PhysXCooking_64.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "4.1.1.0"
+          },
+          "runtimes/win-x64/native/PhysXDevice64.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "18.12.7.1"
+          },
+          "runtimes/win-x64/native/PhysXFoundation_64.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "4.1.1.0"
+          },
+          "runtimes/win-x64/native/PhysXGpu_64.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "4.1.1.0"
+          },
+          "runtimes/win-x64/native/PhysX_64.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "4.1.1.0"
+          },
+          "runtimes/win-x64/native/glut32.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
       "System.Collections.Immutable/6.0.0": {
         "dependencies": {
           "System.Runtime.CompilerServices.Unsafe": "6.0.0"
@@ -554,14 +604,6 @@
             "assetType": "runtime",
             "assemblyVersion": "4.0.1.0",
             "fileVersion": "4.700.19.56404"
-          }
-        }
-      },
-      "Unity3D.UnityEngine/2020.3.21": {
-        "runtime": {
-          "lib/UnityEngine.dll": {
-            "assemblyVersion": "0.0.0.0",
-            "fileVersion": "0.0.0.0"
           }
         }
       },
@@ -921,6 +963,13 @@
       "path": "microsoft.windows.mixedreality.dotnetwinrt/0.5.1045",
       "hashPath": "microsoft.windows.mixedreality.dotnetwinrt.0.5.1045.nupkg.sha512"
     },
+    "PhysX.Net/3.0.0-alpha1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-JT0KrHi39xgv31DImDmVLkcX98h1hKJH5hc0EhauBIxdJcfMiFVjN2KBJ/R6O6eQE6VN/X265N6K/sHKWEXkuA==",
+      "path": "physx.net/3.0.0-alpha1",
+      "hashPath": "physx.net.3.0.0-alpha1.nupkg.sha512"
+    },
     "System.Collections.Immutable/6.0.0": {
       "type": "package",
       "serviceable": true,
@@ -1046,13 +1095,6 @@
       "sha512": "sha512-CeWTdRNfRaSh0pm2gDTJFwVaXfTq6Xwv/sA887iwPTneW7oMtMlpvDIO+U60+3GWTB7Aom6oQwv5VZVUhQRdPQ==",
       "path": "system.windows.extensions/4.7.0",
       "hashPath": "system.windows.extensions.4.7.0.nupkg.sha512"
-    },
-    "Unity3D.UnityEngine/2020.3.21": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-VkDOwJRbu7ktjXGMzGMUNzLBTwVQmw7Olv3QOhs1gw11zL3rcEWg/O5dUbk/7cF8P5uNCdxVKuhGVNXYNN0mug==",
-      "path": "unity3d.unityengine/2020.3.21",
-      "hashPath": "unity3d.unityengine.2020.3.21.nupkg.sha512"
     },
     "ServerCore/1.0.0": {
       "type": "project",

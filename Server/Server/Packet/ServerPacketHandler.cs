@@ -6,7 +6,7 @@ using System;
 using Server.DB;
 using Server.Contents.Sessions;
 using Server.Contents.Sessions.Base;
-using UnityEngine;
+using PhysX;
 
 public static class PacketHandler {
     public static void C_DebugHandler(PacketSession s, IMessage packet) {
@@ -62,6 +62,7 @@ public static class PacketHandler {
         ClientSession session = (ClientSession)s;
 
         bool result = true;
+        
 
         switch(parsedPacket.DestArea) {
             case pAreaType.Hideout: {
@@ -163,7 +164,7 @@ public static class PacketHandler {
         if(section == null)
             return;
 
-        section.Push(() => section.Sync_PlayerPosition(session.AuthCode, parsedPacket.Position, false));
+        section.Push(() => section.Sync_PlayerPosition(session.AuthCode, parsedPacket.Position, true));
     }
     public static void C_Look_RotationHandler(PacketSession s, IMessage packet) {
         C_Look_Rotation parsedPacket = (C_Look_Rotation)packet;
@@ -174,5 +175,15 @@ public static class PacketHandler {
             return;
 
         section.Push(() => section.Sync_PlayerRotation(session.AuthCode, parsedPacket.Rotation));
+    }
+
+    public static void C_Time_Check_ResponseHandler(PacketSession s, IMessage packet) {
+        C_Time_Check_Response parsedPacket = (C_Time_Check_Response)packet;
+        ClientSession session = (ClientSession)s;
+
+        if(session == null)
+            return;
+
+        session.TimeDelay = new TimeSpan(DateTime.Now.Ticks - parsedPacket.ReceivedTick).TotalSeconds;
     }
 }

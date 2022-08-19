@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character : MonoBehaviour { 
+public class Character : MonoBehaviour, CharacterObject { 
     public int AuthCode { get; set; }
 
     [SerializeField] protected PlayerMovement _movement = null;
 
     public virtual Vector3 MoveDir { get; set; }
-    public virtual Vector3 RotateDir { get; set; }
+    public virtual Quaternion RotateDir { get; set; }
     public virtual Vector3 Position { get => transform.position; set => transform.position = value; }
     public virtual pPlayerStance Stance { 
         get {

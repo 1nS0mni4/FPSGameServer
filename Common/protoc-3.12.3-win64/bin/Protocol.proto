@@ -33,6 +33,8 @@ enum PacketID{
 	S_SYNC_PLAYER_TRANSFORM		= 22;
 	C_LOOK_ROTATION				= 23;
 	S_BROADCAST_LOOK_ROTATION	= 24;
+	S_TIME_CHECK				= 25;
+	C_TIME_CHECK_RESPONSE		= 26;
 }
 
 //----------------------------------------<Client Packet>---------------------------------------
@@ -61,7 +63,7 @@ message C_Extract_To{
 
 message C_Spawn_Response{
 	pVector3 position = 1;
-	pVector3 rotation = 2;
+	pQuaternion rotation = 2;
 }
 
 message C_Request_Online{
@@ -81,7 +83,11 @@ message C_Transform_Sync{
 }
 
 message C_Look_Rotation{
-	pVector3 rotation = 1;
+	pQuaternion rotation = 1;
+}
+
+message C_Time_Check_Response{
+	int64 receivedTick = 1;
 }
 
 //----------------------------------------<Server Packet>---------------------------------------
@@ -108,7 +114,7 @@ message S_Spawn{
 message S_Player_Interpol{
 	int32		authCode	= 1;
 	pVector3	position	= 2;
-	pVector3	rotation	= 3;
+	pQuaternion	rotation	= 3;
 }
 
 message S_Load_Players{
@@ -145,8 +151,11 @@ message S_Sync_Player_Transform{
 
 message S_Broadcast_Look_Rotation{
 	int32 authCode = 1;
-	pVector3 rotation = 2;
-	google.protobuf.Any test = 3;
+	pQuaternion rotation = 2;
+}
+
+message S_Time_Check{
+	int64 currentTick = 1;
 }
 
 //---------------------------------------<Packet Data Model>------------------------------------
@@ -154,7 +163,7 @@ message S_Broadcast_Look_Rotation{
 message pObjectData{
 	int32 authCode = 1;
 	pVector3 position = 2;
-	pVector3 rotation = 3;
+	pQuaternion rotation = 3;
 }
 
 message pItem{
@@ -166,6 +175,13 @@ message pVector3{
 	float x = 1;
 	float y = 2;
 	float z = 3;
+}
+
+message pQuaternion{
+	float x = 1;
+	float y = 2;
+	float z = 3;
+	float w = 4;
 }
 
 message pAuthResult{

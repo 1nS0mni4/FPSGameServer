@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "9RE6OZ9k5kCxPY6PWemXMtZRGIyaBkuF4clcoejheei2zPRaAB3Y4fnX+/mYINDoftrwxx9YL584SPLFGOgZSA==",
+  "dgSpecHash": "d7zvuP9oT8LGfcog1vTxHjsBqQVQtE6G40ZWcAtX8tVETwGh2Jwwdh43wCHjvouKgdJzNy0sBg7d55nmq1vsbw==",
   "success": true,
   "projectFilePath": "D:\\Projects\\GitHub\\FPSGameServer\\Server\\Server\\Server.csproj",
   "expectedPackageFiles": [
@@ -37,6 +37,7 @@
     "C:\\Users\\16624\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
     "C:\\Users\\16624\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
     "C:\\Users\\16624\\.nuget\\packages\\microsoft.windows.mixedreality.dotnetwinrt\\0.5.1045\\microsoft.windows.mixedreality.dotnetwinrt.0.5.1045.nupkg.sha512",
+    "C:\\Users\\16624\\.nuget\\packages\\physx.net\\3.0.0-alpha1\\physx.net.3.0.0-alpha1.nupkg.sha512",
     "C:\\Users\\16624\\.nuget\\packages\\system.collections.immutable\\6.0.0\\system.collections.immutable.6.0.0.nupkg.sha512",
     "C:\\Users\\16624\\.nuget\\packages\\system.configuration.configurationmanager\\4.7.0\\system.configuration.configurationmanager.4.7.0.nupkg.sha512",
     "C:\\Users\\16624\\.nuget\\packages\\system.diagnostics.diagnosticsource\\6.0.0\\system.diagnostics.diagnosticsource.6.0.0.nupkg.sha512",
@@ -54,19 +55,7 @@
     "C:\\Users\\16624\\.nuget\\packages\\system.security.permissions\\4.7.0\\system.security.permissions.4.7.0.nupkg.sha512",
     "C:\\Users\\16624\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512",
     "C:\\Users\\16624\\.nuget\\packages\\system.text.encoding.codepages\\4.7.0\\system.text.encoding.codepages.4.7.0.nupkg.sha512",
-    "C:\\Users\\16624\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512",
-    "C:\\Users\\16624\\.nuget\\packages\\unity3d.unityengine\\2020.3.21\\unity3d.unityengine.2020.3.21.nupkg.sha512"
+    "C:\\Users\\16624\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1701",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "프로젝트 대상 프레임워크 'net6.0' 대신 '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8'을(를) 사용하여 패키지 'Unity3D.UnityEngine 2020.3.21'을(를) 복원했습니다. 이 패키지는 프로젝트와 완벽하게 호환되지 않을 수 있습니다.",
-      "libraryId": "Unity3D.UnityEngine",
-      "targetGraphs": [
-        "net6.0"
-      ]
-    }
-  ]
+  "logs": []
 }

@@ -75,5 +75,10 @@ public static class PacketHandler {
         ServerSession session = (ServerSession)s;
 
         throw new NotImplementedException();
+    }public static void S_Time_CheckHandler(PacketSession s, IMessage packet) {
+        S_Time_Check parsedPacket = (S_Time_Check)packet;
+        ServerSession session = (ServerSession)s;
+
+        throw new NotImplementedException();
     }
 }

@@ -71,10 +71,9 @@ namespace ServerCore {
         public void Send(ArraySegment<byte> segment) {
             lock(l_sendQueue) {
                 _sendQueue.Enqueue(segment);
-            }
-
-            if(_pendingList.Count == 0) {
-                RegisterSend();
+                if(_pendingList.Count == 0) {
+                    RegisterSend();
+                }
             }
         }
 
@@ -83,35 +82,42 @@ namespace ServerCore {
             if(_disconnected == 1)
                 return;
 
-            lock(l_sendQueue) {
-                while(_sendQueue.Count > 0) { 
-                    _pendingList.Add(_sendQueue.Dequeue());
-                }
+            while(_sendQueue.Count > 0) {
+                ArraySegment<byte> buff = _sendQueue.Dequeue();
+                _pendingList.Add(buff);
+            }
 
-                _sendArgs.BufferList = _pendingList;
+            _sendArgs.BufferList = _pendingList;
+
+            try {
                 bool pending = _socket.SendAsync(_sendArgs);
-
                 if(pending == false)
                     OnSendCompleted(null, _sendArgs);
+            }
+            catch(Exception e) {
+                Console.WriteLine($"RegisterSend Failed {e}");
             }
         }
 
         private void OnSendCompleted(object sender, SocketAsyncEventArgs args) {
-            if(args.SocketError == SocketError.Success && args.BytesTransferred > 0) {
-                try {
-                    _pendingList.Clear();
+            lock(l_sendQueue) {
+                if(args.BytesTransferred > 0 && args.SocketError == SocketError.Success) {
+                    try {
+                        _sendArgs.BufferList = null;
+                        _pendingList.Clear();
 
-                    if(_sendQueue.Count > 0)
-                        RegisterSend();
-                    else {
+                        OnSend(_sendArgs.BytesTransferred);
 
+                        if(_sendQueue.Count > 0)
+                            RegisterSend();
                     }
-                }catch(Exception e) {
-                    Console.WriteLine($"OnSendCompleted Failed! {e}");
+                    catch(Exception e) {
+                        Console.WriteLine($"OnSendCompleted Failed {e}");
+                    }
                 }
-            }
-            else {
-                Disconnect();
+                else {
+                    Disconnect();
+                }
             }
         }
 
@@ -119,17 +125,17 @@ namespace ServerCore {
             if(_disconnected == 1)
                 return;
 
+            _recvBuffer.Clear();
+            ArraySegment<byte> segment = _recvBuffer.FreeSegment;
+            _recvArgs.SetBuffer(segment.Array, segment.Offset, segment.Count);
+
             try {
-                _recvBuffer.Clear();
-                ArraySegment<byte> segment = _recvBuffer.FreeSegment;
-                _recvArgs.SetBuffer(segment.Array, segment.Offset, segment.Count);
                 bool pending = _socket.ReceiveAsync(_recvArgs);
 
                 if(pending == false)
                     OnRecvCompleted(null, _recvArgs);
             } catch(Exception e) {
                 Console.WriteLine($"RegisterRecv Failed! {e}");
-                Disconnect();
             }
         }
 

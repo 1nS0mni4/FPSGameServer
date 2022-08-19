@@ -46,6 +46,8 @@ public class PacketManager {
         _handler.Add((ushort)PacketID.SSyncPlayerTransform, PacketHandler.S_Sync_Player_TransformHandler);
       _makeFunc.Add((ushort)PacketID.SBroadcastLookRotation, MakePacket<S_Broadcast_Look_Rotation>);
         _handler.Add((ushort)PacketID.SBroadcastLookRotation, PacketHandler.S_Broadcast_Look_RotationHandler);
+      _makeFunc.Add((ushort)PacketID.STimeCheck, MakePacket<S_Time_Check>);
+        _handler.Add((ushort)PacketID.STimeCheck, PacketHandler.S_Time_CheckHandler);
 
     }
 

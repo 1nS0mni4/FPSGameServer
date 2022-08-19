@@ -651,11 +651,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6750578968563626742, guid: 478de9cd7c32693489ac64d9fb02deb8, type: 3}
       propertyPath: _interactTypes.Array.data[1]
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6750578968563626742, guid: 478de9cd7c32693489ac64d9fb02deb8, type: 3}
       propertyPath: _interactTypes.Array.data[2]
-      value: 6
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6750578968563626742, guid: 478de9cd7c32693489ac64d9fb02deb8, type: 3}
+      propertyPath: _interactTypes.Array.data[3]
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7964137759948289218, guid: 478de9cd7c32693489ac64d9fb02deb8, type: 3}
       propertyPath: _uiManager

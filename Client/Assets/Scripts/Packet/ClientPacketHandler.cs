@@ -239,4 +239,15 @@ public static class PacketHandler {
 
         Debug.Log($"S_Broadcast_Look_Rotation Received! {response.AuthCode}");
     }
+
+    public static void S_Time_CheckHandler(PacketSession s, IMessage packet) {
+        ServerSession session = (ServerSession)s;
+        S_Time_Check response = (S_Time_Check)packet;
+
+        C_Time_Check_Response parsed = new C_Time_Check_Response();
+        parsed.ReceivedTick = response.CurrentTick;
+
+        session.Send(parsed);
+    }
+    
 }

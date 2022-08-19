@@ -86,7 +86,8 @@ namespace Server.Contents.Sessions {
 
         public override void Update() {
             foreach(int key in _players.Keys) {
-                _players[key].Update();
+                if(_sessions.ContainsKey(key))
+                    _players[key].Update(_sessions[key].TimeDelay);
             }
 
             //TODO: 다른 Update가 필요한 오브젝트 컨테이너를 여기서 호출

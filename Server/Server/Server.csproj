@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -18,7 +18,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.7" />
     <PackageReference Include="Microsoft.MixedReality.Toolkit.Foundation" Version="2.3.0" />
-    <PackageReference Include="Unity3D.UnityEngine" Version="2020.3.21" />
+    <PackageReference Include="PhysX.Net" Version="3.0.0-alpha1" GeneratePathProperty="true"  />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,5 +28,9 @@
   <ItemGroup>
     <Folder Include="Contents\Objects\Projectile\" />
   </ItemGroup>
+
+  <ImportGroup>
+  	<Import Project="$(PkgPhysX_Net)\lib\RuntimeFiles.targets"/>
+  </ImportGroup>
 
 </Project>
