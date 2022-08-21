@@ -13,13 +13,18 @@ namespace PacketGenerator {
     public class Program {
         public static string clientManager = "";
         public static string clientManagerRegister= "";
-        public static string serverManager= "";
-        public static string serverManagerRegister = "";
+        public static string loginServerManager= "";
+        public static string loginServerManagerRegister = "";
+        public static string gameServerManager = "";
+        public static string gameServerManagerRegister = "";
 
-        public static string clientHandler = "";
-        public static string clientHandlerRegister = "";
-        public static string serverHandler = "";
-        public static string serverHandlerRegister = "";
+        //public static string clientHandler = "";
+        //public static string clientHandlerRegister = "";
+        //public static string feServerHandler = "";
+        //public static string feServerHandlerRegister = "";
+        //public static string beServerHandler = "";
+        //public static string beServerHandlerRegister = "";
+
         public static void Main(string[] args) {
             string filePath = "../../../../../Common/protoc-3.12.3-win64/bin/Protocol.proto";
             if(args.Length >= 1) {
@@ -45,29 +50,51 @@ namespace PacketGenerator {
                 string name = line.Trim(charToTrim).Split("=")[0];
                 string[] rName = RefineName(name);
 
-                switch(name.First()) {
+                switch(rName[(int)NameType.WithUnder].First()) {
                     case 'c': case 'C': {
-                        serverManagerRegister += string.Format(PacketFormat.managerRegisterFormat, rName[(int)NameType.WithoutUnder], rName[(int)NameType.WithUnder]);
-                        serverHandlerRegister += string.Format(PacketFormat.handlerFunctionFormat, rName[(int)NameType.WithUnder], "Client");
+                        loginServerManagerRegister += string.Format(PacketFormat.managerRegisterFormat, rName[(int)NameType.WithoutUnder], rName[(int)NameType.WithUnder]);
+                        //feServerHandlerRegister += string.Format(PacketFormat.handlerFunctionFormat, rName[(int)NameType.WithUnder], "Client");
+                        gameServerManagerRegister += string.Format(PacketFormat.managerRegisterFormat, rName[(int)NameType.WithoutUnder], rName[(int)NameType.WithUnder]);
+                        //beServerHandlerRegister += string.Format(PacketFormat.handlerFunctionFormat, rName[(int)NameType.WithUnder], "Client");
                     }
                     break;
                     case 's': case 'S': {
-                        clientManagerRegister += string.Format(PacketFormat.managerRegisterFormat, rName[(int)NameType.WithoutUnder], rName[(int)NameType.WithUnder]);
-                        clientHandlerRegister += string.Format(PacketFormat.handlerFunctionFormat, rName[(int)NameType.WithUnder], "Server");
+                        
+                        //clientHandlerRegister += string.Format(PacketFormat.handlerFunctionFormat, rName[(int)NameType.WithUnder], "Server");
+                        string serverType = rName[(int)NameType.WithUnder].Split("_")[1];
+
+                        if(serverType.Equals("L2G")) {
+                            gameServerManagerRegister += string.Format(PacketFormat.managerRegisterFormat, rName[(int)NameType.WithoutUnder], rName[(int)NameType.WithUnder]);
+                            //beServerHandlerRegister += string.Format(PacketFormat.handlerFunctionFormat, rName[(int)NameType.WithUnder], "Client");
+                        }
+                        else if(serverType.Equals("G2L")) {
+                            loginServerManagerRegister += string.Format(PacketFormat.managerRegisterFormat, rName[(int)NameType.WithoutUnder], rName[(int)NameType.WithUnder]);
+                            //feServerHandlerRegister += string.Format(PacketFormat.handlerFunctionFormat, rName[(int)NameType.WithUnder], "Client");
+                        }
+                        else if(serverType.Equals("Common")) {
+                            loginServerManagerRegister += string.Format(PacketFormat.managerRegisterFormat, rName[(int)NameType.WithoutUnder], rName[(int)NameType.WithUnder]);
+                            //feServerHandlerRegister += string.Format(PacketFormat.handlerFunctionFormat, rName[(int)NameType.WithUnder], "Client");
+                            gameServerManagerRegister += string.Format(PacketFormat.managerRegisterFormat, rName[(int)NameType.WithoutUnder], rName[(int)NameType.WithUnder]);
+                            //beServerHandlerRegister += string.Format(PacketFormat.handlerFunctionFormat, rName[(int)NameType.WithUnder], "Client");
+                        }
+                        else {
+                            clientManagerRegister += string.Format(PacketFormat.managerRegisterFormat, rName[(int)NameType.WithoutUnder], rName[(int)NameType.WithUnder]);
+                        }
                     }
                     break;
                 }
             }
 
-            serverManager = string.Format(PacketFormat.managerFormat, serverManagerRegister);
+            loginServerManager = string.Format(PacketFormat.managerFormat, loginServerManagerRegister);
             clientManager = string.Format(PacketFormat.managerFormat, clientManagerRegister);
-            serverHandler = string.Format(PacketFormat.handlerFormat, "Server", serverHandlerRegister);
-            clientHandler = string.Format(PacketFormat.handlerFormat, "Client", clientHandlerRegister);
+            //feServerHandler = string.Format(PacketFormat.handlerFormat, "Server", feServerHandlerRegister);
+            //clientHandler = string.Format(PacketFormat.handlerFormat, "Client", clientHandlerRegister);
 
-            File.WriteAllText("ServerPacketManager.cs", serverManager);
+            File.WriteAllText("LoginServerPacketManager.cs", loginServerManager);
             File.WriteAllText("ClientPacketManager.cs", clientManager);
-            File.WriteAllText("ServerPacketHandler.cs", serverHandler);
-            File.WriteAllText("ClientPacketHandler.cs", clientHandler);
+            File.WriteAllText("GameServerPacketManager.cs", gameServerManager);
+            //File.WriteAllText("ServerPacketHandler.cs", feServerHandler);
+            //File.WriteAllText("ClientPacketHandler.cs", clientHandler);
         }
 
         private static string[] RefineName(string message) {
@@ -78,6 +105,8 @@ namespace PacketGenerator {
                 refined[(int)NameType.WithUnder] += '_' + split.First().ToString().ToUpper() + split.Substring(1).ToLower();
                 refined[(int)NameType.WithoutUnder] += split.First().ToString().ToUpper() + split.Substring(1).ToLower();
             }
+
+            
 
             refined[(int)NameType.WithUnder] = refined[(int)NameType.WithUnder].Trim('_');
             refined[(int)NameType.WithoutUnder] = refined[(int)NameType.WithoutUnder].Trim('_');

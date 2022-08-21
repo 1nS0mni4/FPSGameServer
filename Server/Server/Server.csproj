@@ -18,19 +18,23 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.7" />
     <PackageReference Include="Microsoft.MixedReality.Toolkit.Foundation" Version="2.3.0" />
-    <PackageReference Include="PhysX.Net" Version="3.0.0-alpha1" GeneratePathProperty="true"  />
+    <PackageReference Include="PhysX.Net" Version="3.0.0-alpha1" GeneratePathProperty="true" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ServerCore\ServerCore.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Contents\Objects\Projectile\" />
-  </ItemGroup>
-
   <ImportGroup>
-  	<Import Project="$(PkgPhysX_Net)\lib\RuntimeFiles.targets"/>
+  	<Import Project="$(PkgPhysX_Net)\lib\RuntimeFiles.targets" />
   </ImportGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\16624\.nuget\packages\physx.net\3.0.0-alpha1\lib\..\lib\x64\Ijwhost.dll" />
+    <None Remove="C:\Users\16624\.nuget\packages\physx.net\3.0.0-alpha1\lib\..\lib\x64\PhysXCommon_64.dll" />
+    <None Remove="C:\Users\16624\.nuget\packages\physx.net\3.0.0-alpha1\lib\..\lib\x64\PhysXCooking_64.dll" />
+    <None Remove="C:\Users\16624\.nuget\packages\physx.net\3.0.0-alpha1\lib\..\lib\x64\PhysXFoundation_64.dll" />
+    <None Remove="C:\Users\16624\.nuget\packages\physx.net\3.0.0-alpha1\lib\..\lib\x64\PhysX_64.dll" />
+  </ItemGroup>
 
 </Project>

@@ -20,7 +20,7 @@ public abstract class MSceneManager : MonoBehaviour {
     }
 
     protected virtual void Start() {
-        Managers.Scene.IsLoading = false;
+        Managers.Scene.IsSceneChanging = false;
     }
 
     public abstract void InitScene();

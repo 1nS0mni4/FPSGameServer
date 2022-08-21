@@ -66,7 +66,7 @@ public static class PacketHandler {
         ServerSession session = (ServerSession)s;
         S_Load_Players response = (S_Load_Players)packet;
 
-        if(Managers.Scene.IsLoading) {
+        if(Managers.Scene.IsSceneChanging) {
             Managers.Scene.Completed.Enqueue(() => {
                 InGameSceneManager manager = Managers.Scene.GetManager<InGameSceneManager>();
 
@@ -88,7 +88,7 @@ public static class PacketHandler {
         ServerSession session = (ServerSession)s;
         S_Load_Items response = (S_Load_Items)packet;
 
-        if(Managers.Scene.IsLoading) {
+        if(Managers.Scene.IsSceneChanging) {
             Managers.Scene.Completed.Enqueue(() => {
                 InGameSceneManager manager = Managers.Scene.GetManager<InGameSceneManager>();
 
@@ -142,7 +142,7 @@ public static class PacketHandler {
             manager.SpawnPlayerInSpawnPoint(response.AuthCode, response.PrevArea, response.DestArea);
         };
 
-        if(Managers.Scene.IsLoading)   //로딩 중 내 캐릭터 생성을 명령 받았을 때
+        if(Managers.Scene.IsSceneChanging)   //로딩 중 내 캐릭터 생성을 명령 받았을 때
             Managers.Scene.Completed.Enqueue(spawnUser);
         else
             spawnUser.Invoke();

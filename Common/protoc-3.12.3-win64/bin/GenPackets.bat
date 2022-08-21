@@ -6,10 +6,13 @@ XCOPY /Y Protocol.cs "../../../Client/Assets/Scripts/Packet"
 
 START ../../../Server/PacketGenerator/bin/Debug/net6.0/PacketGenerator.exe ./Protocol.proto
 
-XCOPY /Y ServerPacketManager.cs "../../../Server/Server/Packet"
+XCOPY /Y LoginServerPacketManager.cs "../../../Server/Server/Packet"
 REM XCOPY /Y ServerPacketHandler.cs "../../../Server/Server/Packet"
 
-XCOPY /Y ClientPacketManager.cs "../../../Server/Client/Packet"
+REM XCOPY /Y ClientPacketManager.cs "../../../Server/Client/Packet"
 REM XCOPY /Y ClientPacketHandler.cs "../../../Server/Client/Packet"
-XCOPY /Y ClientPacketManager.cs "../../../Client/Assets/Scripts/Managers/Core"
+
+XCOPY /Y ClientPacketManager.cs "../../../Client/Assets/Scripts/ServerCore"
 REM XCOPY /Y ClientPacketHandler.cs "../../../Client/Assets/Scripts/Packet"
+
+XCOPY /Y GameServerPacketManager.cs "../../../UnityServer/Assets/Scripts/Packet"

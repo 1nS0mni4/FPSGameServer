@@ -6,35 +6,61 @@ import "google/protobuf/any.proto";
 option csharp_namespace = "Google.Protobuf.Protocol";
 
 
+/* -----------<Packet Format>------------
+ * S_L2G_ ...	 => Login To Game Server
+ * S_G2L_ ...	 => Game To Login Server
+ * S_Common_ ... => Server Common
+ * S_ ...		 => Server To Client
+ */
+
+ /*------------<Packet Name Constraints>---------
+		if Sender/Receiver is Server-Client Relation, skip _L2G / _G2L/ _Common. 
+		Sender(_S2S)_Verb_Target(_Verb)
+		ex) S_L2G_Transfer_Player_To
+		if target's name contains two nouns, seperate it with _(Underscore).
+		Infinitive should be right after Target. ex) Player_To
+ */
+
 enum PacketID{
 	//option allow_alias = true;	//Other Enums can get same numerics
-	C_DEBUG						= 0;
-	S_ERROR_PACKET				= 1;
-	C_ACCESS					= 2;
-	S_ACCESS_RESPONSE			= 3;
-	C_REGISTER					= 4;
-	S_REGISTER_RESPONSE			= 5;
-	C_DISCONNECT				= 6;
-	C_EXTRACT_TO				= 7;
-	S_SPAWN						= 8;
-	C_SPAWN_RESPONSE			= 9;
-	S_PLAYER_INTERPOL			= 10;
-	S_LOAD_PLAYERS				= 11;
-	S_LOAD_ITEMS				= 12;
-	S_LOAD_FIELDS				= 13;
-	S_PLAYER_LEAVE				= 14;
-	C_REQUEST_ONLINE			= 15;
-	S_REQUEST_ONLINE_RESPONSE	= 16;
-	C_MOVE						= 17;
-	S_MOVE_BROADCAST			= 18;
-	C_JUMP						= 19;
-	S_JUMP_BROADCAST			= 20;
-	C_TRANSFORM_SYNC			= 21;
-	S_SYNC_PLAYER_TRANSFORM		= 22;
-	C_LOOK_ROTATION				= 23;
-	S_BROADCAST_LOOK_ROTATION	= 24;
-	S_TIME_CHECK				= 25;
-	C_TIME_CHECK_RESPONSE		= 26;
+	//-------------------<Login/Register>----------------
+	C_DEBUG							= 0;
+	S_ERROR_PACKET					= 1;
+	C_ACCESS						= 2;
+	S_RESPONSE_ACCESS				= 3;
+	C_REGISTER						= 4;
+	S_RESPONSE_REGISTER				= 5;
+	C_DISCONNECT					= 6;
+
+	//-----------------------<Spawn>-----------------------
+	C_REQUEST_GAME_SESSION			;
+	S_G2L_STANDBY_GAME				;
+	S_L2G_INITIALIZE_GAME			;
+	S_G2L_RESPONSE_INITIALIZE_GAME	;
+	C_EXTRACT_TO					= 7;
+	S_COMMON_TRANSFER_PLAYER		;
+	S_SPAWN							= 8;
+
+	//-------------------<Login Server Only>---------------
+	C_REQUEST_ONLINE				= 9;
+	S_RESPONSE_REQUEST_ONLINE		= 10;
+
+	//-------------------<Game Server Only>---------------
+	S_LOAD_PLAYERS					= 11;
+	S_LOAD_ITEMS					= 12;
+	S_LOAD_FIELDS					= 13;
+	S_BROADCAST_PLAYER_LEAVE		= 14;
+	C_MOVE							= 15;
+	S_BROADCAST_PLAYER_MOVE			= 16;
+	C_LOOK_ROTATION					= 17;
+	S_BROADCAST_PLAYER_ROTATION		= 18;
+	C_JUMP							= 19;
+	S_BROADCAST_PLAYER_JUMP			= 20;
+	C_SYNC_TRANSFORM				= 21;
+	S_SYNC_PLAYER_TRANSFORM			= 22;
+
+	//--------------------<Server To Server>----------------
+
 }
 
 //----------------------------------------<Client Packet>---------------------------------------
@@ -61,11 +87,6 @@ message C_Extract_To{
 	int32 roomCode = 3;
 }
 
-message C_Spawn_Response{
-	pVector3 position = 1;
-	pQuaternion rotation = 2;
-}
-
 message C_Request_Online{
 
 }
@@ -78,31 +99,42 @@ message C_Move{
 message C_Jump{
 }
 
-message C_Transform_Sync{
+message C_Sync_Transform{
 	pVector3 position = 1;
 }
 
 message C_Look_Rotation{
 	pQuaternion rotation = 1;
 }
-
-message C_Time_Check_Response{
-	int64 receivedTick = 1;
-}
-
-//----------------------------------------<Server Packet>---------------------------------------
+//----------------------------------------<Login Server Packet>---------------------------------------
 
 message S_Error_Packet{
 	NetworkError errorCode = 1;
 }
 
-message S_Access_Response{
+message S_Response_Access{
 	NetworkError	errorCode	= 1;
 	int32			authCode	= 2;
 }
 
-message S_Register_Response{
+message S_Response_Register{
 	bool errorCode = 1;
+}
+
+message S_G2L_Standby_Game{
+	pEndPoint endPoint = 1;
+}
+
+message S_L2G_Initialize_Game{
+	pAreaType areaType = 1;
+}
+
+message S_G2L_Response_Initialize_Game{
+	bool success = 1;
+}
+
+message S_Common_Transfer_Player{
+
 }
 
 message S_Spawn{
@@ -111,7 +143,7 @@ message S_Spawn{
 	pAreaType	destArea = 3;
 }
 
-message S_Player_Interpol{
+message S_Interpol_Player{
 	int32		authCode	= 1;
 	pVector3	position	= 2;
 	pQuaternion	rotation	= 3;
@@ -127,21 +159,21 @@ message S_Load_Items{
 message S_Load_Fields{
 }
 
-message S_Player_Leave{
+message S_Broadcast_Player_Leave{
 	int32 authCode = 1;
 }
 
-message S_Request_Online_Response{
+message S_Response_Request_Online{
 	repeated pOnlineUser onlineUsers = 1;
 }
 
-message S_Move_Broadcast{
+message S_Broadcast_Player_Move{
 	int32		  authCode = 1;
 	pPlayerStance stance   = 2;
 	pVector3	  dir	   = 3;
 }
 
-message S_Jump_Broadcast{
+message S_Broadcast_Player_Jump{
 	int32 authCode = 1;
 }
 
@@ -149,14 +181,12 @@ message S_Sync_Player_Transform{
 	repeated pObjectData playerTransforms = 1;
 }
 
-message S_Broadcast_Look_Rotation{
+message S_Broadcast_Player_Rotation{
 	int32 authCode = 1;
 	pQuaternion rotation = 2;
 }
 
-message S_Time_Check{
-	int64 currentTick = 1;
-}
+//----------------------------------------<Game Server Packet>---------------------------------------
 
 //---------------------------------------<Packet Data Model>------------------------------------
 
@@ -194,6 +224,11 @@ message pOnlineUser{
 	int32 authCode = 2;
 	pAreaType whereAt = 3;
 	bool canAccess = 4;
+}
+
+message pEndPoint{
+	int64 ipAddress = 1;
+	int32 port		= 2;
 }
 
 enum pAreaType{

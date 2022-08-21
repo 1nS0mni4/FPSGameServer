@@ -1,6 +1,5 @@
 ﻿using Google.Protobuf;
 using Google.Protobuf.Protocol;
-using Server.Contents.Sessions.Base;
 using Server.DB;
 using ServerCore;
 using System;
@@ -13,7 +12,7 @@ using System.Threading.Tasks;
 namespace Server.Session {
     public class ClientSession : PacketSession {
         public int AuthCode { get; set; }
-        public GameRoom Section { get; set; }
+        //public GameRoom Section { get; set; }
         public double TimeDelay  { 
             get => _timedelay.Average(); 
             set { _timedelay.Add(value); } 
@@ -43,11 +42,11 @@ namespace Server.Session {
 
         public override void OnDisconnect(EndPoint endPoint) {
             Console.WriteLine($"Disconnected: {endPoint}");
-            GameRoom section = Section;
+            //GameRoom section = Section;
 
-            if(section != null) {
-                section.Push(() => section.Leave(this.AuthCode));
-            }
+            //if(section != null) {
+            //    section.Push(() => section.Leave(this.AuthCode));
+            //}
 
             _rttChecker.Stop();
             _rttChecker.Dispose();

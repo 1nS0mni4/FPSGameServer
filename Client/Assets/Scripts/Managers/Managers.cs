@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
+
 #region Manager Interfaces
 
 public interface IManagerStart { public void Start(); }
@@ -39,24 +40,32 @@ public class Managers : MonoBehaviour {
 
     public List<string> AddedManager = new List<string>();
     #endregion
+
     #region Game Instances
     private volatile pAreaType _prevScene = pAreaType.Hideout;
     public static pAreaType CurArea { get => _instance._prevScene; set => _instance._prevScene = value; }
 
     #endregion
 
+
     #region Primitive Managers
     private NetworkManager _network = new NetworkManager();
     public static NetworkManager Network { get => _instance._network; }
 
+#if UNITY_CLIENT_FPS
     private InputManager _input = new InputManager();
     public static InputManager Input { get => _instance._input; }
+#endif
 
     #endregion
 
     private void BatchRegister() {
         Register<NetworkManager>(_network);
+
+#if UNITY_CLIENT_FPS
         Register<InputManager>(_input);
+#endif
+
     }
 
 
@@ -105,11 +114,11 @@ public class Managers : MonoBehaviour {
         if(start != null)
             start.Start();
 
-        IManagerUpdate update = manager as IManagerUpdate; 
+        IManagerUpdate update = manager as IManagerUpdate;
         if(update != null) {
             ManagerUpdate -= update.Update;
             ManagerUpdate += update.Update;
-        }    
+        }
 
         IManagerOnApplicationPause pause = manager as IManagerOnApplicationPause;
         if(pause != null) {

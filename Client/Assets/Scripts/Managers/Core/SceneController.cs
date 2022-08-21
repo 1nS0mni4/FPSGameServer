@@ -7,17 +7,17 @@ using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour {
     public MSceneManager Manager { get; set; }
-    private bool _isLoading = false;
+    private bool _isSceneChanging = false;
     private float _fakeLoadingTime = 3.0f;
 
     private WaitForSeconds loadingWaitSeconds = new WaitForSeconds(0.1f);
-    public bool IsLoading {
-        get { return _isLoading == true; }
+    public bool IsSceneChanging {
+        get { return _isSceneChanging == true; }
         set {
             if(value != false)
                 return;
 
-            _isLoading = value;
+            _isSceneChanging = value;
 
             while(Completed.Count > 0) {
                 Action action = Completed.Dequeue();
@@ -28,7 +28,7 @@ public class SceneController : MonoBehaviour {
     public Queue<Action> Completed = new Queue<Action>();
     public void ChangeSceneTo(pAreaType type) {
         Debug.Log($"ChangeSceneTo {type} Called!");
-        _isLoading = true;
+        _isSceneChanging = true;
         Managers.Input.CanInput = false;
 
         InGameUIManager uiManager = UIManager.GetManager<InGameUIManager>();

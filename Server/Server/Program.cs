@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,26 +9,27 @@ using ServerCore;
 
 namespace Server {
     public class Program {
-        private static Listener _listener = new Listener();
+        public static IPAddress IpAddr = default(IPAddress);
+
+        public static int ClientPort = 17321;
+        public static int ServerPort = 35432;
+
+        private static Listener _clientListener = new Listener();
+        private static Listener _serverListener = new Listener();
 
         public static void Main(string[] args) {
             DbCommands.InitializeDB(true);
-            JobTimer.Instance.Push(() => {
 
-            });
             string host = Dns.GetHostName();
             IPHostEntry ipHost = Dns.GetHostEntry(host);
-            IPAddress ipAddr = ipHost.AddressList[0];
-            IPEndPoint endPoint = new IPEndPoint(ipAddr, 7777);
-            // -> DNS에서는 아직 내 공인IP가 테이블에 저장되어있지 않아서 아마 안되는듯
-            //IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 17321);
+            IpAddr = ipHost.AddressList[0];
 
-            _listener.Listen(endPoint, SessionManager.Instance.Generate<ClientSession>);
+            //TODO: 서버 Deploy할 때 config.json파일 따로 만들어서 거기서 포트 작성해주는게 관리하기 좋을 듯
+            _clientListener.Listen(IpAddr, ClientPort, SessionManager.Instance.Generate<ClientSession>);
+            _serverListener.Listen(IpAddr, ServerPort, SessionManager.Instance.Generate<GameServerSession>);
 
             while(true) {
-                //Console.WriteLine("Server Running...");
                 JobTimer.Instance.Flush();
-                //Thread.Sleep(1000);
             }
         }
     }

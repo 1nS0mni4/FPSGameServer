@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -10,7 +11,8 @@ namespace ServerCore {
     public class Listener {
         private Socket _listenSocket = null;
         private Func<Session> _sessionFactory;
-        public void Listen(IPEndPoint endPoint, Func<Session> sessionFactory, int backlog = 10, int count = 1) {
+        public void Listen(IPAddress ipAddr, int port, Func<Session> sessionFactory, int backlog = 10, int count = 1) {
+            IPEndPoint endPoint = new IPEndPoint(ipAddr, port);
             _listenSocket = new Socket(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             _sessionFactory = sessionFactory;
 
@@ -20,6 +22,8 @@ namespace ServerCore {
             for(int i = 0; i < count; i++) {
                 SocketAsyncEventArgs args = new SocketAsyncEventArgs();
                 args.Completed += new EventHandler<SocketAsyncEventArgs>(OnAcceptCompleted);
+
+                Process process = new Process();
 
                 RegisterAccept(args);
             }
