@@ -20,34 +20,32 @@ public class PacketManager {
     private void Register() {
       _makeFunc.Add((ushort)PacketID.SErrorPacket, MakePacket<S_Error_Packet>);
         _handler.Add((ushort)PacketID.SErrorPacket, PacketHandler.S_Error_PacketHandler);
-      _makeFunc.Add((ushort)PacketID.SAccessResponse, MakePacket<S_Access_Response>);
-        _handler.Add((ushort)PacketID.SAccessResponse, PacketHandler.S_Access_ResponseHandler);
-      _makeFunc.Add((ushort)PacketID.SRegisterResponse, MakePacket<S_Register_Response>);
-        _handler.Add((ushort)PacketID.SRegisterResponse, PacketHandler.S_Register_ResponseHandler);
+      _makeFunc.Add((ushort)PacketID.SResponseAccess, MakePacket<S_Response_Access>);
+        _handler.Add((ushort)PacketID.SResponseAccess, PacketHandler.S_Response_AccessHandler);
+      _makeFunc.Add((ushort)PacketID.SResponseRegister, MakePacket<S_Response_Register>);
+        _handler.Add((ushort)PacketID.SResponseRegister, PacketHandler.S_Response_RegisterHandler);
+      _makeFunc.Add((ushort)PacketID.SResponseRequestGameSession, MakePacket<S_Response_Request_Game_Session>);
+        _handler.Add((ushort)PacketID.SResponseRequestGameSession, PacketHandler.S_Response_Request_Game_SessionHandler);
       _makeFunc.Add((ushort)PacketID.SSpawn, MakePacket<S_Spawn>);
         _handler.Add((ushort)PacketID.SSpawn, PacketHandler.S_SpawnHandler);
-      _makeFunc.Add((ushort)PacketID.SPlayerInterpol, MakePacket<S_Player_Interpol>);
-        _handler.Add((ushort)PacketID.SPlayerInterpol, PacketHandler.S_Player_InterpolHandler);
+      _makeFunc.Add((ushort)PacketID.SResponseRequestOnline, MakePacket<S_Response_Request_Online>);
+        _handler.Add((ushort)PacketID.SResponseRequestOnline, PacketHandler.S_Response_Request_OnlineHandler);
       _makeFunc.Add((ushort)PacketID.SLoadPlayers, MakePacket<S_Load_Players>);
         _handler.Add((ushort)PacketID.SLoadPlayers, PacketHandler.S_Load_PlayersHandler);
       _makeFunc.Add((ushort)PacketID.SLoadItems, MakePacket<S_Load_Items>);
         _handler.Add((ushort)PacketID.SLoadItems, PacketHandler.S_Load_ItemsHandler);
       _makeFunc.Add((ushort)PacketID.SLoadFields, MakePacket<S_Load_Fields>);
         _handler.Add((ushort)PacketID.SLoadFields, PacketHandler.S_Load_FieldsHandler);
-      _makeFunc.Add((ushort)PacketID.SPlayerLeave, MakePacket<S_Player_Leave>);
-        _handler.Add((ushort)PacketID.SPlayerLeave, PacketHandler.S_Player_LeaveHandler);
-      _makeFunc.Add((ushort)PacketID.SRequestOnlineResponse, MakePacket<S_Request_Online_Response>);
-        _handler.Add((ushort)PacketID.SRequestOnlineResponse, PacketHandler.S_Request_Online_ResponseHandler);
-      _makeFunc.Add((ushort)PacketID.SMoveBroadcast, MakePacket<S_Move_Broadcast>);
-        _handler.Add((ushort)PacketID.SMoveBroadcast, PacketHandler.S_Move_BroadcastHandler);
-      _makeFunc.Add((ushort)PacketID.SJumpBroadcast, MakePacket<S_Jump_Broadcast>);
-        _handler.Add((ushort)PacketID.SJumpBroadcast, PacketHandler.S_Jump_BroadcastHandler);
+      _makeFunc.Add((ushort)PacketID.SBroadcastPlayerLeave, MakePacket<S_Broadcast_Player_Leave>);
+        _handler.Add((ushort)PacketID.SBroadcastPlayerLeave, PacketHandler.S_Broadcast_Player_LeaveHandler);
+      _makeFunc.Add((ushort)PacketID.SBroadcastPlayerMove, MakePacket<S_Broadcast_Player_Move>);
+        _handler.Add((ushort)PacketID.SBroadcastPlayerMove, PacketHandler.S_Broadcast_Player_MoveHandler);
+      _makeFunc.Add((ushort)PacketID.SBroadcastPlayerRotation, MakePacket<S_Broadcast_Player_Rotation>);
+        _handler.Add((ushort)PacketID.SBroadcastPlayerRotation, PacketHandler.S_Broadcast_Player_RotationHandler);
+      _makeFunc.Add((ushort)PacketID.SBroadcastPlayerJump, MakePacket<S_Broadcast_Player_Jump>);
+        _handler.Add((ushort)PacketID.SBroadcastPlayerJump, PacketHandler.S_Broadcast_Player_JumpHandler);
       _makeFunc.Add((ushort)PacketID.SSyncPlayerTransform, MakePacket<S_Sync_Player_Transform>);
         _handler.Add((ushort)PacketID.SSyncPlayerTransform, PacketHandler.S_Sync_Player_TransformHandler);
-      _makeFunc.Add((ushort)PacketID.SBroadcastLookRotation, MakePacket<S_Broadcast_Look_Rotation>);
-        _handler.Add((ushort)PacketID.SBroadcastLookRotation, PacketHandler.S_Broadcast_Look_RotationHandler);
-      _makeFunc.Add((ushort)PacketID.STimeCheck, MakePacket<S_Time_Check>);
-        _handler.Add((ushort)PacketID.STimeCheck, PacketHandler.S_Time_CheckHandler);
 
     }
 

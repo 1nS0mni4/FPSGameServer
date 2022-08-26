@@ -24,8 +24,10 @@ public class ExtractionArea : MonoBehaviour {
     [SerializeField]
     private float _extractionRemaining = 0.0f;
 
+#if UNITY_CLIENT_FPS
     [SerializeField]
     private ExtractionUI _extractionUI = null;
+#endif
     public Action<bool> ExtractionSuccessEvent = null;
 
     private string _playerTag = "MyPlayer";
@@ -35,9 +37,10 @@ public class ExtractionArea : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
         if(other.CompareTag(_playerTag) == false)
             return;
-
+#if UNITY_CLIENT_FPS
         if(_extractionUI != null)
             _extractionUI.gameObject.SetActive(true);
+#endif
 
         _isExtracting = true;
         _extractionRemaining = _extractionLimit;
@@ -53,16 +56,20 @@ public class ExtractionArea : MonoBehaviour {
 
         _isExtracting = false;
         _extractionRemaining = 0.0f;
+#if UNITY_CLIENT_FPS
         if(_extractionUI != null)
             _extractionUI.gameObject.SetActive(false);
+#endif
         StopCoroutine(CoStartCountExtraction());
     }
 
     public IEnumerator CoStartCountExtraction() {
         while(_isExtracting) {
             _extractionRemaining -= Time.deltaTime;
+#if UNITY_CLIENT_FPS
             if(_extractionUI != null)
                 _extractionUI.SetExecTime(_extractionRemaining);
+#endif
 
             if(_extractionRemaining <= 0.0f) {
                 ExtractionSucess();
@@ -80,17 +87,21 @@ public class ExtractionArea : MonoBehaviour {
             ExtractionSuccessEvent.Invoke(false);
         }
 
+#if UNITY_CLIENT_FPS
         InGameSceneManager manager = Managers.Scene.GetManager<InGameSceneManager>();
 
         if(manager != null) {
             Managers.Scene.ChangeSceneTo(_destination == pAreaType.Hideout ? pAreaType.Hideout : pAreaType.Fieldmap);
         }
 
-        C_Extract_To extPacket = new C_Extract_To();
-        extPacket.RoomCode = _roomCode;
+        C_Common_Extract_To extPacket = new C_Common_Extract_To();
         extPacket.PrevArea = Managers.CurArea;
         extPacket.DestArea = _destination;
 
         Managers.Network.Send(extPacket);
+        return;
+#endif
+
+
     }
 }

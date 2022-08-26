@@ -69,7 +69,7 @@ public class NetworkManager : Manager, IManagerStart, IManagerUpdate, IManagerOn
         if(_frontSession == null)
             return;
 
-        C_Disconnect disconnect = new C_Disconnect();
+        C_Common_Disconnect disconnect = new C_Common_Disconnect();
         Send(disconnect);
         _frontSession.Disconnect();
     }

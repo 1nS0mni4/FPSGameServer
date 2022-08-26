@@ -11,17 +11,16 @@ using Extensions;
 
 public static class PacketHandler {
     public static void S_Error_PacketHandler(PacketSession s, IMessage packet) {
-        Debug.Log("S_Error_Packet Received!");
         ServerSession session = (ServerSession)s;
         S_Error_Packet response = (S_Error_Packet)packet;
 
         Debug.Log(response.ErrorCode.ToString());
     }
 
-    public static void S_Access_ResponseHandler(PacketSession s, IMessage packet) {
+    public static void S_Response_AccessHandler(PacketSession s, IMessage packet) {
         Debug.Log("S_Access_Response Received!");
         ServerSession session = (ServerSession)s;
-        S_Access_Response response = (S_Access_Response)packet;
+        S_Response_Access response = (S_Response_Access)packet;
 
         LoginUIManager ui = UIManager.GetManager<LoginUIManager>();
         if(ui == null)
@@ -47,10 +46,10 @@ public static class PacketHandler {
         }
     }
 
-    public static void S_Register_ResponseHandler(PacketSession s, IMessage packet) {
+    public static void S_Response_RegisterHandler(PacketSession s, IMessage packet) {
         Debug.Log("S_Register_Response Received!");
         ServerSession session = (ServerSession)s;
-        S_Register_Response response = (S_Register_Response)packet;
+        S_Response_Register response = (S_Response_Register)packet;
 
         if(response.ErrorCode == false) {
             return;
@@ -115,10 +114,10 @@ public static class PacketHandler {
         manager.f_Loaded_Field = true;
     }
 
-    public static void S_Player_InterpolHandler(PacketSession s, IMessage packet) {
+    public static void S_Interpol_PlayerHandler(PacketSession s, IMessage packet) {
 
         ServerSession session = (ServerSession)s;
-        S_Player_Interpol response = (S_Player_Interpol)packet;
+        S_Interpol_Player response = (S_Interpol_Player)packet;
 
         InGameSceneManager manager = Managers.Scene.GetManager<InGameSceneManager>();
 
@@ -150,9 +149,9 @@ public static class PacketHandler {
         Debug.Log($"S_Spawn Received! {response.AuthCode}");
     }
 
-    public static void S_Player_LeaveHandler(PacketSession s, IMessage packet) {
+    public static void S_Broadcast_Player_LeaveHandler(PacketSession s, IMessage packet) {
         ServerSession session = (ServerSession)s;
-        S_Player_Leave response = (S_Player_Leave)packet;
+        S_Broadcast_Player_Leave response = (S_Broadcast_Player_Leave)packet;
 
         InGameSceneManager manager = Managers.Scene.GetManager<InGameSceneManager>();
 
@@ -163,23 +162,32 @@ public static class PacketHandler {
         Debug.Log($"S_Player_Leave Received! {response.AuthCode}");
     }
 
-    public static void S_Request_Online_ResponseHandler(PacketSession s, IMessage packet) {
+    public static void S_Response_Request_OnlineHandler(PacketSession s, IMessage packet) {
         Debug.Log("S_Request_Online_Response Received!");
         ServerSession session = (ServerSession)s;
-        S_Request_Online_Response response = (S_Request_Online_Response)packet;
+        S_Response_Request_Online response = (S_Response_Request_Online)packet;
 
         Action<object> requester = null;
 
-        if(Managers.Network.MessageWait.TryGetValue(typeof(S_Request_Online_Response), out requester)) {
-            Managers.Network.MessageWait.Remove(typeof(S_Request_Online_Response));
+        if(Managers.Network.MessageWait.TryGetValue(typeof(S_Response_Request_Online), out requester)) {
+            Managers.Network.MessageWait.Remove(typeof(S_Response_Request_Online));
             requester.Invoke(response);
         }
     }
 
-    public static void S_Move_BroadcastHandler(PacketSession s, IMessage packet) {
+    public static void S_Response_Request_Game_SessionHandler(PacketSession s, IMessage packet) {
+        Debug.Log("S_Request_Online_Response Received!");
+        ServerSession session = (ServerSession)s;
+        S_Response_Request_Online response = (S_Response_Request_Online)packet;
+
+
+        throw new NotImplementedException();
+    }
+
+    public static void S_Broadcast_Player_MoveHandler(PacketSession s, IMessage packet) {
         Debug.Log("S_Move_Broadcast Received!");
         ServerSession session = (ServerSession)s;
-        S_Move_Broadcast response = (S_Move_Broadcast)packet;
+        S_Broadcast_Player_Move response = (S_Broadcast_Player_Move)packet;
 
         if(Managers.Network.AuthCode == response.AuthCode)
             return;
@@ -195,9 +203,9 @@ public static class PacketHandler {
         }
     }
 
-    public static void S_Jump_BroadcastHandler(PacketSession s, IMessage packet) {
+    public static void S_Broadcast_Player_JumpHandler(PacketSession s, IMessage packet) {
         ServerSession session = (ServerSession)s;
-        S_Jump_Broadcast response = (S_Jump_Broadcast)packet;
+        S_Broadcast_Player_Jump response = (S_Broadcast_Player_Jump)packet;
 
         if(Managers.Network.AuthCode == response.AuthCode)
             return;
@@ -227,9 +235,9 @@ public static class PacketHandler {
         }
     }
 
-    public static void S_Broadcast_Look_RotationHandler(PacketSession s, IMessage packet) {
+    public static void S_Broadcast_Player_RotationHandler(PacketSession s, IMessage packet) {
         ServerSession session = (ServerSession)s;
-        S_Broadcast_Look_Rotation response = (S_Broadcast_Look_Rotation)packet;
+        S_Broadcast_Player_Rotation response = (S_Broadcast_Player_Rotation)packet;
 
         InGameSceneManager manager = Managers.Scene.GetManager<InGameSceneManager>();
         if(manager == null)
@@ -239,15 +247,4 @@ public static class PacketHandler {
 
         Debug.Log($"S_Broadcast_Look_Rotation Received! {response.AuthCode}");
     }
-
-    public static void S_Time_CheckHandler(PacketSession s, IMessage packet) {
-        ServerSession session = (ServerSession)s;
-        S_Time_Check response = (S_Time_Check)packet;
-
-        C_Time_Check_Response parsed = new C_Time_Check_Response();
-        parsed.ReceivedTick = response.CurrentTick;
-
-        session.Send(parsed);
-    }
-    
 }

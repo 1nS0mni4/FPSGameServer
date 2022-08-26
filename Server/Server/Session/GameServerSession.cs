@@ -11,14 +11,10 @@ using System.Threading.Tasks;
 namespace Server.Session {
     public class GameServerSession : PacketSession {
         public int AuthCode { get; set; }
-
         public pAreaType AreaType { get; set; }
-        public bool CanAccess { get; set; } = false;
-        public long ServerIP { get; set; }
-        public int ServerPort { get; set; }
 
         public override void OnConnect(EndPoint endPoint) {
-            //TODO: 서버 초기화 데이터 전송하기. ex) AreaType 지정해주기 등등...
+            
         }
 
         public override void OnDisconnect(EndPoint endPoint) {

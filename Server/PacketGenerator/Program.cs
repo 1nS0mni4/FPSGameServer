@@ -48,44 +48,49 @@ namespace PacketGenerator {
 
                 char[] charToTrim = new char[]{' ', ';', '\t'};
                 string name = line.Trim(charToTrim).Split("=")[0];
+                if(name == String.Empty)
+                    continue;
+                if(name.First() == '/')
+                    continue;
                 string[] rName = RefineName(name);
+                string remote = rName[(int)NameType.WithUnder].Split("_")[1];
 
                 switch(rName[(int)NameType.WithUnder].First()) {
                     case 'c': case 'C': {
-                        loginServerManagerRegister += string.Format(PacketFormat.managerRegisterFormat, rName[(int)NameType.WithoutUnder], rName[(int)NameType.WithUnder]);
-                        //feServerHandlerRegister += string.Format(PacketFormat.handlerFunctionFormat, rName[(int)NameType.WithUnder], "Client");
-                        gameServerManagerRegister += string.Format(PacketFormat.managerRegisterFormat, rName[(int)NameType.WithoutUnder], rName[(int)NameType.WithUnder]);
-                        //beServerHandlerRegister += string.Format(PacketFormat.handlerFunctionFormat, rName[(int)NameType.WithUnder], "Client");
-                    }
-                    break;
+                        if(remote.Equals("Login")) {
+                            loginServerManagerRegister += string.Format(PacketFormat.managerRegisterFormat, rName[(int)NameType.WithoutUnder], rName[(int)NameType.WithUnder]);
+                            //feServerHandlerRegister += string.Format(PacketFormat.handlerFunctionFormat, rName[(int)NameType.WithUnder], "Client");
+                        }
+                        else if(remote.Equals("Game")) {
+                            gameServerManagerRegister += string.Format(PacketFormat.managerRegisterFormat, rName[(int)NameType.WithoutUnder], rName[(int)NameType.WithUnder]);
+                            //beServerHandlerRegister += string.Format(PacketFormat.handlerFunctionFormat, rName[(int)NameType.WithUnder], "Client");
+                        }
+                        else if(remote.Equals("Common")){
+                            loginServerManagerRegister += string.Format(PacketFormat.managerRegisterFormat, rName[(int)NameType.WithoutUnder], rName[(int)NameType.WithUnder]);
+                            //feServerHandlerRegister += string.Format(PacketFormat.handlerFunctionFormat, rName[(int)NameType.WithUnder], "Client");
+                            gameServerManagerRegister += string.Format(PacketFormat.managerRegisterFormat, rName[(int)NameType.WithoutUnder], rName[(int)NameType.WithUnder]);
+                            //beServerHandlerRegister += string.Format(PacketFormat.handlerFunctionFormat, rName[(int)NameType.WithUnder], "Client");
+                        }
+                    } break;
                     case 's': case 'S': {
-                        
-                        //clientHandlerRegister += string.Format(PacketFormat.handlerFunctionFormat, rName[(int)NameType.WithUnder], "Server");
-                        string serverType = rName[(int)NameType.WithUnder].Split("_")[1];
-
-                        if(serverType.Equals("L2G")) {
+                        if(remote.Equals("Game")) {
                             gameServerManagerRegister += string.Format(PacketFormat.managerRegisterFormat, rName[(int)NameType.WithoutUnder], rName[(int)NameType.WithUnder]);
                             //beServerHandlerRegister += string.Format(PacketFormat.handlerFunctionFormat, rName[(int)NameType.WithUnder], "Client");
                         }
-                        else if(serverType.Equals("G2L")) {
+                        else if(remote.Equals("Login")) {
                             loginServerManagerRegister += string.Format(PacketFormat.managerRegisterFormat, rName[(int)NameType.WithoutUnder], rName[(int)NameType.WithUnder]);
                             //feServerHandlerRegister += string.Format(PacketFormat.handlerFunctionFormat, rName[(int)NameType.WithUnder], "Client");
-                        }
-                        else if(serverType.Equals("Common")) {
-                            loginServerManagerRegister += string.Format(PacketFormat.managerRegisterFormat, rName[(int)NameType.WithoutUnder], rName[(int)NameType.WithUnder]);
-                            //feServerHandlerRegister += string.Format(PacketFormat.handlerFunctionFormat, rName[(int)NameType.WithUnder], "Client");
-                            gameServerManagerRegister += string.Format(PacketFormat.managerRegisterFormat, rName[(int)NameType.WithoutUnder], rName[(int)NameType.WithUnder]);
-                            //beServerHandlerRegister += string.Format(PacketFormat.handlerFunctionFormat, rName[(int)NameType.WithUnder], "Client");
                         }
                         else {
                             clientManagerRegister += string.Format(PacketFormat.managerRegisterFormat, rName[(int)NameType.WithoutUnder], rName[(int)NameType.WithUnder]);
+                            //clientHandlerRegister += string.Format(PacketFormat.handlerFunctionFormat, rName[(int)NameType.WithUnder], "Server");
                         }
-                    }
-                    break;
+                    } break;
                 }
             }
 
             loginServerManager = string.Format(PacketFormat.managerFormat, loginServerManagerRegister);
+            gameServerManager = String.Format(PacketFormat.managerFormat, gameServerManagerRegister);
             clientManager = string.Format(PacketFormat.managerFormat, clientManagerRegister);
             //feServerHandler = string.Format(PacketFormat.handlerFormat, "Server", feServerHandlerRegister);
             //clientHandler = string.Format(PacketFormat.handlerFormat, "Client", clientHandlerRegister);

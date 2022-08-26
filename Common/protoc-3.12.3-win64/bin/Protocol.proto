@@ -6,105 +6,136 @@ import "google/protobuf/any.proto";
 option csharp_namespace = "Google.Protobuf.Protocol";
 
 
-/* -----------<Packet Format>------------
- * S_L2G_ ...	 => Login To Game Server
- * S_G2L_ ...	 => Game To Login Server
- * S_Common_ ... => Server Common
- * S_ ...		 => Server To Client
- */
 
- /*------------<Packet Name Constraints>---------
-		if Sender/Receiver is Server-Client Relation, skip _L2G / _G2L/ _Common. 
-		Sender(_S2S)_Verb_Target(_Verb)
-		ex) S_L2G_Transfer_Player_To
-		if target's name contains two nouns, seperate it with _(Underscore).
-		Infinitive should be right after Target. ex) Player_To
+/*------------<패킷 명명 규칙>---------
+ *		패킷 기본 형식
+ *			{C/S}({_Target})_...
+ * 
+ *		Client-Server Relation
+ *			클라이언트:
+ *				Login 서버가 타겟일 경우			: C_Login_...
+ *				Game 서버가 타겟일 경우			: C_Game_...
+ *				두 서버가 공통으로 사용할 경우		: C_Common_...
+ *			서버:
+ *				타겟에 관계 없이 전부				: S_...
+ *
+ *		Server-Server Relation
+ *			Login -> Game일 경우					: S_L2G_...
+ *			Game -> Login일 경우					: S_Login_...
+ *
+ *
+ *			명사의 내부에 두 개 이상의 단어가 들어갈 경우 _로 한 개씩 끊어서 작성합니다.
+ *			ex) S_Response_Request_Game_Session
+ *
+ *		 패킷의 용도
+ *				데이터 요청:
+ *				Sender(_Receiver)_Request_Target
+ *				ex) C_Request_Game_Session
+ *
+ *				명령:
+ *				Sender(_Receiver)_Verb_Target
+ *				ex) S_Load_Players, S_L2G_Initialize_Game
+ *
+ *				응답: 
+ *				Sender(_Receiver)_Response_Verb_Target
+ *				ex) S_Response_Request_Game_Session
+ *
+ *				정보 전달: 
+ *				Sender(_Receiver)_Target_Verb
+ *				ex) S_Login_Game_Standby
  */
 
 enum PacketID{
 	//option allow_alias = true;	//Other Enums can get same numerics
-	//-------------------<Login/Register>----------------
-	C_DEBUG							= 0;
+	//-------------------<Login/Register>------------------
+	C_LOGIN_DEBUG					= 0;
 	S_ERROR_PACKET					= 1;
-	C_ACCESS						= 2;
+	C_LOGIN_ACCESS					= 2;
 	S_RESPONSE_ACCESS				= 3;
-	C_REGISTER						= 4;
+	C_LOGIN_REGISTER				= 4;
 	S_RESPONSE_REGISTER				= 5;
-	C_DISCONNECT					= 6;
+	C_COMMON_DISCONNECT				= 6;
 
 	//-----------------------<Spawn>-----------------------
-	C_REQUEST_GAME_SESSION			;
-	S_G2L_STANDBY_GAME				;
-	S_L2G_INITIALIZE_GAME			;
-	S_G2L_RESPONSE_INITIALIZE_GAME	;
-	C_EXTRACT_TO					= 7;
-	S_COMMON_TRANSFER_PLAYER		;
-	S_SPAWN							= 8;
+	C_LOGIN_REQUEST_GAME_SESSION	= 7;		//AreaType과 유저 수를 전송해서 참가 가능한 해당 타입의 세션 정보 요청
+	S_LOGIN_GAME_STANDBY				= 8;		//요청받은 타입에 맞는 새로운 게임 서버가 준비되었음을 알림
+	S_RESPONSE_REQUEST_GAME_SESSION	= 9;		//요청받은 타입의 세션 중 참가가능한 세션이 존재함과 해당 세션의 EndPoint 전달
+	C_COMMON_EXTRACT_TO				= 10;		//전달받은 EndPoint에게 전송 필요
+	S_SPAWN							= 11;		//게임 서버나 로그인 서버가 S_Spawn을 전송
 
 	//-------------------<Login Server Only>---------------
-	C_REQUEST_ONLINE				= 9;
-	S_RESPONSE_REQUEST_ONLINE		= 10;
+	C_LOGIN_REQUEST_ONLINE			= 12;
+	S_RESPONSE_REQUEST_ONLINE		= 13;
 
-	//-------------------<Game Server Only>---------------
-	S_LOAD_PLAYERS					= 11;
-	S_LOAD_ITEMS					= 12;
-	S_LOAD_FIELDS					= 13;
-	S_BROADCAST_PLAYER_LEAVE		= 14;
-	C_MOVE							= 15;
-	S_BROADCAST_PLAYER_MOVE			= 16;
-	C_LOOK_ROTATION					= 17;
-	S_BROADCAST_PLAYER_ROTATION		= 18;
-	C_JUMP							= 19;
-	S_BROADCAST_PLAYER_JUMP			= 20;
-	C_SYNC_TRANSFORM				= 21;
-	S_SYNC_PLAYER_TRANSFORM			= 22;
+	//--------------------<Game Server Only>---------------
+	S_LOAD_PLAYERS					= 14;
+	S_LOAD_ITEMS					= 15;
+	S_LOAD_FIELDS					= 16;
+	S_BROADCAST_PLAYER_LEAVE		= 17;
+	C_GAME_MOVE						= 18;
+	S_BROADCAST_PLAYER_MOVE			= 19;
+	C_GAME_LOOK_ROTATION			= 20;
+	S_BROADCAST_PLAYER_ROTATION		= 21;
+	C_GAME_JUMP						= 22;
+	S_BROADCAST_PLAYER_JUMP			= 23;
+	C_GAME_TRANSFORM_SYNC			= 24;
+	S_SYNC_PLAYER_TRANSFORM			= 25;
+	C_COMMON_LEAVE					= 26;
 
-	//--------------------<Server To Server>----------------
-
+	//--------------------<Server To Server>---------------
+	S_LOGIN_GAME_INFO_NOTIFY			= 27;
 }
 
 //----------------------------------------<Client Packet>---------------------------------------
-message C_Debug{
+message C_Login_Debug{
 	string message = 1;
 }
 
-message C_Access{
+message C_Login_Access{
 	string id = 1;
 	string pw = 2;
 }
 
-message C_Register{
+message C_Login_Register{
 	string id = 1;
 	string pw = 2;
 }
 
-message C_Disconnect{ 
+message C_Common_Disconnect{ 
 }
 
-message C_Extract_To{
+message C_Login_Request_Game_Session{
+	pAreaType areaType = 1;
+	int32 userCount = 2;
+}
+
+message C_Common_Extract_To{
 	pAreaType prevArea = 1;
 	pAreaType destArea = 2;
-	int32 roomCode = 3;
 }
 
-message C_Request_Online{
+message C_Login_Request_Online{
 
 }
 
-message C_Move{
+message C_Game_Move{
 	pVector3	  dir	 = 1;
 	pPlayerStance stance = 2;
 }
 
-message C_Jump{
+message C_Game_Jump{
 }
 
-message C_Sync_Transform{
+message C_Game_Transform_Sync{
 	pVector3 position = 1;
 }
 
-message C_Look_Rotation{
+message C_Game_Look_Rotation{
 	pQuaternion rotation = 1;
+}
+
+message C_Common_Leave{
+
 }
 //----------------------------------------<Login Server Packet>---------------------------------------
 
@@ -121,20 +152,14 @@ message S_Response_Register{
 	bool errorCode = 1;
 }
 
-message S_G2L_Standby_Game{
+message S_Login_Game_Standby{
 	pEndPoint endPoint = 1;
+	int32	  serverID = 2;
+	pAreaType areaType = 3;
 }
 
-message S_L2G_Initialize_Game{
-	pAreaType areaType = 1;
-}
-
-message S_G2L_Response_Initialize_Game{
-	bool success = 1;
-}
-
-message S_Common_Transfer_Player{
-
+message S_Response_Request_Game_Session{
+	pEndPoint endPoint = 1;
 }
 
 message S_Spawn{
@@ -154,6 +179,9 @@ message S_Load_Players{
 }
 
 message S_Load_Items{
+	//AuthCode와 데이터를 전달한다.
+	//AuthCode를 기준으로 필드의 ItemContainer에게 데이터를 전달하기 때문에
+	//플레이어 ItemContainer든 필드 ItemContainer이든 가능하게 한다.
 }
 
 message S_Load_Fields{
@@ -186,7 +214,9 @@ message S_Broadcast_Player_Rotation{
 	pQuaternion rotation = 2;
 }
 
-//----------------------------------------<Game Server Packet>---------------------------------------
+message S_Login_Game_Info_Notify{
+	//TODO: 로그인 서버에게 게임서버의 현재 정보를 전송한다.
+}
 
 //---------------------------------------<Packet Data Model>------------------------------------
 

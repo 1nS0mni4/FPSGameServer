@@ -41,7 +41,7 @@ public class TransmitterUI : UI_Panel {
     }
 
     private void RefreshSessionList(object packet) {
-        S_Request_Online_Response response = packet as S_Request_Online_Response;
+        S_Response_Request_Online response = packet as S_Response_Request_Online;
 
         if(response == null)
             return;
@@ -70,13 +70,13 @@ public class TransmitterUI : UI_Panel {
         Managers.Input.CanInput = false;
         StartCoroutine(CoStartLoading());
 
-        Managers.Network.MessageWait.Add(typeof(S_Request_Online_Response), RefreshSessionList);
-        C_Request_Online request = new C_Request_Online();
+        Managers.Network.MessageWait.Add(typeof(S_Response_Request_Online), RefreshSessionList);
+        S_Response_Request_Online request = new S_Response_Request_Online();
         Managers.Network.Send(request);
     }
 
     protected override void OnDisabled() {
-        Managers.Network.MessageWait.Remove(typeof(S_Request_Online_Response));
+        Managers.Network.MessageWait.Remove(typeof(S_Response_Request_Online));
         Managers.Input.CanInput = true;
 
         StopCoroutine(CoStartLoading());

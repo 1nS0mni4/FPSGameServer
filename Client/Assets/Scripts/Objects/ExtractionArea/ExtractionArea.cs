@@ -86,8 +86,7 @@ public class ExtractionArea : MonoBehaviour {
             Managers.Scene.ChangeSceneTo(_destination == pAreaType.Hideout ? pAreaType.Hideout : pAreaType.Fieldmap);
         }
 
-        C_Extract_To extPacket = new C_Extract_To();
-        extPacket.RoomCode = _roomCode;
+        C_Common_Extract_To extPacket = new C_Common_Extract_To();
         extPacket.PrevArea = Managers.CurArea;
         extPacket.DestArea = _destination;
 

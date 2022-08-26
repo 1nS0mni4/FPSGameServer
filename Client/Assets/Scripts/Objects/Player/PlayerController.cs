@@ -188,7 +188,7 @@ public class PlayerController : MonoBehaviour {
 
         if(moveDir.Equals(direction) == false) {
             moveDir = direction;
-            C_Move movePacket = new C_Move();
+            C_Game_Move movePacket = new C_Game_Move();
             movePacket.Dir = new pVector3();
 
             movePacket.Dir.X = moveDir.x;

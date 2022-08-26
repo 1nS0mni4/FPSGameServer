@@ -8,7 +8,11 @@ namespace Server.Utils {
     public class Singleton<T> where T : new() {
         private static T _instance = new T();
         public static T Instance {
-            get { return _instance; }
+            get { 
+                if(_instance == null)
+                    _instance = new T();
+                return _instance; 
+            }
         }
     }
 }

@@ -64,13 +64,6 @@ public class InGameSceneManager : MSceneManager {
             _myPlayer.gameObject.transform.position = pos;
             _myPlayer.gameObject.transform.rotation = rot;
 
-            {
-                C_Spawn_Response spawn = new C_Spawn_Response();
-                spawn.Position = _myPlayer.gameObject.transform.position.TopVector3();
-                spawn.Rotation = _myPlayer.gameObject.transform.rotation.TopQuaternion();
-                Managers.Network.Send(spawn);
-            }
-
             _players.Add(authID, _myPlayer);
             _myPlayer.gameObject.SetActive(true);
         }

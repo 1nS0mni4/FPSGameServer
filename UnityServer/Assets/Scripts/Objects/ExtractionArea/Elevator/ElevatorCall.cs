@@ -8,7 +8,9 @@ public class ElevatorCall : InteractableObject {
     [SerializeField] private ExtractionArea _extraction = null;
 
     private void Awake() {
+#if UNITY_CLIENT_FPS
         if(_interactableUI == null) throw new MissingComponentException("ElevatorCall - _interactableUI Component is null");
+#endif
         if(_elevController == null) throw new MissingComponentException("ElevatorCall - _elevController Component is null");
         if(_extraction == null) throw new MissingComponentException("ElevatorCall - _extraction Component is null");
     }
@@ -19,9 +21,5 @@ public class ElevatorCall : InteractableObject {
                 _elevController.ActivateExtraction(true);
             }break;
         }
-    }
-
-    public override void ShowInteractType() {
-        _interactableUI.ShowInteractType(this, _interactTypes);
     }
 }

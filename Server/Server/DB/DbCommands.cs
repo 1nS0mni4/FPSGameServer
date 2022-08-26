@@ -25,7 +25,7 @@ namespace Server.DB {
 
         #region Account Database Commands
 
-        public static pAuthResult AccountValidationCheck(C_Access access) {
+        public static pAuthResult AccountValidationCheck(C_Login_Access access) {
             Console.WriteLine($"AccountValidationCheck Started!");
             pAuthResult result = new pAuthResult();
 
@@ -62,7 +62,7 @@ namespace Server.DB {
             }
         }
 
-        public static bool AccountCreate(C_Register register) {
+        public static bool AccountCreate(C_Login_Register register) {
             Console.WriteLine($"AccountCreate Started!");
             using(AppDbContext db = new AppDbContext()) {
                 UserAccount regist = db.UserAccounts.SingleOrDefault(account => account.ID == register.Id);

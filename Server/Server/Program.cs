@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Server.Contents.Manager;
 using Server.DB;
 using Server.Session;
 using ServerCore;

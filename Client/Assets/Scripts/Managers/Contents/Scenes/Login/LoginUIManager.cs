@@ -77,7 +77,7 @@ public class LoginUIManager : UIManager {
         idInput = _textID.text;
         pwInput = _textPW.text;
 
-        C_Access access = new C_Access();
+        C_Login_Access access = new C_Login_Access();
         access.Id = idInput;
         access.Pw = pwInput;
 
@@ -89,7 +89,7 @@ public class LoginUIManager : UIManager {
         idInput = _textID.text;
         pwInput = _textPW.text;
 
-        C_Register register = new C_Register(){
+        C_Login_Register register = new C_Login_Register(){
             Id = idInput,
             Pw = pwInput
         };
