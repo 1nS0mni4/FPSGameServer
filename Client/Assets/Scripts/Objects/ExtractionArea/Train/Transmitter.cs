@@ -1,3 +1,4 @@
+using Google.Protobuf.Protocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,10 +25,11 @@ public class Transmitter : InteractableObject {
         _interactableUI.ShowInteractType(this, _interactTypes);
     }
 
-    public override void Interact(InteractType type) {
+    public override void Interact(pInteractType type) {
         switch(type) {
-            case InteractType.Object_Use: {
+            case pInteractType.ObjectUse: {
                 _transmitterUI.gameObject.SetActive(true);
+                //TODO: TransmitterUI에게 지금 작동 중인 Transmitter가 본인임을 전달해야 함
             } break;
         }
     }
@@ -35,14 +37,13 @@ public class Transmitter : InteractableObject {
 
 
     #region Original Functions
-    public void CallTrainTo(int authCode) {
-        _extraction._roomCode = authCode;
-        _trainController.StandbyTrain(true);
+    //TODO: IPEndPoint 받아서 세션을 따로 연결해야됨! authCode로 하는게 아니라!
+    public void CallTrainTo(uint authCode) {
+        _trainController.ActivateExtraction(true);
     }
 
     public void PassTrain() {
-        _extraction._roomCode = -1;
-        _trainController.StandbyTrain(false);
+        _trainController.ActivateExtraction(false);
     }
 
     #endregion

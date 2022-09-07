@@ -628,6 +628,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _execUI: {fileID: 1426490938}
   _fade: {fileID: 86682032}
+  _transmitter: {fileID: 1597621870}
 --- !u!1001 &1491009407
 PrefabInstance:
   m_ObjectHideFlags: 0

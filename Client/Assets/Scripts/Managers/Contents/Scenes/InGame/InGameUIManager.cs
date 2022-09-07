@@ -13,4 +13,9 @@ public class InGameUIManager : UIManager {
     [SerializeField]
     private FadeUI _fade = null;
     public FadeUI Fade { get => _fade; }
+
+    [SerializeField]
+    private TransmitterUI _transmitter = null;
+
+    public TransmitterUI Transmitter { get => _transmitter; }
 }

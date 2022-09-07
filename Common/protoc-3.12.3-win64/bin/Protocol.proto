@@ -20,7 +20,7 @@ option csharp_namespace = "Google.Protobuf.Protocol";
  *				타겟에 관계 없이 전부				: S_...
  *
  *		Server-Server Relation
- *			Login -> Game일 경우					: S_L2G_...
+ *			Login -> Game일 경우					: S_Game_...
  *			Game -> Login일 경우					: S_Login_...
  *
  *
@@ -48,50 +48,51 @@ option csharp_namespace = "Google.Protobuf.Protocol";
 enum PacketID{
 	//option allow_alias = true;	//Other Enums can get same numerics
 	//-------------------<Login/Register>------------------
-	C_LOGIN_DEBUG					= 0;
-	S_ERROR_PACKET					= 1;
-	C_LOGIN_ACCESS					= 2;
-	S_RESPONSE_ACCESS				= 3;
-	C_LOGIN_REGISTER				= 4;
-	S_RESPONSE_REGISTER				= 5;
-	C_COMMON_DISCONNECT				= 6;
-
-	//-----------------------<Spawn>-----------------------
-	C_LOGIN_REQUEST_GAME_SESSION	= 7;		//AreaType과 유저 수를 전송해서 참가 가능한 해당 타입의 세션 정보 요청
-	S_LOGIN_GAME_STANDBY				= 8;		//요청받은 타입에 맞는 새로운 게임 서버가 준비되었음을 알림
-	S_RESPONSE_REQUEST_GAME_SESSION	= 9;		//요청받은 타입의 세션 중 참가가능한 세션이 존재함과 해당 세션의 EndPoint 전달
-	C_COMMON_EXTRACT_TO				= 10;		//전달받은 EndPoint에게 전송 필요
-	S_SPAWN							= 11;		//게임 서버나 로그인 서버가 S_Spawn을 전송
+	C_COMMON_DEBUG						= 0;
+	S_ERROR_PACKET						= 1;
+	C_LOGIN_ACCESS						= 2;
+	S_RESPONSE_ACCESS					= 3;
+	C_LOGIN_REGISTER					= 4;
+	S_RESPONSE_REGISTER					= 5;
+	C_COMMON_DISCONNECT					= 6;
 
 	//-------------------<Login Server Only>---------------
-	C_LOGIN_REQUEST_ONLINE			= 12;
-	S_RESPONSE_REQUEST_ONLINE		= 13;
+	C_LOGIN_REQUEST_ONLINE				= 7;
+	S_RESPONSE_REQUEST_ONLINE			= 8;
+
+	//---------------------<GameAccess>--------------------
+	C_LOGIN_REQUEST_GAME_SESSION		= 9;
+	S_LOGIN_GAME_STANDBY				= 10;
+	S_GAME_USER_ACCESS					= 11;
+	S_RESPONSE_REQUEST_GAME_SESSION		= 12;
 
 	//--------------------<Game Server Only>---------------
-	S_LOAD_PLAYERS					= 14;
-	S_LOAD_ITEMS					= 15;
-	S_LOAD_FIELDS					= 16;
-	S_BROADCAST_PLAYER_LEAVE		= 17;
-	C_GAME_MOVE						= 18;
-	S_BROADCAST_PLAYER_MOVE			= 19;
-	C_GAME_LOOK_ROTATION			= 20;
-	S_BROADCAST_PLAYER_ROTATION		= 21;
-	C_GAME_JUMP						= 22;
-	S_BROADCAST_PLAYER_JUMP			= 23;
-	C_GAME_TRANSFORM_SYNC			= 24;
-	S_SYNC_PLAYER_TRANSFORM			= 25;
-	C_COMMON_LEAVE					= 26;
+	C_GAME_TRY_ENTER					= 13;
+	S_LOAD_PLAYERS						= 14;
+	S_LOAD_ITEMS						= 15;
+	S_LOAD_FIELD						= 16;
+	S_BROADCAST_PLAYER_SPAWN			= 17;
+	C_GAME_MOVE							= 18;
+	S_BROADCAST_PLAYER_MOVE				= 19;
+	C_GAME_ROTATION						= 20;
+	S_BROADCAST_PLAYER_ROTATION			= 21;
+	C_GAME_TRANSFORM_SYNC				= 22;
+	S_SYNC_PLAYER_TRANSFORM				= 23;
+	C_GAME_INTERACT						= 24;
+	S_BROADCAST_PLAYER_LEAVE			= 25;
 
 	//--------------------<Server To Server>---------------
-	S_LOGIN_GAME_INFO_NOTIFY			= 27;
-}
+	S_LOGIN_NOTIFY_SERVER_INFO			= 26;
 
+	//--------------------<Common Packet>---------------
+
+}
 //----------------------------------------<Client Packet>---------------------------------------
-message C_Login_Debug{
+message C_Common_Debug {
 	string message = 1;
 }
 
-message C_Login_Access{
+message C_Login_Access {
 	string id = 1;
 	string pw = 2;
 }
@@ -101,134 +102,118 @@ message C_Login_Register{
 	string pw = 2;
 }
 
-message C_Common_Disconnect{ 
-}
+message C_Common_Disconnect{ }
+
+message C_Login_Request_Online{ }
 
 message C_Login_Request_Game_Session{
-	pAreaType areaType = 1;
-	int32 userCount = 2;
+	pAreaType	   areaType	 = 1;
+	int32		   userCount = 2;
+	repeated uint32 authCode  = 3;
 }
 
-message C_Common_Extract_To{
-	pAreaType prevArea = 1;
-	pAreaType destArea = 2;
-}
-
-message C_Login_Request_Online{
-
+message C_Game_Try_Enter{
+	uint32 authCode = 1;
 }
 
 message C_Game_Move{
-	pVector3	  dir	 = 1;
-	pPlayerStance stance = 2;
+	pVector3 velocity = 1;
 }
 
-message C_Game_Jump{
+message C_Game_Rotation{
+	uint32		  authCode	   = 1;
+	pQuaternion	  rotation = 2;
 }
 
 message C_Game_Transform_Sync{
 	pVector3 position = 1;
 }
 
-message C_Game_Look_Rotation{
-	pQuaternion rotation = 1;
+message C_Game_Interact{
+	uint32		  authCode	   = 1;
+	pInteractType interactType = 2;
 }
 
-message C_Common_Leave{
-
-}
 //----------------------------------------<Login Server Packet>---------------------------------------
-
 message S_Error_Packet{
 	NetworkError errorCode = 1;
 }
 
 message S_Response_Access{
 	NetworkError	errorCode	= 1;
-	int32			authCode	= 2;
+	uint32			authCode	= 2;
 }
 
 message S_Response_Register{
 	bool errorCode = 1;
 }
 
-message S_Login_Game_Standby{
-	pEndPoint endPoint = 1;
-	int32	  serverID = 2;
-	pAreaType areaType = 3;
+message S_Response_Request_Online{
+	repeated pOnlineUser onlineUsers = 1;
+}
+
+message S_Game_User_Access{
+	int32			userCount = 1;
+	repeated uint32 authCode  = 2;
 }
 
 message S_Response_Request_Game_Session{
 	pEndPoint endPoint = 1;
 }
 
-message S_Spawn{
-	int32		authCode = 1;
-	pAreaType	prevArea = 2;
-	pAreaType	destArea = 3;
-}
+//----------------------------------------<Game Server Packet>---------------------------------------
 
-message S_Interpol_Player{
-	int32		authCode	= 1;
-	pVector3	position	= 2;
-	pQuaternion	rotation	= 3;
+message S_Login_Game_Standby{
+	pEndPoint endPoint = 1;
+	uint32	  serverID = 2;
+	pAreaType areaType = 3;
 }
 
 message S_Load_Players{
 	repeated pObjectData objectList = 1;
 }
 
-message S_Load_Items{
-	//AuthCode와 데이터를 전달한다.
-	//AuthCode를 기준으로 필드의 ItemContainer에게 데이터를 전달하기 때문에
-	//플레이어 ItemContainer든 필드 ItemContainer이든 가능하게 한다.
-}
+message S_Load_Items{ }
 
-message S_Load_Fields{
-}
+message S_Load_Field{ }
 
-message S_Broadcast_Player_Leave{
-	int32 authCode = 1;
-}
-
-message S_Response_Request_Online{
-	repeated pOnlineUser onlineUsers = 1;
+message S_Broadcast_Player_Spawn{
+	pObjectData info = 1;
 }
 
 message S_Broadcast_Player_Move{
-	int32		  authCode = 1;
-	pPlayerStance stance   = 2;
-	pVector3	  dir	   = 3;
-}
-
-message S_Broadcast_Player_Jump{
-	int32 authCode = 1;
-}
-
-message S_Sync_Player_Transform{
-	repeated pObjectData playerTransforms = 1;
+	uint32	 authCode = 1;
+	pVector3 velocity = 2;
 }
 
 message S_Broadcast_Player_Rotation{
-	int32 authCode = 1;
+	uint32		authCode = 1;
 	pQuaternion rotation = 2;
 }
 
-message S_Login_Game_Info_Notify{
-	//TODO: 로그인 서버에게 게임서버의 현재 정보를 전송한다.
+message S_Sync_Player_Transform{
+	repeated pObjectData players = 1;
+}
+
+message S_Broadcast_Player_Leave{
+	uint32 authCode = 1;
+}
+
+message S_Login_Notify_Server_Info{
+
 }
 
 //---------------------------------------<Packet Data Model>------------------------------------
 
 message pObjectData{
-	int32 authCode = 1;
-	pVector3 position = 2;
+	uint32		authCode = 1;
+	pVector3	position = 2;
 	pQuaternion rotation = 3;
 }
 
 message pItem{
-	int32 itemCode = 1;
-	int32 itemCount = 2;
+	uint32	itemCode = 1;
+	int32	itemCount = 2;
 }
 
 message pVector3{
@@ -246,14 +231,14 @@ message pQuaternion{
 
 message pAuthResult{
 	NetworkError errorCode = 1;
-	int32 authCode = 2;
+	uint32		 authCode  = 2;
 }
 
 message pOnlineUser{
-	string name = 1;
-	int32 authCode = 2;
-	pAreaType whereAt = 3;
-	bool canAccess = 4;
+	string		name		  = 1;
+	uint32		authCode	  = 2;
+	pAreaType	whereAt		  = 3;
+	bool		canAccess	  = 4;
 }
 
 message pEndPoint{
@@ -279,14 +264,6 @@ enum pPlayerStance{
 	RUN			= 4;
 }
 
-enum pObjectType{
-	PLAYER = 0;
-	MYPLAYER = 1;
-	PROJECTILE = 2;
-	DROP = 3;
-	FIELDOBJECT = 4;
-}
-
 enum NetworkError{
 	SUCCESS				= 0;
 	NOACCOUNT			= 1;
@@ -296,3 +273,29 @@ enum NetworkError{
 	INVALID_ACCESS		= 5;
 }
 
+enum pInteractType{
+	INTERACTYPE_NONE = 0;
+    CHEST_OPEN = 1;
+    CHEST_CLOSE = 2;
+
+    DOOR_OPEN = 3;
+    DOOR_CLOSE= 4;
+    DOOR_BREACH = 5;
+
+    ITEM_TAKE = 6;
+    ITEM_SEARCH = 7;
+
+    OBJECT_USE = 8;
+}
+
+enum pObjectType{
+	NONE_NONE = 0;
+	//----------Character Types----------
+	CHARACTER_PLAYER		= 285212672;
+	CHARACTER_MERCHANT		= 301989888;
+	CHARACTER_VANCRUEL		= 335544320;
+	//------------Object Types------------
+	OBJECT_NONINTERACTABLE	= 553648128;
+	OBJECT_INTERACTABLE		= 570425344;
+	OBJECT_PROJECTILE		= 603979776;
+}

@@ -8,4 +8,19 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: 05ead3554cfd6554f9af542530549bc0
+  - enabled: 1
+    path: Assets/Scenes/Hideout.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Cityhall.unity
+    guid: 1b09a7768acc9404b9527ed1a835139d
+  - enabled: 1
+    path: Assets/Scenes/Residential.unity
+    guid: 7a15a35efb26d734a84b6b1587cbaf80
+  - enabled: 1
+    path: Assets/Scenes/Industrial.unity
+    guid: 449a07da7aae9f645bf670b3888945d1
+  - enabled: 1
+    path: Assets/Scenes/Commerce.unity
+    guid: 652900ae98f847d4486a6d5caaaaf8cb
   m_configObjects: {}

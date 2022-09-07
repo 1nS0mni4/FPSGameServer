@@ -11,20 +11,16 @@ using System.Threading.Tasks;
 
 namespace Server.Session {
     public class ClientSession : PacketSession {
-        public int AuthCode { get; set; }
-        //public GameRoom Section { get; set; }
+        public uint AuthCode { get; set; }
+        public Action OnConnectEvent;
 
         public override void OnConnect(EndPoint endPoint) {
             Console.WriteLine($"Connected To: {endPoint}");
+            OnConnectEvent?.Invoke();
         }
 
         public override void OnDisconnect(EndPoint endPoint) {
             Console.WriteLine($"Disconnected: {endPoint}");
-            //GameRoom section = Section;
-
-            //if(section != null) {
-            //    section.Push(() => section.Leave(this.AuthCode));
-            //}
         }
 
         public override void OnRecvPacket(ArraySegment<byte> segment) {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -33,6 +34,9 @@ namespace ServerCore {
     }
     public abstract class Session {
         private Socket _socket;
+        private Ping _ping = new Ping();
+        public float _pingTime = 0.0f;
+        protected IPEndPoint RemoteEndPoint { get; private set; }
         protected int _disconnected = 1;
         public bool Connected { get { return _disconnected == 0; } }
 
@@ -46,16 +50,21 @@ namespace ServerCore {
 
         public void Start(Socket socket) {
             _socket = socket;
-            
+            RemoteEndPoint = _socket.RemoteEndPoint as IPEndPoint;
+
             _recvArgs.Completed += new EventHandler<SocketAsyncEventArgs>(OnRecvCompleted);
             _sendArgs.Completed += new EventHandler<SocketAsyncEventArgs>(OnSendCompleted);
 
             RegisterRecv();
+
+            _ping.PingCompleted += OnPingReceived;
+            _ping.SendPingAsync(RemoteEndPoint.Address);
         }
 
         public void Disconnect() {
             if(Interlocked.Exchange(ref _disconnected, 1) == 1)
                 return;
+            _ping.Dispose();
             OnDisconnect(_socket.RemoteEndPoint);
             _socket.Shutdown(SocketShutdown.Both);
             _socket.Close();
@@ -162,6 +171,24 @@ namespace ServerCore {
                 Disconnect();
             }
         }
+
+        private void OnPingReceived(object sender, PingCompletedEventArgs args) {
+            if(args.Cancelled) {
+                Console.WriteLine($"Ping Cancelled!");
+                _ping.SendPingAsync(RemoteEndPoint.Address);
+                return;
+            }
+
+            if(args.Error != null) {
+                Console.WriteLine(args.Error.Message);
+                _ping.SendPingAsync(RemoteEndPoint.Address);
+                return;
+            }
+
+            _pingTime = args.Reply.RoundtripTime / 2.0f;
+            _ping.SendPingAsync(RemoteEndPoint.Address);
+        }
+
         #endregion
 
         #region Abstract Functions

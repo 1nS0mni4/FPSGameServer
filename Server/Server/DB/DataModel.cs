@@ -11,6 +11,6 @@ namespace Server.DB {
         public int UserAccountID { get; set; }
         public string ID { get; set; }
         public string Password { get; set; }
-        public int AuthCode { get; set; }
+        public uint AuthCode { get; set; }
     }
 }

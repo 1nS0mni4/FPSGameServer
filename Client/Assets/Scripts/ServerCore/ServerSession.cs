@@ -3,16 +3,13 @@ using Google.Protobuf.Protocol;
 using ServerCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
+using System.Net.NetworkInformation;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Client.Session {
     public class ServerSession : PacketSession {
-        public int AuthCode { get; set; }
-
+        public uint AuthCode { get; set; }
         public override void OnConnect(EndPoint endPoint) {
             Interlocked.Exchange(ref _disconnected, 0);
         }

@@ -1,7 +1,14 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
-    - Initializer
+    - CharacterPooler
+    - ElevatorCall
+    - ElevatorController
+    - ExtractionArea
+    - InGameSceneManager
+    - ServerManager
+    - TrainController
+    - Transmitter
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
     UnityEditor.TestRunner.dll:
@@ -11,7 +18,58 @@ ScriptsOnlyBuild:
   serializedClasses: {}
   methodsToPreserve: []
   sceneClasses:
-    Assets/Scenes/Main.unity:
+    Assets/Scenes/Cityhall.unity:
+    - Class: 1
+      Script: {instanceID: 0}
+    - Class: 4
+      Script: {instanceID: 0}
+    - Class: 20
+      Script: {instanceID: 0}
+    - Class: 21
+      Script: {instanceID: 0}
+    - Class: 23
+      Script: {instanceID: 0}
+    - Class: 28
+      Script: {instanceID: 0}
+    - Class: 33
+      Script: {instanceID: 0}
+    - Class: 43
+      Script: {instanceID: 0}
+    - Class: 48
+      Script: {instanceID: 0}
+    - Class: 64
+      Script: {instanceID: 0}
+    - Class: 65
+      Script: {instanceID: 0}
+    - Class: 81
+      Script: {instanceID: 0}
+    - Class: 82
+      Script: {instanceID: 0}
+    - Class: 104
+      Script: {instanceID: 0}
+    - Class: 108
+      Script: {instanceID: 0}
+    - Class: 114
+      Script: {instanceID: 1610}
+    - Class: 114
+      Script: {instanceID: 1628}
+    - Class: 114
+      Script: {instanceID: 2514}
+    - Class: 114
+      Script: {instanceID: 2670}
+    - Class: 114
+      Script: {instanceID: 3230}
+    - Class: 114
+      Script: {instanceID: 3716}
+    - Class: 114
+      Script: {instanceID: 3974}
+    - Class: 115
+      Script: {instanceID: 0}
+    - Class: 157
+      Script: {instanceID: 0}
+    - Class: 196
+      Script: {instanceID: 0}
+    Assets/Scenes/Commerce.unity:
     - Class: 1
       Script: {instanceID: 0}
     - Class: 4
@@ -26,19 +84,145 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
+    - Class: 104
+      Script: {instanceID: 0}
+    - Class: 108
+      Script: {instanceID: 0}
+    - Class: 157
+      Script: {instanceID: 0}
+    - Class: 196
+      Script: {instanceID: 0}
+    Assets/Scenes/Hideout.unity:
+    - Class: 1
+      Script: {instanceID: 0}
+    - Class: 4
+      Script: {instanceID: 0}
+    - Class: 20
+      Script: {instanceID: 0}
+    - Class: 21
+      Script: {instanceID: 0}
+    - Class: 28
+      Script: {instanceID: 0}
+    - Class: 48
+      Script: {instanceID: 0}
+    - Class: 81
+      Script: {instanceID: 0}
+    - Class: 104
+      Script: {instanceID: 0}
+    - Class: 108
+      Script: {instanceID: 0}
+    - Class: 157
+      Script: {instanceID: 0}
+    - Class: 196
+      Script: {instanceID: 0}
+    Assets/Scenes/Industrial.unity:
+    - Class: 1
+      Script: {instanceID: 0}
+    - Class: 4
+      Script: {instanceID: 0}
+    - Class: 20
+      Script: {instanceID: 0}
+    - Class: 21
+      Script: {instanceID: 0}
+    - Class: 28
+      Script: {instanceID: 0}
+    - Class: 48
+      Script: {instanceID: 0}
+    - Class: 81
+      Script: {instanceID: 0}
+    - Class: 104
+      Script: {instanceID: 0}
+    - Class: 108
+      Script: {instanceID: 0}
+    - Class: 157
+      Script: {instanceID: 0}
+    - Class: 196
+      Script: {instanceID: 0}
+    Assets/Scenes/Main.unity:
+    - Class: 1
+      Script: {instanceID: 0}
+    - Class: 4
+      Script: {instanceID: 0}
+    - Class: 20
+      Script: {instanceID: 0}
+    - Class: 21
+      Script: {instanceID: 0}
+    - Class: 23
+      Script: {instanceID: 0}
+    - Class: 28
+      Script: {instanceID: 0}
+    - Class: 33
+      Script: {instanceID: 0}
+    - Class: 43
+      Script: {instanceID: 0}
+    - Class: 48
+      Script: {instanceID: 0}
+    - Class: 64
+      Script: {instanceID: 0}
+    - Class: 81
+      Script: {instanceID: 0}
     - Class: 89
       Script: {instanceID: 0}
     - Class: 104
       Script: {instanceID: 0}
+    - Class: 108
+      Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 19746}
+      Script: {instanceID: 3640}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 157
       Script: {instanceID: 0}
     - Class: 196
       Script: {instanceID: 0}
+    Assets/Scenes/Residential.unity:
+    - Class: 1
+      Script: {instanceID: 0}
+    - Class: 4
+      Script: {instanceID: 0}
+    - Class: 20
+      Script: {instanceID: 0}
+    - Class: 21
+      Script: {instanceID: 0}
+    - Class: 28
+      Script: {instanceID: 0}
+    - Class: 48
+      Script: {instanceID: 0}
+    - Class: 81
+      Script: {instanceID: 0}
+    - Class: 104
+      Script: {instanceID: 0}
+    - Class: 108
+      Script: {instanceID: 0}
+    - Class: 157
+      Script: {instanceID: 0}
+    - Class: 196
+      Script: {instanceID: 0}
   scriptHashData:
+  - hash:
+      serializedVersion: 2
+      Hash: a6e561615949734e9f12f9b61661f43e
+    assemblyName: UnityEngine.UI.dll
+    namespaceName: UnityEngine.UI
+    className: Image
+  - hash:
+      serializedVersion: 2
+      Hash: bcaee4c2a83047257b5f47d6ed264b75
+    assemblyName: UnityEngine.UI.dll
+    namespaceName: UnityEngine.UI
+    className: Toggle
+  - hash:
+      serializedVersion: 2
+      Hash: 040dd48e3a027d5424519a5fa2009df4
+    assemblyName: UnityEngine.UI.dll
+    namespaceName: UnityEngine.UI
+    className: ScrollRect
+  - hash:
+      serializedVersion: 2
+      Hash: 699619b86d9359741a4f58540298c80b
+    assemblyName: UnityEngine.UI.dll
+    namespaceName: UnityEngine.UI
+    className: Text
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -53,19 +237,19 @@ ScriptsOnlyBuild:
     className: AnimationPlayableAsset
   - hash:
       serializedVersion: 2
-      Hash: a6e561615949734e9f12f9b61661f43e
-    assemblyName: UnityEngine.UI.dll
-    namespaceName: UnityEngine.UI
-    className: Image
-  - hash:
-      serializedVersion: 2
       Hash: 77aaaaa51f7a8d8ff333a879741e47d2
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_InputField
   - hash:
       serializedVersion: 2
-      Hash: 499bdf2960e7ad33cb02205f58518578
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Rotate
+  - hash:
+      serializedVersion: 2
+      Hash: f65b71e3c7980759591dfecf01145c0e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ExtractionArea
@@ -89,22 +273,28 @@ ScriptsOnlyBuild:
     className: ElevatorController
   - hash:
       serializedVersion: 2
+      Hash: 8bf14ea4c2573341442cfb01300f46e1
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: DebrisScript
+  - hash:
+      serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: SignalAsset
   - hash:
       serializedVersion: 2
-      Hash: bcaee4c2a83047257b5f47d6ed264b75
-    assemblyName: UnityEngine.UI.dll
-    namespaceName: UnityEngine.UI
-    className: Toggle
-  - hash:
-      serializedVersion: 2
       Hash: 0dbc3be398b4869a5c8d0d8481ee402c
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: LayoutElement
+  - hash:
+      serializedVersion: 2
+      Hash: bd61762216a93ae9d04ab5ca01dfb653
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: SojaExiles
+    className: PlayerMovement
   - hash:
       serializedVersion: 2
       Hash: 6bc76e17f0d5e93f3eea7f5a2fe227f3
@@ -143,16 +333,16 @@ ScriptsOnlyBuild:
     className: Shadow
   - hash:
       serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ReporterGUI
+  - hash:
+      serializedVersion: 2
       Hash: 300fd99066f8c288e85f5e81ce65fe34
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_FontAsset
-  - hash:
-      serializedVersion: 2
-      Hash: 654f765af43e27c50510e27c25fe9ee4
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: SessionPanel
   - hash:
       serializedVersion: 2
       Hash: 7cf5d910361d65e93f58cee6748ad9e7
@@ -161,28 +351,16 @@ ScriptsOnlyBuild:
     className: PlayerStat
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 94f6ed5c9bf042cddaecdb3dae1e4938
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: UI_Panel
-  - hash:
-      serializedVersion: 2
-      Hash: e18b8baff95bfb33756f04384cd4c32e
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: InGameUIManager
+    className: GrenadeScript
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UIElements
     className: PanelEventHandler
-  - hash:
-      serializedVersion: 2
-      Hash: 8ff481d6fe49490bc8c801cc91510fe1
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: FadeUI
   - hash:
       serializedVersion: 2
       Hash: c3d3430df9e3ea95e3e3d587961390fb
@@ -197,10 +375,16 @@ ScriptsOnlyBuild:
     className: TMP_StyleSheet
   - hash:
       serializedVersion: 2
-      Hash: 699619b86d9359741a4f58540298c80b
-    assemblyName: UnityEngine.UI.dll
-    namespaceName: UnityEngine.UI
-    className: Text
+      Hash: 7fe1677739b73c9b6f63468e0b5fed5c
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ExplosiveBarrelScript
+  - hash:
+      serializedVersion: 2
+      Hash: 5a53671008ad6f68b0d110f7c70d732d
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: TargetScript
   - hash:
       serializedVersion: 2
       Hash: 91d258529db2b5060a913f2afcea1a21
@@ -215,10 +399,16 @@ ScriptsOnlyBuild:
     className: RawImage
   - hash:
       serializedVersion: 2
-      Hash: df5fe56b1ba335238b952cc14b7ab1c6
+      Hash: 6cfbe3f38b16b3f621af8a711bece725
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: SojaExiles
+    className: Drawer_Pull_Zopp
+  - hash:
+      serializedVersion: 2
+      Hash: e78cd16ebf9601c38819cd2a88afbf1d
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: PlayerController
+    className: Reporter
   - hash:
       serializedVersion: 2
       Hash: a1aa98c78061c6f03a8c124cda576e67
@@ -227,10 +417,22 @@ ScriptsOnlyBuild:
     className: CanvasScaler
   - hash:
       serializedVersion: 2
-      Hash: 33154d994be7865ecaf97ecf18de082f
+      Hash: 1d5e205e86a81a8c3b98feb1f3f5c274
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ElevatorCall
+  - hash:
+      serializedVersion: 2
+      Hash: 1264318873c977ce783e3cc8dc561d16
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: SojaExiles
+    className: Drawer_Pull_X
+  - hash:
+      serializedVersion: 2
+      Hash: e38c89741d86cfc79b1cdde1da3b3863
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: CasingScript
   - hash:
       serializedVersion: 2
       Hash: cf9f5cf2c3145a37ac07f00e50e460f9
@@ -263,7 +465,7 @@ ScriptsOnlyBuild:
     className: TimelineAsset
   - hash:
       serializedVersion: 2
-      Hash: 99911d7fd54bbdb1939e30a25c77a78f
+      Hash: 2a0316f6f8931d5184b19d72f3512f5e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: InGameSceneManager
@@ -275,10 +477,22 @@ ScriptsOnlyBuild:
     className: TextMeshProUGUI
   - hash:
       serializedVersion: 2
-      Hash: f68da61bbf478f83c7337dc4eeac7e03
+      Hash: aa537a2a99418618903ba5ea365837a5
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: Managers
+    className: ExplosionScript
+  - hash:
+      serializedVersion: 2
+      Hash: 6cfbe3f38b16b3f621af8a711bece725
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: SojaExiles
+    className: Drawer_Pull_Z
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: SojaExiles
+    className: SceneSwitchGen
   - hash:
       serializedVersion: 2
       Hash: 3b03d181d52daf5fab30296b53355e62
@@ -323,16 +537,28 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
+      Hash: 7003551f5d2a1e674c8ed745dcedb0ac
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ImpactScript
+  - hash:
+      serializedVersion: 2
+      Hash: 83348db14ab42d913d71659068d3470d
+    assemblyName: ColoredHeaderCreator.dll
+    namespaceName: Baedrick.ColoredHeaders
+    className: ColoredHeaderObject
+  - hash:
+      serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: UnityEngine.TestRunner.dll
     namespaceName: UnityEngine.TestTools.TestRunner.Callbacks
     className: TestResultRendererCallback
   - hash:
       serializedVersion: 2
-      Hash: f698907fa31dbdf66d1bcd05eaf039e3
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: MyPlayer
+    className: ReporterMessageReceiver
   - hash:
       serializedVersion: 2
       Hash: e09e8bebc0fcd32bb8af1287a6b44816
@@ -359,16 +585,22 @@ ScriptsOnlyBuild:
     className: MarkerTrack
   - hash:
       serializedVersion: 2
+      Hash: df69d0b5057ca9ea660270e6660fc67c
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: AutomaticGunScriptLPFP
+  - hash:
+      serializedVersion: 2
       Hash: 8e6ceabfd38a184413d69b7db56c89cc
     assemblyName: UnityEngine.TestRunner.dll
     namespaceName: UnityEngine.TestTools
     className: BeforeAfterTestCommandState
   - hash:
       serializedVersion: 2
-      Hash: d8a7bcc34e58737ad94a4bbc2a902e7c
+      Hash: 469d3bc243d3bef31800dda6d35c21a0
     assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: LoginSceneManager
+    namespaceName: SojaExiles
+    className: ClosetopencloseDoor
   - hash:
       serializedVersion: 2
       Hash: 69415240821be7986b27e72bf9609a30
@@ -377,13 +609,25 @@ ScriptsOnlyBuild:
     className: Button
   - hash:
       serializedVersion: 2
+      Hash: 63f6fe26b936eaf2921883855e4e2dad
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: TableFlipR
+  - hash:
+      serializedVersion: 2
       Hash: 0fd6822f6177297bd0eb4d83cc7a9030
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: ToggleGroup
   - hash:
       serializedVersion: 2
-      Hash: 5bccb2bf077b9ee949c28bfb60ac258e
+      Hash: 6af99a33a27dd02a47b9ca4032f7b50d
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: BulletScript
+  - hash:
+      serializedVersion: 2
+      Hash: 3fa16f5bae261446fc59e40c39b83595
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Transmitter
@@ -401,16 +645,34 @@ ScriptsOnlyBuild:
     className: AssaultRifle
   - hash:
       serializedVersion: 2
-      Hash: 990560b4ed3107fdf5acbc1abd4d690e
+      Hash: a8bad63dc38d5729e38889649e4ee034
     assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: ExtractionUI
+    namespaceName: SojaExiles
+    className: opencloseDoor
   - hash:
       serializedVersion: 2
       Hash: 8aa3d6ccbcb54ee8db6c1229854adaaa
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: ContentSizeFitter
+  - hash:
+      serializedVersion: 2
+      Hash: ad4687a9dff8afd640d5f0082a5171d5
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: SojaExiles
+    className: MouseLook
+  - hash:
+      serializedVersion: 2
+      Hash: 88095e22d9e4be3b7e57d4eda7bef234
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: SojaExiles
+    className: opencloseSlide
+  - hash:
+      serializedVersion: 2
+      Hash: 350d2e309675611b33e276b75f655358
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: FPSControllerLPFP
+    className: FpsControllerLPFP
   - hash:
       serializedVersion: 2
       Hash: caa533b001ae39b864ba8425019e2268
@@ -425,10 +687,22 @@ ScriptsOnlyBuild:
     className: PlayableTrack
   - hash:
       serializedVersion: 2
+      Hash: 62db304807e6a68e2beea73346753688
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: SojaExiles
+    className: OvenFlip
+  - hash:
+      serializedVersion: 2
       Hash: 3164bc883ff663a5cdb32d1ef7e7c0c5
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: VerticalLayoutGroup
+  - hash:
+      serializedVersion: 2
+      Hash: 5d694fb001503417d2bb4a27eeab8ac5
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: TestReporter
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -441,6 +715,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.EventSystems
     className: BaseInput
+  - hash:
+      serializedVersion: 2
+      Hash: 88095e22d9e4be3b7e57d4eda7bef234
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: SojaExiles
+    className: opencloseWindow
   - hash:
       serializedVersion: 2
       Hash: 18c222bef9ae745ce69ddde9b74337ca
@@ -479,16 +759,10 @@ ScriptsOnlyBuild:
     className: PositionAsUV1
   - hash:
       serializedVersion: 2
-      Hash: 6e681ad16c567965398040c473198c37
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: TransmitterUI
-  - hash:
-      serializedVersion: 2
-      Hash: 89c91d46b0d8f765f75f3b2c57b586b3
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: SessionPanelPooler
+    className: ServerManager
   - hash:
       serializedVersion: 2
       Hash: 87ff43d2baf3385cba327d8f803a4ebb
@@ -515,22 +789,16 @@ ScriptsOnlyBuild:
     className: EventTrigger
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: SceneController
-  - hash:
-      serializedVersion: 2
-      Hash: b86a86ec7851e8db2b79ff9b1a7b1420
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: LoginUIManager
-  - hash:
-      serializedVersion: 2
       Hash: a81d4c2c1cf3ad164d277d927a193679
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: Dropdown
+  - hash:
+      serializedVersion: 2
+      Hash: ddc4f817ffdd812fbeeb20318e1e1a1a
+    assemblyName: ColoredHeaderCreator.dll
+    namespaceName: Baedrick.ColoredHeaders
+    className: ColoredHeaderPresets
   - hash:
       serializedVersion: 2
       Hash: a5781dc71a671b1ad2b38de19f24b71f
@@ -545,7 +813,7 @@ ScriptsOnlyBuild:
     className: SignalTrack
   - hash:
       serializedVersion: 2
-      Hash: 89c91d46b0d8f765f75f3b2c57b586b3
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: CharacterPooler
@@ -569,6 +837,12 @@ ScriptsOnlyBuild:
     className: ControlTrack
   - hash:
       serializedVersion: 2
+      Hash: 1f75f7ef1e894cbb2b08245adb2907fb
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: SojaExiles
+    className: opencloseDoor1
+  - hash:
+      serializedVersion: 2
       Hash: 3165968ba45c74472d279ba04455fccb
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
@@ -581,10 +855,10 @@ ScriptsOnlyBuild:
     className: SignalReceiver
   - hash:
       serializedVersion: 2
-      Hash: 040dd48e3a027d5424519a5fa2009df4
-    assemblyName: UnityEngine.UI.dll
-    namespaceName: UnityEngine.UI
-    className: ScrollRect
+      Hash: 88095e22d9e4be3b7e57d4eda7bef234
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: SojaExiles
+    className: opencloseWindowApt
   - hash:
       serializedVersion: 2
       Hash: 18c222bef9ae745ce69ddde9b74337ca
@@ -611,10 +885,22 @@ ScriptsOnlyBuild:
     className: TMP_Settings
   - hash:
       serializedVersion: 2
-      Hash: a3c656bdecb00c5285e11e5f955d3562
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: InteractableUI
+    className: LookAtCamera
+  - hash:
+      serializedVersion: 2
+      Hash: 2516c569a5afe369671ab79778906a15
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: HandgunScriptLPFP
+  - hash:
+      serializedVersion: 2
+      Hash: a8bad63dc38d5729e38889649e4ee034
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: SojaExiles
+    className: BRGlassDoor
   - hash:
       serializedVersion: 2
       Hash: 6980e81ddc615a861309d2d659cc3760
@@ -623,16 +909,16 @@ ScriptsOnlyBuild:
     className: TMP_SubMeshUI
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: Test
-  - hash:
-      serializedVersion: 2
       Hash: fd68d84f33fad85aac38f2739c0ee270
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_SpriteAsset
+  - hash:
+      serializedVersion: 2
+      Hash: ca5252d6deaf2d103466dcbfc329b978
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: TableFlipL
   - hash:
       serializedVersion: 2
       Hash: e7a73f5f78ba6445195ec23b74a1ce2d
@@ -647,10 +933,22 @@ ScriptsOnlyBuild:
     className: BaseStat
   - hash:
       serializedVersion: 2
+      Hash: 1ce6f757bda026ce273c4a348afe5c9a
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: SojaExiles
+    className: opencloseWindow1
+  - hash:
+      serializedVersion: 2
       Hash: 8220b46879dc5e37db1b940c938f5744
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: SignalEmitter
+  - hash:
+      serializedVersion: 2
+      Hash: f76e13a40b92bb02535373417c04f7e4
+    assemblyName: ColoredHeaderCreator.dll
+    namespaceName: Baedrick.ColoredHeaders
+    className: ColoredHeaderSettings
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -675,13 +973,12 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Bullet
-  - hash:
-      serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: Initializer
   platform: 19
   scenePathNames:
   - Assets/Scenes/Main.unity
-  playerPath: D:/Projects/Test/UnityServer.exe
+  - Assets/Scenes/Hideout.unity
+  - Assets/Scenes/Cityhall.unity
+  - Assets/Scenes/Residential.unity
+  - Assets/Scenes/Industrial.unity
+  - Assets/Scenes/Commerce.unity
+  playerPath: D:/Projects/GitHub/FPSGameServer/Server/Server/bin/Debug/net6.0/UnityServer.exe

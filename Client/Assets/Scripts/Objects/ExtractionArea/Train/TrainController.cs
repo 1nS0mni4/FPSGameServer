@@ -35,19 +35,15 @@ public class TrainController : ExtractionObjectController {
     }
 
     #region Override Functions
-    public override sealed void ExtractionEffects(bool isStart) {
+    protected override sealed void ExtractionEffects(bool isStart) {
         _rDoorTargetPos = isStart ? _originRPos + _doorRight.transform.right.normalized : _originRPos;
         _lDoorTargetPos = isStart ? _originLPos - _doorLeft.transform.right.normalized : _originLPos;
 
-        StartCoroutine(CoDoorAction());
+        StartCoroutine(CoActivateTrain(isStart));
     }
     #endregion
 
     #region Original Functions
-
-    public void StandbyTrain(bool isActivate) {
-        StartCoroutine(CoActivateTrain(isActivate));
-    }
 
     private IEnumerator CoActivateTrain(bool isActivate) {
         float timer = 0.0f;
@@ -61,7 +57,7 @@ public class TrainController : ExtractionObjectController {
         }
 
         //TODO: isActivate == true일 때 기차 정차 소리 및 세팅
-        ActivateExtraction(isActivate);
+        StartCoroutine(CoDoorAction());
         yield break;
     }
 

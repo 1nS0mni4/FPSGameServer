@@ -10,6 +10,7 @@
 -a="D:\Projects\GitHub\FPSGameServer\UnityServer\Library\PlayerScriptAssemblies\Unity.Services.Core.Networking.dll"
 -a="D:\Projects\GitHub\FPSGameServer\UnityServer\Library\PlayerScriptAssemblies\Unity.TextMeshPro.dll"
 -a="D:\Projects\GitHub\FPSGameServer\UnityServer\Library\PlayerScriptAssemblies\Unity.Services.Core.Threading.dll"
+-a="D:\Projects\GitHub\FPSGameServer\UnityServer\Library\PlayerScriptAssemblies\ColoredHeaderCreator.dll"
 -a="D:\Projects\GitHub\FPSGameServer\UnityServer\Library\PlayerScriptAssemblies\Unity.Services.Core.Internal.dll"
 -a="D:\Projects\GitHub\FPSGameServer\UnityServer\Library\PlayerScriptAssemblies\UnityEngine.UI.dll"
 -a="D:\Projects\GitHub\FPSGameServer\UnityServer\Library\PlayerScriptAssemblies\Unity.Services.Core.Configuration.dll"

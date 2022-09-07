@@ -7,23 +7,31 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Server.Session {
     public class ClientSession : PacketSession {
-        public int AuthCode { get; set; }
-        //public GameRoom Section { get; set; }
+        public uint AuthCode { get; set; }
+        private Ping _ping;
+        private int _pingTime = 0;
+
+        public int PingTime { 
+            get {
+                if(_ping.isDone)
+                    return _ping.time;
+                else
+                    return -1;
+            }
+        }
 
         public override void OnConnect(EndPoint endPoint) {
-            Console.WriteLine($"Connected To: {endPoint}");
+            
         }
 
         public override void OnDisconnect(EndPoint endPoint) {
             Console.WriteLine($"Disconnected: {endPoint}");
-            //GameRoom section = Section;
-
-            //if(section != null) {
-            //    section.Push(() => section.Leave(this.AuthCode));
-            //}
+            IPEndPoint ipEnd = endPoint as IPEndPoint;
+            _ping = new Ping(ipEnd.Address.Address.ToString());
         }
 
         public override void OnRecvPacket(ArraySegment<byte> segment) {

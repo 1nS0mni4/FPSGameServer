@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 
 [System.Serializable]
-public class OnAccessClicked : UnityEvent<int> { }
+public class OnAccessClicked : UnityEvent<uint> { }
 
 public class SessionPanel : MonoBehaviour {
     [SerializeField] private Button             _access     = null;
@@ -15,10 +15,10 @@ public class SessionPanel : MonoBehaviour {
 
     public OnAccessClicked _onAccessClicked = new OnAccessClicked();
 
-    private int _authCode = -1;
+    private uint _authCode = 0;
     private string _userName = "";
 
-    public int AuthCode { get => _authCode; set {
+    public uint AuthCode { get => _authCode; set {
             _authCode = value;
             _authCodeText.text = _authCode.ToString();
         } 
@@ -31,7 +31,7 @@ public class SessionPanel : MonoBehaviour {
         } 
     }
 
-    public void Setup(int authCode, string userName) {
+    public void Setup(uint authCode, string userName) {
         AuthCode = authCode;
         UserName = userName;
     }
@@ -43,7 +43,7 @@ public class SessionPanel : MonoBehaviour {
     }
 
     private void OnDisable() {
-        AuthCode = -1;
+        AuthCode = 0;
         UserName = string.Empty;
     }
 }

@@ -21,4 +21,10 @@ namespace Server.Utils {
             public pVector3 TopVector3() { return new pVector3() { X = x, Y = y, Z = z }; }
         }
     }
+
+    public class ObjectType {
+        public static uint GetRandomAuthCode(pObjectType objectType) {
+            return (uint)System.Random.Shared.Next((int)objectType, (int)objectType + 65535);
+        }
+    }
 }

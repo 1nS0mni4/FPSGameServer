@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
-using static Define;
 
 public class ExtractionArea : MonoBehaviour {
     [Header("Extraction Destination")]

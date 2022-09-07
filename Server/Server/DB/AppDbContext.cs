@@ -30,7 +30,7 @@ namespace Server.DB {
             builder.Entity<UserAccount>().HasIndex(i => i.ID).IsUnique();
 
             builder.Entity<UserAccount>().Property("AuthCode")
-                .HasDefaultValue(-1);
+                .HasDefaultValue(0);
 
         }
     }

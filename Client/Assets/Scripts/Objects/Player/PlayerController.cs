@@ -186,20 +186,17 @@ public class PlayerController : MonoBehaviour {
 
         Vector3 direction = new Vector3(moveX, moveDir.y, moveZ).normalized;
 
+
         if(moveDir.Equals(direction) == false) {
             moveDir = direction;
             C_Game_Move movePacket = new C_Game_Move();
-            movePacket.Dir = new pVector3();
-
-            movePacket.Dir.X = moveDir.x;
-            movePacket.Dir.Y = moveDir.y;
-            movePacket.Dir.Z = moveDir.z;
-            movePacket.Stance = _movement.Stance;
+            movePacket.Velocity = _movement.Velocity.TopVector3();
 
             Managers.Network.Send(movePacket);
         }
 
         _movement.MoveTo(moveDir);
+
         #endregion
     }
     private float ClampAngle(float angle, float min, float max) {

@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace ServerCore {
     public abstract class PacketSession : Session {
@@ -34,7 +35,6 @@ namespace ServerCore {
     public abstract class Session {
         private Socket _socket;
         protected int _disconnected = 1;
-        public bool Connected { get { return _disconnected == 0; } }
 
         private SocketAsyncEventArgs _recvArgs = new SocketAsyncEventArgs();
         private RecvBuffer _recvBuffer = new RecvBuffer();
@@ -43,6 +43,9 @@ namespace ServerCore {
         private Queue<ArraySegment<byte>> _sendQueue = new Queue<ArraySegment<byte>>();
         object l_sendQueue = new object();
         private List<ArraySegment<byte>> _pendingList = new List<ArraySegment<byte>>();
+
+        public bool Connected { get { return _disconnected == 0; } }
+        public int SessionID { get; set; }
 
         public void Start(Socket socket) {
             _socket = socket;

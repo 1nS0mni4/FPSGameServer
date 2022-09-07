@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
+using Server.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,23 +38,23 @@ namespace Server.DB {
 
                 if(account == null) {                           //계정이 존재하지 않음
                     result.ErrorCode = NetworkError.Noaccount;
-                    result.AuthCode = -1;
+                    result.AuthCode = 0;
                     return result;
                 }
 
                 if(account.Password.Equals(userPW) == false) {  //비밀번호 오류
                     result.ErrorCode = NetworkError.InvalidPassword;
-                    result.AuthCode = -1;
+                    result.AuthCode = 0;
                     return result;
                 }
 
-                if(account.AuthCode.Equals(-1) == false) {
+                if(account.AuthCode.Equals(0) == false) {
                     result.ErrorCode = NetworkError.Overlap;
-                    result.AuthCode = -1;
+                    result.AuthCode = 0;
                     return result;
                 }
 
-                account.AuthCode = Random.Shared.Next(0, 65535);
+                account.AuthCode = ObjectType.GetRandomAuthCode(pObjectType.CharacterPlayer);
                 db.SaveChanges();
 
                 result.ErrorCode = NetworkError.Success;
@@ -82,7 +83,7 @@ namespace Server.DB {
             }
         }
 
-        public static bool Disconnect(int authCode) {
+        public static bool Disconnect(uint authCode) {
             using(AppDbContext db = new AppDbContext()) {
                 //UserAuth auth = db.UserAuths.SingleOrDefault(i => i.AuthCode == authCode);
                 UserAccount account = db.UserAccounts.SingleOrDefault(i => i.AuthCode == authCode);
@@ -90,7 +91,7 @@ namespace Server.DB {
                 if(account == null)
                     return false;
 
-                account.AuthCode = -1;
+                account.AuthCode = 0;
                 db.SaveChanges();
 
                 return true;

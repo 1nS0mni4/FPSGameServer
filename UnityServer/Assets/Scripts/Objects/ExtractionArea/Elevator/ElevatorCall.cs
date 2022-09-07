@@ -1,3 +1,4 @@
+using Google.Protobuf.Protocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,9 +16,9 @@ public class ElevatorCall : InteractableObject {
         if(_extraction == null) throw new MissingComponentException("ElevatorCall - _extraction Component is null");
     }
 
-    public override void Interact(Define.InteractType type) {
+    public override void Interact(pInteractType type) {
         switch(type) {
-            case Define.InteractType.Object_Use: {
+            case pInteractType.ObjectUse: {
                 _elevController.ActivateExtraction(true);
             }break;
         }

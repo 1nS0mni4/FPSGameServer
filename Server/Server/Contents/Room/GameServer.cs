@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Server.Contents.Room {
     public class GameServer {
-        public int ServerID { get; set; }
+        public uint ServerID { get; set; }
         public pAreaType AreaType { get; set; }
         public GameServerSession Session { get; private set; } = null;
         public pEndPoint EndPoint { get; private set; } = null;

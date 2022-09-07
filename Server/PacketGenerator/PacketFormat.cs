@@ -77,7 +77,7 @@ public class PacketManager {{
         /// </summary>
         public static string managerRegisterFormat =
 @"      _makeFunc.Add((ushort)PacketID.{0}, MakePacket<{1}>);
-        _handler.Add((ushort)PacketID.{0}, PacketHandler.{1}Handler);
+    _handler.Add((ushort)PacketID.{0}, PacketHandler.{1}Handler);
 ";
         #endregion
 

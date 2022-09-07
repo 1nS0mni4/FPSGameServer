@@ -24,7 +24,7 @@ public class ElevatorController : ExtractionObjectController {
         _originRPos = _doorRight.transform.position;
     }
 
-    public override sealed void ExtractionEffects(bool isStart) {
+    protected override sealed void ExtractionEffects(bool isStart) {
         _rDoorTargetPos = isStart ? _originRPos + _doorRight.transform.right.normalized : _originRPos;
         _lDoorTargetPos = isStart ? _originLPos - _doorLeft.transform.right.normalized : _originLPos;
 
@@ -32,6 +32,7 @@ public class ElevatorController : ExtractionObjectController {
     }
 
     private IEnumerator CoDoorAction() {
+        _isInteractable = false;
         Vector3 _value;
 
         while(true) {
@@ -54,6 +55,7 @@ public class ElevatorController : ExtractionObjectController {
             yield return null;
         }
 
+        _isInteractable = true;
         yield break;
     }
 

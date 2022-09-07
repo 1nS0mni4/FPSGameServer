@@ -1,8 +1,8 @@
+using Google.Protobuf.Protocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static Define;
 
 public class Transmitter : InteractableObject {
 #if UNITY_CLIENT_FPS
@@ -24,7 +24,7 @@ public class Transmitter : InteractableObject {
     }
 
 #region Override Functions
-    public override void Interact(InteractType type) {
+    public override void Interact(pInteractType type) {
 #if UNITY_CLIENT_FPS
         switch(type) {
             case InteractType.Object_Use: {

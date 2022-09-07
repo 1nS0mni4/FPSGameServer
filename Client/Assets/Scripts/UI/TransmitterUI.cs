@@ -26,7 +26,7 @@ public class TransmitterUI : UI_Panel {
         gameObject.SetActive(false);
     }
 
-    public void Button_TransmitAccess(int authCode) {
+    public void Button_TransmitAccess(uint authCode) {
         if(_transmitter == null)
             return;
 
@@ -40,18 +40,13 @@ public class TransmitterUI : UI_Panel {
         _transmitter.PassTrain();
     }
 
-    private void RefreshSessionList(object packet) {
-        S_Response_Request_Online response = packet as S_Response_Request_Online;
-
-        if(response == null)
-            return;
-
+    public void RefreshSessionList(S_Response_Request_Online packet) {
         StopCoroutine(CoStartLoading());
         _loadingIcon.gameObject.SetActive(false);
 
-        for(int i = 0; i < response.OnlineUsers.Count; i++) {
+        for(int i = 0; i < packet.OnlineUsers.Count; i++) {
             SessionPanel panel = _sessionPooler.Get();
-            panel.Setup(response.OnlineUsers[i].AuthCode, response.OnlineUsers[i].Name);
+            panel.Setup(packet.OnlineUsers[i].AuthCode, packet.OnlineUsers[i].Name);
         }
     }
 
@@ -69,14 +64,10 @@ public class TransmitterUI : UI_Panel {
     protected override void OnEnabled() {
         Managers.Input.CanInput = false;
         StartCoroutine(CoStartLoading());
-
-        Managers.Network.MessageWait.Add(typeof(S_Response_Request_Online), RefreshSessionList);
-        S_Response_Request_Online request = new S_Response_Request_Online();
-        Managers.Network.Send(request);
     }
 
     protected override void OnDisabled() {
-        Managers.Network.MessageWait.Remove(typeof(S_Response_Request_Online));
+        //Managers.Network.MessageWait.Remove(typeof(S_Response_Request_Online));
         Managers.Input.CanInput = true;
 
         StopCoroutine(CoStartLoading());

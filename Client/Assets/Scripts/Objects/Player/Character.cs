@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(PlayerMovement))]
 public class Character : MonoBehaviour, CharacterObject { 
-    public int AuthCode { get; set; }
+    public uint AuthCode { get; set; }
 
     [SerializeField] protected PlayerMovement _movement = null;
 

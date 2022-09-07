@@ -10,10 +10,7 @@ public struct PacketModel {
 }
 public class PacketQueue {
     #region Singleton
-    private static PacketQueue _instance;
-    static PacketQueue() {
-        _instance = new PacketQueue();
-    }
+    private static PacketQueue _instance = new PacketQueue();
     public static PacketQueue Instance { get => _instance; }
 
     #endregion

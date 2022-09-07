@@ -68,6 +68,8 @@
     <Compile Include="Assets\ExternalAssets\Unity-Logs-Viewer\Reporter\ReporterGUI.cs" />
     <Compile Include="Assets\Scripts\Objects\Player\PlayerStat.cs" />
     <Compile Include="Assets\ExternalAssets\Low Poly FPS Pack - Free (Sample)\Components\Scripts\Casings_&amp;_Projectiles\GrenadeScript.cs" />
+    <Compile Include="Assets\Scripts\ServerCore\Listener.cs" />
+    <Compile Include="Assets\Scripts\Objects\ObjectPooler\FieldObjectPooler.cs" />
     <Compile Include="Assets\ExternalAssets\Low Poly FPS Pack - Free (Sample)\Components\Demo_Scene_Components\Scripts\ExplosiveBarrelScript.cs" />
     <Compile Include="Assets\ExternalAssets\Unity-Logs-Viewer\Reporter\MultiKeyDictionary.cs" />
     <Compile Include="Assets\ExternalAssets\Low Poly FPS Pack - Free (Sample)\Components\Demo_Scene_Components\Scripts\TargetScript.cs" />
@@ -79,6 +81,7 @@
     <Compile Include="Assets\Scripts\Objects\ExtractionArea\Elevator\ElevatorCall.cs" />
     <Compile Include="Assets\ExternalAssets\SE Basic Assets\Scripts and Animations\Drawer\X Axis\Drawer_Pull_X.cs" />
     <Compile Include="Assets\ExternalAssets\Low Poly FPS Pack - Free (Sample)\Components\Scripts\Casings_&amp;_Projectiles\CasingScript.cs" />
+    <Compile Include="Assets\Scripts\Managers\InGameSceneManager.cs" />
     <Compile Include="Assets\ExternalAssets\Low Poly FPS Pack - Free (Sample)\Components\Scripts\Explosions_&amp;_Impacts\ExplosionScript.cs" />
     <Compile Include="Assets\ExternalAssets\SE Basic Assets\Scripts and Animations\Drawer\Z Axis\Drawer_Pull_Z.cs" />
     <Compile Include="Assets\ExternalAssets\SE Basic Assets\Scripts and Animations\First Person Player\SceneSwitchGen.cs" />
@@ -86,6 +89,7 @@
     <Compile Include="Assets\Scripts\Objects\Player\Character.cs" />
     <Compile Include="Assets\Scripts\ServerCore\ClientSession.cs" />
     <Compile Include="Assets\ExternalAssets\Low Poly FPS Pack - Free (Sample)\Components\Scripts\Explosions_&amp;_Impacts\ImpactScript.cs" />
+    <Compile Include="Assets\Scripts\Managers\SessionManager.cs" />
     <Compile Include="Assets\ExternalAssets\Unity-Logs-Viewer\Reporter\ReporterMessageReceiver.cs" />
     <Compile Include="Assets\Scripts\Utils\Interfaces.cs" />
     <Compile Include="Assets\Scripts\Packet\GameServerPacketManager.cs" />
@@ -98,17 +102,19 @@
     <Compile Include="Assets\Scripts\Utils\Extensions.cs" />
     <Compile Include="Assets\Scripts\Objects\ExtractionArea\Train\Transmitter.cs" />
     <Compile Include="Assets\Scripts\Objects\Weapon\AssaultRifle.cs" />
+    <Compile Include="Assets\Scripts\Utils\Singleton.cs" />
     <Compile Include="Assets\ExternalAssets\SE Basic Assets\Scripts and Animations\Doors\opencloseDoor.cs" />
     <Compile Include="Assets\ExternalAssets\SE Basic Assets\Scripts and Animations\First Person Player\MouseLook.cs" />
     <Compile Include="Assets\ExternalAssets\Apartment Kit\Scripts &amp; Animation\Slide\opencloseSlide.cs" />
     <Compile Include="Assets\ExternalAssets\Low Poly FPS Pack - Free (Sample)\Components\Scripts\FPSController\FpsControllerLPFP.cs" />
     <Compile Include="Assets\ExternalAssets\Apartment Kit\Scripts &amp; Animation\OvenOpen\OvenFlip.cs" />
     <Compile Include="Assets\ExternalAssets\Unity-Logs-Viewer\Reporter\Test\TestReporter.cs" />
-    <Compile Include="Assets\Scripts\ServerCore\SessionManager.cs" />
     <Compile Include="Assets\ExternalAssets\SE Basic Assets\Scripts and Animations\Windows\opencloseWindow.cs" />
     <Compile Include="Assets\Scripts\Objects\Weapon\Magazine.cs" />
+    <Compile Include="Assets\Scripts\Managers\ServerManager.cs" />
     <Compile Include="Assets\Scripts\Objects\InteractableObject.cs" />
     <Compile Include="Assets\Scripts\Objects\ExtractionArea\Train\TrainController.cs" />
+    <Compile Include="Assets\Scripts\ServerCore\JobQueue.cs" />
     <Compile Include="Assets\Scripts\ServerCore\ServerSession.cs" />
     <Compile Include="Assets\Scripts\Objects\ObjectPooler\CharacterPooler.cs" />
     <Compile Include="Assets\Scripts\Objects\Player\Player.cs" />
@@ -124,6 +130,7 @@
     <Compile Include="Assets\Scripts\Objects\Base\BaseStat.cs" />
     <Compile Include="Assets\ExternalAssets\SE Basic Assets\Scripts and Animations\Windows\opencloseWindow1.cs" />
     <Compile Include="Assets\Scripts\Utils\PacketQueue.cs" />
+    <Compile Include="Assets\Scripts\Managers\NetworkManager.cs" />
     <Compile Include="Assets\Scripts\Objects\Weapon\Bullet.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(PlayerStat))]
-[RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour {
     private CharacterController _controller = null;
@@ -15,6 +14,7 @@ public class PlayerMovement : MonoBehaviour {
     private Vector3       moveForce;
     private pPlayerStance _curStance        = pPlayerStance.Walk;
 
+    public Vector3 Velocity { get => _controller.velocity; }
     public bool IsGrounded { get => _controller.isGrounded; }
     public pPlayerStance Stance {
         get => _curStance;
@@ -59,22 +59,6 @@ public class PlayerMovement : MonoBehaviour {
         _controller.Move(moveForce * Time.deltaTime);
     }
 
-    /// <summary>
-    /// 서버 패킷 수신용
-    /// </summary>
-    /// <param name="direction"></param>
-    /// <param name="stance"></param>
-    public void MoveTo(pVector3 direction, pPlayerStance stance) {
-        Stance = stance;
-        Vector3 dir = new Vector3(direction.X, direction.Y, direction.Z);
-        MoveTo(dir);
-    }
-
-    public void Interpolate(pVector3 position) {
-        Vector3 pos = new Vector3(position.X, position.Y, position.Z);
-        //transform.position = Vector3.Lerp(transform.position, pos, );
-    }
-
     public void Jump() {
         if(_controller.isGrounded == false)
             return;
@@ -85,13 +69,6 @@ public class PlayerMovement : MonoBehaviour {
     public void RotateTo(Vector3 direction) {
         transform.rotation = Quaternion.Euler(direction.x, direction.y, 0);
     }
-
-    //public IEnumerator CoStartRotate(Vector3 direction) {
-    //    while(true) {
-    //        RotateTo(direction);
-    //        yield return null;
-    //    }
-    //}
 
     public IEnumerator CoEffectGravity() {
         while(true) {

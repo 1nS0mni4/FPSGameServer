@@ -15,7 +15,7 @@ public class InGameSceneManager : MSceneManager {
 
     [Header("Player")]
     [SerializeField] private MyPlayer _myPlayer = null;
-                     public Dictionary<int, Character> _players = new Dictionary<int, Character>();
+                     public Dictionary<uint, Player> _players = new Dictionary<uint, Player>();
                      public CharacterPooler _characterPooler = null;
 
                      private WaitForSeconds loadWaitTime = new WaitForSeconds(0.5f);
@@ -29,7 +29,7 @@ public class InGameSceneManager : MSceneManager {
     [HideInInspector]public bool f_Loaded_Field     = true;
 
     public override void InitScene() {
-
+        Physics.autoSimulation = false;
     }
 
     protected override void Start() {
@@ -41,79 +41,68 @@ public class InGameSceneManager : MSceneManager {
         
     }
 
-    public void SpawnPlayerInSpawnPoint(int authID, pAreaType prevArea, pAreaType destArea) {
-        if(_players.ContainsKey(authID))
+    public void SpawnPlayer(uint authCode, pVector3 position = null, pQuaternion rotation = null) {
+        if(_players.ContainsKey(authCode))
             return;
 
-        Vector3 pos = Vector3.zero;
-        Quaternion rot = Quaternion.Euler(Vector3.zero);
+        Vector3 pos = position.ToUnityVector3();
+        if(position == null)
+            pos = new Vector3(0, 2, -20);
+        
+        Quaternion rot = rotation.ToUnityQuaternion();
+        if(rotation == null)
+            rot = Quaternion.Euler(new Vector3(0, 0, 0));
 
-        for(int i = 0; i < _spawnPoints.Count; i++) {
-            if(prevArea != _spawnPoints[i].fromArea)
-                continue;
-
-            if(destArea != _spawnPoints[i].toArea)
-                continue;
-
-            pos = _spawnPoints[i].transform.position;
-            rot = _spawnPoints[i].transform.rotation;
-            break;
-        }
-
-        if(authID == Managers.Network.AuthCode) {
+        if(authCode == Managers.Network.AuthCode) {
+            _myPlayer.AuthCode = authCode;
             _myPlayer.gameObject.transform.position = pos;
             _myPlayer.gameObject.transform.rotation = rot;
 
-            _players.Add(authID, _myPlayer);
             _myPlayer.gameObject.SetActive(true);
         }
         else {
-            Character player  = _characterPooler.Get();
+            Player player  = _characterPooler.Get();
+            player.AuthCode = authCode;
             player.gameObject.transform.position = pos;
             player.gameObject.transform.rotation = rot;
             player.gameObject.SetActive(true);
 
-            _players.Add(authID, player);
+            _players.Add(authCode, player);
         }
     }
 
-    public void SpawnPlayerInPosition(int authID, pVector3 position, pQuaternion rotation) {
-        if(authID == Managers.Network.AuthCode)
-            return;
+    public void SyncObjectInPosition(uint authCode, pVector3 position, pQuaternion rotation) {
+        Player player = null;
 
-        if(_players.ContainsKey(authID))
-            return;
-
-        Character player = _characterPooler.Get();
-        if(player == null)
-            return;
-
-        player.Position = position.ToUnityVector3();
-        player.RotateDir = rotation.ToUnityQuaternion();
-
-        player.gameObject.SetActive(true);
-
-        _players.Add(authID, player);
-    }
-
-    public void SyncObjectInPosition(int authID, pVector3 position, pQuaternion rotation) {
-        Character player = null;
-
-        if(_players.TryGetValue(authID, out player)) {
+        if(_players.TryGetValue(authCode, out player)) {
             player.Position = position.ToUnityVector3();
             player.RotateDir = rotation.ToUnityQuaternion();
         }
     }
 
-    public void SyncPlayerRotation(int authID, pQuaternion rot) {
-        Character player = null;
+    public void SyncPlayerRotation(uint authCode, pQuaternion rot) {
+        Player player = null;
 
-        if(_players.TryGetValue(authID, out player)) {
+        if(_players.TryGetValue(authCode, out player)) {
             player.RotateDir = rot.ToUnityQuaternion();
         }
     }
 
-    public void RemovePlayer(int authCode) {
+    public void SyncPlayerMove(uint authCode, pVector3 velocity) {
+        Player player = null;
+
+        if(_players.TryGetValue(authCode, out player)) {
+            player.Velocity = velocity.ToUnityVector3();
+
+            float deltaTime = Managers.Network.PingTime;
+            while(deltaTime > Time.fixedDeltaTime) {
+                deltaTime -= Time.fixedDeltaTime;
+                Physics.Simulate(Time.fixedDeltaTime);
+            }
+        }
+    }
+
+    public void RemovePlayer(uint authCode) {
         if(_players.ContainsKey(authCode)) {
             _characterPooler.Destroy(_players[authCode]);
         }

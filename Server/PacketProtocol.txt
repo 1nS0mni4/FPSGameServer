@@ -1,0 +1,332 @@
+syntax = "proto3";
+
+package Protocol;
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/any.proto";
+option csharp_namespace = "Google.Protobuf.Protocol";
+
+
+
+/*------------<패킷 명명 규칙>---------
+ *		패킷 기본 형식
+ *			{C/S}({_Target})_...
+ * 
+ *		Client-Server Relation
+ *			클라이언트:
+ *				Login 서버가 타겟일 경우			: C_Login_...
+ *				Game 서버가 타겟일 경우			: C_Game_...
+ *				두 서버가 공통으로 사용할 경우		: C_Common_...
+ *			서버:
+ *				타겟에 관계 없이 전부				: S_...
+ *
+ *		Server-Server Relation
+ *			Login -> Game일 경우					: S_Game_...
+ *			Game -> Login일 경우					: S_Login_...
+ *
+ *
+ *			명사의 내부에 두 개 이상의 단어가 들어갈 경우 _로 한 개씩 끊어서 작성합니다.
+ *			ex) S_Response_Request_Game_Session
+ *
+ *		 패킷의 용도
+ *				데이터 요청:
+ *				Sender(_Receiver)_Request_Target
+ *				ex) C_Request_Game_Session
+ *
+ *				명령:
+ *				Sender(_Receiver)_Verb_Target
+ *				ex) S_Load_Players, S_L2G_Initialize_Game
+ *
+ *				응답: 
+ *				Sender(_Receiver)_Response_Verb_Target
+ *				ex) S_Response_Request_Game_Session
+ *
+ *				정보 전달: 
+ *				Sender(_Receiver)_Target_Verb
+ *				ex) S_Login_Game_Standby
+ */
+
+	//option allow_alias = true;	//Other Enums can get same numerics
+	//-------------------<Login/Register>------------------
+	C_COMMON_DEBUG = 0;
+	S_ERROR_PACKET = 1;
+	C_LOGIN_ACCESS = 2;
+	S_RESPONSE_ACESS = 3;
+	C_LOGIN_REGISTER = 4;
+	S_RESPONSE_REGISTER = 5;
+	C_COMMON_DISCONNECT = 6;
+
+	//-------------------<Login Server Only>---------------
+	C_LOGIN_REQUEST_ONLINE = 7;
+	S_RESPONSE_REQUEST_ONLINE = 8;
+
+	//---------------------<GameAccess>--------------------
+	C_LOGIN_REQUEST_GAME_SESSION = 9;
+	S_LOGIN_GAME_STANDBY = 10;
+	S_GAME_USER_ACCESS = 11;
+	S_RESPONSE_REQUEST_GAME_SESSION = 12;
+
+	//--------------------<Game Server Only>---------------
+	C_GAME_TRY_ENTER = 13;
+	S_LOAD_PLAYERS = 14;
+	S_LOAD_ITEMS = 15;
+	S_LOAD_FIELD = 16;
+	S_BROADCAST_PLAYER_SPAWN = 17;
+	C_GAME_MOVE = 18;
+	S_BROADCAST_PLAYER_MOVE = 19;
+	C_GAME_ROTATION = 20;
+	S_BROADCAST_PLAYER_ROTATION = 21;
+	C_GAME_JUMP = 22;
+	S_BROADCAST_PLAYER_JUMP = 23;
+	C_GAME_TRANFORM_ = 24;
+	S_SYNC_PLAYER_TRANFORM = 25;
+
+	//--------------------<Server To Server>---------------
+	S_LOGIN_SERVER_INFO_NOTIFY = 26;
+
+	//--------------------<Common Packet>---------------
+	C_COMMON_INTERACT = 27;
+
+//----------------------------------------<Client Packet>---------------------------------------
+message C_Login_Debug{
+	string message = 1;
+}
+
+message C_Login_Access{
+	string id = 1;
+	string pw = 2;
+}
+
+message C_Login_Register{
+	string id = 1;
+	string pw = 2;
+}
+
+message C_Common_Disconnect{ 
+}
+
+message C_Login_Request_Game_Session{
+	pAreaType areaType = 1;
+	int32 userCount = 2;
+	repeated int32 authCode = 3;
+}
+
+message C_Common_Extract_To{
+	pAreaType prevArea = 1;
+	pAreaType destArea = 2;
+}
+
+message C_Login_Request_Online{
+
+}
+
+message C_Game_Try_Enter{
+	uint32 authCode = 1;
+}
+
+message C_Game_Move{
+	pVector3	  dir	 = 1;
+	pPlayerStance stance = 2;
+}
+
+message C_Game_Jump{
+}
+
+message C_Game_Transform_Sync{
+	pVector3 position = 1;
+}
+
+message C_Game_Look_Rotation{
+	pQuaternion rotation = 1;
+}
+
+message C_Common_Leave{
+
+}
+
+message C_Common_Interact{
+	uint32 authCode = 1;
+	pInteractType interactType = 2;
+}
+//----------------------------------------<Login Server Packet>---------------------------------------
+
+message S_Error_Packet{
+	NetworkError errorCode = 1;
+}
+
+message S_Response_Access{
+	NetworkError	errorCode	= 1;
+	uint32			authCode	= 2;
+}
+
+message S_Response_Register{
+	bool errorCode = 1;
+}
+
+message S_Login_Game_Standby{
+	pEndPoint endPoint = 1;
+	uint32	  serverID = 2;
+	pAreaType areaType = 3;
+}
+
+message S_Response_Request_Game_Session{
+	pEndPoint endPoint = 1;
+}
+
+message S_Game_User_Access{
+	int32 userCount = 1;
+	repeated uint32 authCode = 2;
+}
+
+message S_Spawn{
+	uint32		authCode = 1;
+	pAreaType	prevArea = 2;
+	pAreaType	destArea = 3;
+}
+
+message S_Interpol_Player{
+	uint32		authCode	= 1;
+	pVector3	position	= 2;
+	pQuaternion	rotation	= 3;
+}
+
+message S_Load_Players{
+	repeated pObjectData objectList = 1;
+}
+
+message S_Load_Items{
+	//AuthCode와 데이터를 전달한다.
+	//AuthCode를 기준으로 필드의 ItemContainer에게 데이터를 전달하기 때문에
+	//플레이어 ItemContainer든 필드 ItemContainer이든 가능하게 한다.
+}
+
+message S_Load_Fields{
+}
+
+message S_Broadcast_Player_Leave{
+	uint32 authCode = 1;
+}
+
+message S_Response_Request_Online{
+	repeated pOnlineUser onlineUsers = 1;
+}
+
+message S_Broadcast_Player_Move{
+	uint32		  authCode = 1;
+	pPlayerStance stance   = 2;
+	pVector3	  dir	   = 3;
+}
+
+message S_Broadcast_Player_Jump{
+	uint32 authCode = 1;
+}
+
+message S_Sync_Player_Transform{
+	repeated pObjectData playerTransforms = 1;
+}
+
+message S_Broadcast_Player_Rotation{
+	uint32 authCode = 1;
+	pQuaternion rotation = 2;
+}
+
+message S_Login_Game_Info_Notify{
+	//TODO: 로그인 서버에게 게임서버의 현재 정보를 전송한다.
+}
+
+//---------------------------------------<Packet Data Model>------------------------------------
+
+message pObjectData{
+	uint32 authCode = 1;
+	pVector3 position = 2;
+	pQuaternion rotation = 3;
+}
+
+message pItem{
+	uint32 itemCode = 1;
+	int32 itemCount = 2;
+}
+
+message pVector3{
+	float x = 1;
+	float y = 2;
+	float z = 3;
+}
+
+message pQuaternion{
+	float x = 1;
+	float y = 2;
+	float z = 3;
+	float w = 4;
+}
+
+message pAuthResult{
+	NetworkError errorCode = 1;
+	uint32 authCode = 2;
+}
+
+message pOnlineUser{
+	string name = 1;
+	uint32 authCode = 2;
+	pAreaType whereAt = 3;
+	bool canAccess = 4;
+}
+
+message pEndPoint{
+	int64 ipAddress = 1;
+	int32 port		= 2;
+}
+
+enum pAreaType{
+	GAMESTART		= 0;
+	HIDEOUT			= 1;
+	FIELDMAP		= 2;
+	CITYHALL		= 3;		//시청
+	RESIDENTIAL		= 4;		//주거지구
+	INDUSTRIAL		= 5;		//공업지구
+	COMMERCE		= 6;		//상업지구
+}
+
+enum pPlayerStance{	
+	NOSTANCE	= 0;
+	IDLE		= 1;
+	CROUCH		= 2;
+	WALK		= 3;
+	RUN			= 4;
+}
+
+enum NetworkError{
+	SUCCESS				= 0;
+	NOACCOUNT			= 1;
+	OVERLAP				= 2;
+	INVALID_PASSWORD	= 3;
+	INVALID_ROOM		= 4;
+	INVALID_ACCESS		= 5;
+}
+
+enum pInteractType{
+	INTERACTYPE_NONE = 0;
+    CHEST_OPEN = 1;
+    CHEST_CLOSE = 2;
+
+    DOOR_OPEN = 3;
+    DOOR_CLOSE= 4;
+    DOOR_BREACH = 5;
+
+    ITEM_TAKE = 6;
+    ITEM_SEARCH = 7;
+
+    OBJECT_USE = 8;
+}
+
+
+enum pObjectType{
+	NONE_NONE = 0;
+	//----------Character Types----------
+	CHARACTER_PLAYER		= 285212672;
+	CHARACTER_MERCHANT		= 301989888;
+	CHARACTER_VANCRUEL		= 335544320;
+	//------------Object Types------------
+	OBJECT_NONINTERACTABLE	= 553648128;
+	OBJECT_INTERACTABLE		= 570425344;
+	OBJECT_PROJECTILE		= 603979776;
+}

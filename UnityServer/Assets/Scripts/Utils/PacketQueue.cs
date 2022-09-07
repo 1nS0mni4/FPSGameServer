@@ -7,6 +7,7 @@ using UnityEngine;
 public struct PacketModel {
     public ushort packetID;
     public IMessage packet;
+    public int sessionID;
 }
 public class PacketQueue {
     #region Singleton
@@ -22,9 +23,9 @@ public class PacketQueue {
 
     public int PacketCount { get => _queue.Count; }
 
-    public void Push(ushort packetID, IMessage packet) {
+    public void Push(ushort packetID, IMessage packet, int sessionID) {
         lock(l_queue) {
-            _queue.Enqueue(new PacketModel() { packetID = packetID, packet = packet});
+            _queue.Enqueue(new PacketModel() { packetID = packetID, packet = packet, sessionID = sessionID});
         }
     }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Google.Protobuf.Protocol;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,23 +7,24 @@ using static Define;
 
 [System.Serializable]
 public struct InteractUIFormat {
-    public InteractType _type;
+    public pInteractType _type;
     public GameObject _ui;
 }
 
 public class InteractableUI : MonoBehaviour {
     [Header("InteractableUI Panel Object")]
-    [SerializeField] private GameObject                                  _panel               = null;
+    [SerializeField] private GameObject                    _panel                = null;
 
     [Header("InteractUIFormats")]
-    [SerializeField] private List<InteractUIFormat>                      _uiFormats           = new List<InteractUIFormat>();
-                     private Dictionary<InteractType, GameObject>        _formats             = new Dictionary<InteractType, GameObject>();
+    [SerializeField] private List<InteractUIFormat>        _uiFormats            = new List<InteractUIFormat>();
+                     private Dictionary<pInteractType, 
+                                        GameObject>        _formats              = new Dictionary<pInteractType, GameObject>();
 
-                     private List<InteractType>                          _activatedFormats    = new List<InteractType>();
-                     private InteractableObject                          _curObject           = null;
-                     private InteractType                                _curType             = InteractType.None;
+                     private List<pInteractType>           _activatedFormats     = new List<pInteractType>();
+                     private InteractableObject            _curObject            = null;
+                     private pInteractType                 _curType              = pInteractType.InteractypeNone;
 
-                     private bool                                        _isOpen              = false;
+                     private bool                          _isOpen               = false;
 
     public bool IsOpen { get => _isOpen; }
 
@@ -49,11 +51,11 @@ public class InteractableUI : MonoBehaviour {
 
         _panel.SetActive(false);
         _curObject = null;
-        _curType = InteractType.None;
+        _curType = pInteractType.InteractypeNone;
         _activatedFormats.Clear();
     }
 
-    public void ShowInteractType(InteractableObject obj, InteractType[] types) {
+    public void ShowInteractType(InteractableObject obj, pInteractType[] types) {
         if(types.Length <= 0)
             return;
 
@@ -70,7 +72,7 @@ public class InteractableUI : MonoBehaviour {
                 ui.SetActive(true);
                 _activatedFormats.Add(types[i]);
 
-                if(_curType == InteractType.None)
+                if(_curType == pInteractType.InteractypeNone)
                     _curType = types[i];
             }
         }
@@ -91,11 +93,19 @@ public class InteractableUI : MonoBehaviour {
     }
 
     public void Interact() {
-        if(_curType == InteractType.None)
+        if(_curType == pInteractType.InteractypeNone)
             return;
 
         _curObject.Interact(_curType);
         _panel.SetActive(false);
+
+        {
+            C_Game_Interact interact = new C_Game_Interact();
+            interact.AuthCode = _curObject.AuthCode;
+            interact.InteractType = _curType;
+
+            Managers.Network.Send(interact);
+        }
     }
 
     private void OnDisable() {
@@ -107,7 +117,7 @@ public class InteractableUI : MonoBehaviour {
 
         _panel.SetActive(false);
         _curObject = null;
-        _curType = InteractType.None;
+        _curType = pInteractType.InteractypeNone;
         _activatedFormats.Clear();
     }
 }

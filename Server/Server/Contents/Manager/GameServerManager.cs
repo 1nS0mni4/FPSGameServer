@@ -14,14 +14,14 @@ namespace Server.Contents.Manager {
     public class GameServerManager : Singleton<GameServerManager> {
         public static string ServerProgramPath = "";
 
-        private int _serverID = 0;
-        private Dictionary<int, GameServer> _cityhallServers = new Dictionary<int, GameServer>();
+        private uint _serverID = 0;
+        private Dictionary<uint, GameServer> _cityhallServers = new Dictionary<uint, GameServer>();
         private object l_cityhall = new object();
-        private Dictionary<int, GameServer> _residentialServers = new Dictionary<int, GameServer>();
+        private Dictionary<uint, GameServer> _residentialServers = new Dictionary<uint, GameServer>();
         private object l_residential = new object();
-        private Dictionary<int, GameServer> _industrialServers = new Dictionary<int, GameServer>();
+        private Dictionary<uint, GameServer> _industrialServers = new Dictionary<uint, GameServer>();
         private object l_industrial = new object();
-        private Dictionary<int, GameServer> _commerceServers = new Dictionary<int, GameServer>();
+        private Dictionary<uint, GameServer> _commerceServers = new Dictionary<uint, GameServer>();
         private object l_commerce = new object();
 
         private List<ClientSession> _cityhallWaiting    = new List<ClientSession>();
@@ -51,16 +51,24 @@ namespace Server.Contents.Manager {
             }
 
             ProcessStartInfo info = new ProcessStartInfo($"{ServerProgramPath}UnityServer.exe");
+            //실행할 때 새로운 CMD창 띄우기 (true: 띄우지 않는다. false: 띄운다.)
+            info.CreateNoWindow = false;
+            info.UseShellExecute = false;
+            //CMD 데이터 보내기
+            info.RedirectStandardInput = true;
+
             info.CreateNoWindow = true;
             info.ArgumentList.Add("-batchmode");
             info.ArgumentList.Add("-nographics");
-            info.ArgumentList.Add(Program.IpAddr.ToString());
+            info.ArgumentList.Add(Program.HostString);
             info.ArgumentList.Add(Program.ServerPort.ToString());
             info.ArgumentList.Add(server.ServerID.ToString());
-            info.ArgumentList.Add(((int)areaType).ToString());
-            //info.UserName = $"{nameof(areaType)}_Server({server.ServerID})";
+            info.ArgumentList.Add(( (int)areaType ).ToString());
+
+            Console.WriteLine($"Host String: {Program.HostString}");
 
             Process.Start(info);
+            Console.WriteLine("GameServer Process Start");
         }
 
         /// <summary>
@@ -124,10 +132,11 @@ namespace Server.Contents.Manager {
 
                 return;
             }
-
-            S_Response_Request_Game_Session request = new S_Response_Request_Game_Session();
-            request.EndPoint = server.EndPoint;
-            session.Send(request);
+            else {
+                S_Response_Request_Game_Session request = new S_Response_Request_Game_Session();
+                request.EndPoint = server.EndPoint;
+                session.Send(request);
+            }
         }
 
         /// <summary>
@@ -202,7 +211,7 @@ namespace Server.Contents.Manager {
             }
         }
 
-        public void GameServerUpdate(S_Login_Game_Info_Notify notify) {
+        public void GameServerUpdate(S_Login_Notify_Server_Info notify) {
             //TODO: 패킷 만들기, 패킷 데이터에 따라 유저 수 업데이트
         }
     }

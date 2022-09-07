@@ -96,6 +96,8 @@ public class Managers : MonoBehaviour {
     private void Update() {
         if(ManagerUpdate != null)
             ManagerUpdate.Invoke();
+
+
     }
 
     private void OnApplicationPause(bool pause) {

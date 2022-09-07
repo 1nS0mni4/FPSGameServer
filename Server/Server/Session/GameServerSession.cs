@@ -14,7 +14,7 @@ namespace Server.Session {
         public pAreaType AreaType { get; set; }
 
         public override void OnConnect(EndPoint endPoint) {
-            
+            Console.WriteLine($"Server Connected!");
         }
 
         public override void OnDisconnect(EndPoint endPoint) {

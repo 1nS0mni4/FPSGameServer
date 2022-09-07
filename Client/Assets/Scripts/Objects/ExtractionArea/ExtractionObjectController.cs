@@ -5,8 +5,11 @@ using UnityEngine;
 public class ExtractionObjectController : MonoBehaviour {
     [SerializeField] protected ExtractionArea _extractionArea = null;
                      protected bool _isActivated = false;
+                     protected bool _isInteractable = true;
+
 
     public bool IsActivated { get => _isActivated; }
+    public bool IsInteractable { get => _isInteractable; }
 
     private void Awake() {
         if(_extractionArea == null) throw new System.NotImplementedException();
@@ -24,11 +27,12 @@ public class ExtractionObjectController : MonoBehaviour {
         else {
             if(_extractionArea.IsExtracting)
                 return;
-            ExtractionEffects(false);
             _extractionArea.Collider.enabled = false;
+            ExtractionEffects(false);
         }
+
+        _isActivated = isActivate;
     }
 
-
-    public virtual void ExtractionEffects(bool isStart) { }
+    protected virtual void ExtractionEffects(bool isStart) { }
 }

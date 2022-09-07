@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectPooler<T> : MonoBehaviour where T: MonoBehaviour {
-    public Transform _transform = null;
+    private Transform _transform = null;
     private List<T> _objects = new List<T>();
     private object l_objects = new object();
 
     private void Awake() {
+        _transform = GetComponent<Transform>();
         if(_transform == null)
-            _transform = transform;
+            return;
+
+        if(_transform.childCount <= 0)
+            return;
 
         for(int i = 0; i < _transform.childCount; i++) {
             T child = _transform.GetChild(i).GetComponent<T>();
@@ -19,6 +23,9 @@ public class ObjectPooler<T> : MonoBehaviour where T: MonoBehaviour {
     }
 
     public T Get() {
+        if(_transform == null)
+            return null;
+
         lock(l_objects) {
             T go = null;
 
