@@ -92,6 +92,66 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 196
       Script: {instanceID: 0}
+    Assets/Scenes/Fieldmap.unity:
+    - Class: 1
+      Script: {instanceID: 0}
+    - Class: 4
+      Script: {instanceID: 0}
+    - Class: 20
+      Script: {instanceID: 0}
+    - Class: 21
+      Script: {instanceID: 0}
+    - Class: 28
+      Script: {instanceID: 0}
+    - Class: 48
+      Script: {instanceID: 0}
+    - Class: 81
+      Script: {instanceID: 0}
+    - Class: 104
+      Script: {instanceID: 0}
+    - Class: 108
+      Script: {instanceID: 0}
+    - Class: 157
+      Script: {instanceID: 0}
+    - Class: 196
+      Script: {instanceID: 0}
+    Assets/Scenes/GameStart.unity:
+    - Class: 1
+      Script: {instanceID: 0}
+    - Class: 4
+      Script: {instanceID: 0}
+    - Class: 20
+      Script: {instanceID: 0}
+    - Class: 21
+      Script: {instanceID: 0}
+    - Class: 23
+      Script: {instanceID: 0}
+    - Class: 28
+      Script: {instanceID: 0}
+    - Class: 33
+      Script: {instanceID: 0}
+    - Class: 43
+      Script: {instanceID: 0}
+    - Class: 48
+      Script: {instanceID: 0}
+    - Class: 64
+      Script: {instanceID: 0}
+    - Class: 81
+      Script: {instanceID: 0}
+    - Class: 89
+      Script: {instanceID: 0}
+    - Class: 104
+      Script: {instanceID: 0}
+    - Class: 108
+      Script: {instanceID: 0}
+    - Class: 114
+      Script: {instanceID: 3640}
+    - Class: 115
+      Script: {instanceID: 0}
+    - Class: 157
+      Script: {instanceID: 0}
+    - Class: 196
+      Script: {instanceID: 0}
     Assets/Scenes/Hideout.unity:
     - Class: 1
       Script: {instanceID: 0}
@@ -133,43 +193,6 @@ ScriptsOnlyBuild:
     - Class: 104
       Script: {instanceID: 0}
     - Class: 108
-      Script: {instanceID: 0}
-    - Class: 157
-      Script: {instanceID: 0}
-    - Class: 196
-      Script: {instanceID: 0}
-    Assets/Scenes/Main.unity:
-    - Class: 1
-      Script: {instanceID: 0}
-    - Class: 4
-      Script: {instanceID: 0}
-    - Class: 20
-      Script: {instanceID: 0}
-    - Class: 21
-      Script: {instanceID: 0}
-    - Class: 23
-      Script: {instanceID: 0}
-    - Class: 28
-      Script: {instanceID: 0}
-    - Class: 33
-      Script: {instanceID: 0}
-    - Class: 43
-      Script: {instanceID: 0}
-    - Class: 48
-      Script: {instanceID: 0}
-    - Class: 64
-      Script: {instanceID: 0}
-    - Class: 81
-      Script: {instanceID: 0}
-    - Class: 89
-      Script: {instanceID: 0}
-    - Class: 104
-      Script: {instanceID: 0}
-    - Class: 108
-      Script: {instanceID: 0}
-    - Class: 114
-      Script: {instanceID: 3640}
-    - Class: 115
       Script: {instanceID: 0}
     - Class: 157
       Script: {instanceID: 0}
@@ -975,8 +998,9 @@ ScriptsOnlyBuild:
     className: Bullet
   platform: 19
   scenePathNames:
-  - Assets/Scenes/Main.unity
+  - Assets/Scenes/GameStart.unity
   - Assets/Scenes/Hideout.unity
+  - Assets/Scenes/Fieldmap.unity
   - Assets/Scenes/Cityhall.unity
   - Assets/Scenes/Residential.unity
   - Assets/Scenes/Industrial.unity

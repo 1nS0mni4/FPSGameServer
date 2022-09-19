@@ -185,7 +185,8 @@ public static class PacketHandler {
         ServerSession session = (ServerSession)s;
         S_Response_Request_Game_Session response = (S_Response_Request_Game_Session)packet;
 
-        Managers.Network.Connect_Game(response.EndPoint.IpAddress, response.EndPoint.Port);
+        Managers.Network.Connect_Game(response.EndPoint);
+        Debug.Log("pEndPoint Received!");
     }
 
     public static void S_Broadcast_Player_MoveHandler(PacketSession s, IMessage packet) {

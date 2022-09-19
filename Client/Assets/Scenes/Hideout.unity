@@ -260,9 +260,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1426490938}
     - target: {fileID: 7882225238030064376, guid: c598daa716eaeba4f91a43e68bb98346, type: 3}
+      propertyPath: _destination
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7882225238030064376, guid: c598daa716eaeba4f91a43e68bb98346, type: 3}
       propertyPath: _extractionUI
       value: 
       objectReference: {fileID: 1426490938}
+    - target: {fileID: 7882225238030064376, guid: c598daa716eaeba4f91a43e68bb98346, type: 3}
+      propertyPath: _extractionLimit
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c598daa716eaeba4f91a43e68bb98346, type: 3}
 --- !u!1001 &714588079

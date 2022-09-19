@@ -32,7 +32,6 @@ public class ElevatorCall : InteractableObject {
                     _elevController.ActivateExtraction(false);
                     Managers.Network.Disconnect_Game();
                 }
-
             }break;
         }
     }

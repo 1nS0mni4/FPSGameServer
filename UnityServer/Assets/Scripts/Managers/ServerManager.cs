@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ServerManager : MonoBehaviour {
     private static ServerManager _instance;
@@ -52,8 +53,9 @@ public class ServerManager : MonoBehaviour {
 
         IPHostEntry ipHost = Dns.GetHostEntry(hostString);
 
-
         Network.ConnectTo(ipHost.AddressList[0], port);
+
+        SceneManager.LoadSceneAsync((int)areaType, LoadSceneMode.Single);
     }
 
     private void Update() {
@@ -69,5 +71,9 @@ public class ServerManager : MonoBehaviour {
                 //action.Invoke(SessionManager.Instance.Find(list[i].sessionID), list[i].packet);
             }
         }
+    }
+
+    public void CloseServer() {
+
     }
 }

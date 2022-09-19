@@ -6,11 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Main.unity
+    path: Assets/Scenes/GameStart.unity
     guid: 05ead3554cfd6554f9af542530549bc0
   - enabled: 1
     path: Assets/Scenes/Hideout.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Fieldmap.unity
+    guid: 6c1e5a22bbfbc2f448e5971cd200135b
   - enabled: 1
     path: Assets/Scenes/Cityhall.unity
     guid: 1b09a7768acc9404b9527ed1a835139d

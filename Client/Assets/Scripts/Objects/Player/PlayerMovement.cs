@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private Vector3       moveForce;
     private pPlayerStance _curStance        = pPlayerStance.Walk;
+    
 
     public Vector3 Velocity { get => _controller.velocity; }
     public bool IsGrounded { get => _controller.isGrounded; }

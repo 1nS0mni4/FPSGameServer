@@ -1,4 +1,5 @@
 using Google.Protobuf.Protocol;
+using Server.Session;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,8 @@ public class Player : Character {
 
     private Vector3 _position = Vector3.zero;
     private bool _posInterpolated = false;
+
+    public ClientSession Session { get; set; }
 
     public override Vector3 Position {
         get => base.Position; 

@@ -100,7 +100,7 @@ public class ExtractionArea : MonoBehaviour {
         if(manager == null)
             return;
 
-        Managers.Scene.ChangeSceneTo(_destination == pAreaType.Hideout ? pAreaType.Hideout : pAreaType.Fieldmap);
+        Managers.Scene.ChangeSceneTo(_destination);
 
         switch(_destination) {
             case pAreaType.Hideout: {   //게임 필드에서 탈출할 때

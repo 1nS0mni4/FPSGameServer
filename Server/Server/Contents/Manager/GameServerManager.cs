@@ -174,41 +174,62 @@ namespace Server.Contents.Manager {
                 default:return;
             }
 
-            if(server == null)
+            if(server == null) {
+                //TODO: 해당 서버 강제 종료 요청
                 return;
-
+            }
+            
             server.InitializeServer(session, serverInfo);
 
             S_Response_Request_Game_Session request = new S_Response_Request_Game_Session();
             request.EndPoint = server.EndPoint;
+            List<uint> waiterList = new List<uint>();
 
             switch(server.AreaType) {
                 case pAreaType.Cityhall: {
                     lock(l_cityhallWaiting) { 
-                        foreach(ClientSession s in _cityhallWaiting) { s.Send(request); }
+                        foreach(ClientSession s in _cityhallWaiting) {
+                            waiterList.Add(s.AuthCode);
+                            s.Send(request); 
+                        }
                         _cityhallWaiting.Clear();
                     }
                 } break;
                 case pAreaType.Residential: {
                     lock(l_residentialWaiting) {
-                        foreach(ClientSession s in _residentialWaiting) { s.Send(request); }
+                        foreach(ClientSession s in _residentialWaiting) {
+                            waiterList.Add(s.AuthCode);
+                            s.Send(request); 
+                        }
                         _residentialWaiting.Clear();
                     }
                 } break;
                 case pAreaType.Industrial: {
                     lock(l_industrialWaiting) {
-                        foreach(ClientSession s in _industrialWaiting) { s.Send(request); }
+                        foreach(ClientSession s in _industrialWaiting) {
+                            waiterList.Add(s.AuthCode);
+                            s.Send(request); 
+                        }
                         _industrialWaiting.Clear();
                     }
                 } break;
                 case pAreaType.Commerce: {
                     lock(l_commerceWaiting) {
-                        foreach(ClientSession s in _commerceWaiting) { s.Send(request); }
+                        foreach(ClientSession s in _commerceWaiting) {
+                            waiterList.Add(s.AuthCode);
+                            s.Send(request); 
+                        }
                         _commerceWaiting.Clear();
                     }
                 } break;
                 default: return;
             }
+
+            S_Game_User_Access accessUser = new S_Game_User_Access();
+            accessUser.AuthCode.AddRange(waiterList);
+            accessUser.UserCount = waiterList.Count;
+
+            session.Send(accessUser);
         }
 
         public void GameServerUpdate(S_Login_Notify_Server_Info notify) {

@@ -18,22 +18,23 @@ public class PacketManager {
     public Action<ushort, IMessage> CustomHandler { get; set; } = null;
 
     private void Register() {
-        _makeFunc.Add((ushort)PacketID.CCommonDebug, MakePacket<C_Common_Debug>);
-        _handler.Add((ushort)PacketID.CCommonDebug, PacketHandler.C_Common_DebugHandler);
-        _makeFunc.Add((ushort)PacketID.CLoginAccess, MakePacket<C_Login_Access>);
-        _handler.Add((ushort)PacketID.CLoginAccess, PacketHandler.C_Login_AccessHandler);
-        _makeFunc.Add((ushort)PacketID.CLoginRegister, MakePacket<C_Login_Register>);
-        _handler.Add((ushort)PacketID.CLoginRegister, PacketHandler.C_Login_RegisterHandler);
-        _makeFunc.Add((ushort)PacketID.CCommonDisconnect, MakePacket<C_Common_Disconnect>);
-        _handler.Add((ushort)PacketID.CCommonDisconnect, PacketHandler.C_Common_DisconnectHandler);
-        _makeFunc.Add((ushort)PacketID.CLoginRequestOnline, MakePacket<C_Login_Request_Online>);
-        _handler.Add((ushort)PacketID.CLoginRequestOnline, PacketHandler.C_Login_Request_OnlineHandler);
-        _makeFunc.Add((ushort)PacketID.CLoginRequestGameSession, MakePacket<C_Login_Request_Game_Session>);
-        _handler.Add((ushort)PacketID.CLoginRequestGameSession, PacketHandler.C_Login_Request_Game_SessionHandler);
-        _makeFunc.Add((ushort)PacketID.SLoginGameStandby, MakePacket<S_Login_Game_Standby>);
-        _handler.Add((ushort)PacketID.SLoginGameStandby, PacketHandler.S_Login_Game_StandbyHandler);
-        _makeFunc.Add((ushort)PacketID.SLoginNotifyServerInfo, MakePacket<S_Login_Notify_Server_Info>);
-        _handler.Add((ushort)PacketID.SLoginNotifyServerInfo, PacketHandler.S_Login_Notify_Server_InfoHandler);
+      _makeFunc.Add((ushort)PacketID.CCommonDebug, MakePacket<C_Common_Debug>);
+    _handler.Add((ushort)PacketID.CCommonDebug, PacketHandler.C_Common_DebugHandler);
+      _makeFunc.Add((ushort)PacketID.CLoginAccess, MakePacket<C_Login_Access>);
+    _handler.Add((ushort)PacketID.CLoginAccess, PacketHandler.C_Login_AccessHandler);
+      _makeFunc.Add((ushort)PacketID.CLoginRegister, MakePacket<C_Login_Register>);
+    _handler.Add((ushort)PacketID.CLoginRegister, PacketHandler.C_Login_RegisterHandler);
+      _makeFunc.Add((ushort)PacketID.CCommonDisconnect, MakePacket<C_Common_Disconnect>);
+    _handler.Add((ushort)PacketID.CCommonDisconnect, PacketHandler.C_Common_DisconnectHandler);
+      _makeFunc.Add((ushort)PacketID.CLoginRequestOnline, MakePacket<C_Login_Request_Online>);
+    _handler.Add((ushort)PacketID.CLoginRequestOnline, PacketHandler.C_Login_Request_OnlineHandler);
+      _makeFunc.Add((ushort)PacketID.CLoginRequestGameSession, MakePacket<C_Login_Request_Game_Session>);
+    _handler.Add((ushort)PacketID.CLoginRequestGameSession, PacketHandler.C_Login_Request_Game_SessionHandler);
+      _makeFunc.Add((ushort)PacketID.SLoginGameStandby, MakePacket<S_Login_Game_Standby>);
+    _handler.Add((ushort)PacketID.SLoginGameStandby, PacketHandler.S_Login_Game_StandbyHandler);
+      _makeFunc.Add((ushort)PacketID.SLoginNotifyServerInfo, MakePacket<S_Login_Notify_Server_Info>);
+    _handler.Add((ushort)PacketID.SLoginNotifyServerInfo, PacketHandler.S_Login_Notify_Server_InfoHandler);
+
     }
 
     public void OnRecvPacket(PacketSession session, ArraySegment<byte> segment) {

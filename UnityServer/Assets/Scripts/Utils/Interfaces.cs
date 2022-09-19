@@ -6,3 +6,7 @@ public interface IPoolable {
 public interface IClearable {
     public void Clear();
 }
+
+//public interface IJob {
+//    public void Execute();
+//}

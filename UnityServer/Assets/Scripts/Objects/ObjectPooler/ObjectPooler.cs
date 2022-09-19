@@ -3,23 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectPooler<T> : MonoBehaviour where T: MonoBehaviour {
+    [SerializeField]
     private Transform _transform = null;
+
+    public int _childCount;
+
     private List<T> _objects = new List<T>();
     private object l_objects = new object();
 
     private void Awake() {
-        _transform = GetComponent<Transform>();
-        if(_transform == null)
-            return;
-
-        if(_transform.childCount <= 0)
-            return;
-
-        for(int i = 0; i < _transform.childCount; i++) {
-            T child = _transform.GetChild(i).GetComponent<T>();
-            child.gameObject.SetActive(false);
-            _objects.Add(child);
-        }
+        if(transform.childCount <= 0)
+            throw new MissingReferenceException();
     }
 
     public T Get() {
@@ -45,5 +39,21 @@ public class ObjectPooler<T> : MonoBehaviour where T: MonoBehaviour {
             return;
 
         obj.gameObject.SetActive(false);
+    }
+
+    private void Reset() {
+        if(_transform == null)
+            _transform = transform;
+
+        if(_transform.childCount <= 0)
+            return;
+
+        _childCount = _transform.childCount;
+
+        for(int i = 0; i < _transform.childCount; i++) {
+            T child = _transform.GetChild(i).GetComponent<T>();
+            child.gameObject.SetActive(false);
+            _objects.Add(child);
+        }
     }
 }

@@ -121,7 +121,7 @@ message C_Game_Move{
 }
 
 message C_Game_Rotation{
-	uint32		  authCode	   = 1;
+	uint32		  authCode = 1;
 	pQuaternion	  rotation = 2;
 }
 
@@ -242,8 +242,8 @@ message pOnlineUser{
 }
 
 message pEndPoint{
-	int64 ipAddress = 1;
-	int32 port		= 2;
+	string hostString = 1;
+	int32 port		  = 2;
 }
 
 enum pAreaType{

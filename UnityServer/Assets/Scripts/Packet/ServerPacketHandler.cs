@@ -64,16 +64,16 @@ public static class PacketHandler {
 
     public static void C_Game_Try_EnterHandler(PacketSession s, IMessage packet) {
         C_Game_Try_Enter parsedPacket = (C_Game_Try_Enter)packet;
-        ClientSession session = (ClientSession)s;
+        ClientSession session = s as ClientSession;
 
-        if(s == null)
+        if(session == null)
             return;
+
+        session.AuthCode = parsedPacket.AuthCode;
 
         bool result = InGameSceneManager.Instance.EnterGame(session, session.AuthCode);
         if(result == false)
             session.Disconnect();
-
-        session.AuthCode = parsedPacket.AuthCode;
     }
 
     public static void S_Game_User_AccessHandler(PacketSession s, IMessage packet) {

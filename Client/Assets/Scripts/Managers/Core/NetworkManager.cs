@@ -33,8 +33,10 @@ public class NetworkManager : Manager, IManagerStart, IManagerUpdate, IManagerOn
         connector.Connect(endPoint, () => { return _loginSession; });
     }
 
-    public void Connect_Game(long ipAddress, int port) {
-        IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
+    public void Connect_Game(pEndPoint pendPoint) {
+        IPHostEntry ipHost = Dns.GetHostEntry(pendPoint.HostString);
+        IPAddress ipAddr = ipHost.AddressList[0];
+        IPEndPoint endPoint = new IPEndPoint(ipAddr, pendPoint.Port);
 
         Connector connector = new Connector();
         connector.Connect(endPoint, () => { return _gameSession; });

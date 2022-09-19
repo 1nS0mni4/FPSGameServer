@@ -29,7 +29,7 @@ public class InGameSceneManager : MSceneManager {
     [HideInInspector]public bool f_Loaded_Field     = true;
 
     public override void InitScene() {
-        Physics.autoSimulation = false;
+        //Physics.autoSimulation = false;
     }
 
     protected override void Start() {

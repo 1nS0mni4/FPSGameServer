@@ -1,9 +1,11 @@
+using Extensions;
 using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using Server.Session;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Jobs;
 using UnityEngine;
 
 public class ClientObject {
@@ -12,30 +14,26 @@ public class ClientObject {
 }
 
 public class InGameSceneManager : MonoBehaviour {
+    #region Singleton
     private static InGameSceneManager _instance;
     public static InGameSceneManager Instance { get => _instance; }
+    #endregion
 
     public pAreaType _areaType;
 
-    public CharacterPooler _characterPooler;
+    public List<Transform> _spawnPoint = new List<Transform>();
+
+    [HideInInspector]
+    public CharacterPooler _playerPooler;
+
+
     private List<uint> _playerAuths = new List<uint>();
-    private Dictionary<uint, ClientObject> _players = new Dictionary<uint, ClientObject>();
+    private Dictionary<uint, Player> _players = new Dictionary<uint, Player>();
     private Dictionary<uint, InteractableObject> _fieldObjects = new Dictionary<uint, InteractableObject>();
 
 
     private bool f_Load_FieldData = false;
     private bool f_Load_Items = true;
-
-    private IEnumerator CoCheckLoadFinished() {
-        while(true) {
-            if(f_Load_FieldData & f_Load_Items)
-                break;
-
-            yield return null;
-        }
-
-        ServerManager.Network.Listen();
-    }
 
     private void Awake() {
         if(_instance != null) {
@@ -63,6 +61,18 @@ public class InGameSceneManager : MonoBehaviour {
         f_Load_Items = true;
     }
 
+    private IEnumerator CoCheckLoadFinished() {
+        while(true) {
+            if(f_Load_FieldData & f_Load_Items == true)
+                break;
+
+            yield return null;
+        }
+
+        ServerManager.Network.Listen();
+        yield break;
+    }
+
     public bool RegisterUserAuth(uint authCode) {
         if(_playerAuths.Contains(authCode))
             return false;
@@ -81,20 +91,36 @@ public class InGameSceneManager : MonoBehaviour {
         if(_playerAuths.Contains(authCode) == false || _players.ContainsKey(authCode))
             return false;
 
-        Player player = _characterPooler.Get();
-
-        ClientObject cliObject = new ClientObject();
-        cliObject._session = session;
-        cliObject._player = player;
+        Player player = _playerPooler.Get();
         
-        _players.Add(authCode, cliObject);
+        Transform randSpawn = _spawnPoint[UnityEngine.Random.Range(0, _spawnPoint.Count - 1)];
+        _spawnPoint.Remove(randSpawn);
+        player.gameObject.SetActive(true);
+        player.transform.position = randSpawn.position;
+        player.Session = session;
 
-        //TODO: 플레이어 생성 후 위치 전송
+        _players.Add(authCode, player);
+
+        S_Broadcast_Player_Spawn spawn = new S_Broadcast_Player_Spawn();
+        spawn.Info.AuthCode = authCode;
+        spawn.Info.Position = player.transform.position.TopVector3();
+        spawn.Info.Rotation = player.transform.rotation.TopQuaternion();
+
+        //TODO: Broadcast기능 추가.
+        ServerManager.Network.Broadcast(spawn);
 
         return true;
     }
 
     public void PlayerMove(uint authCode, pVector3 velocity) {
+
+    }
+
+    public void GameEnd() {
+
+    }
+
+    public void Broadcast(IMessage packet) {
 
     }
 }

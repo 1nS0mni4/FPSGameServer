@@ -70,40 +70,40 @@ namespace Google.Protobuf.Protocol {
             "aFJlc3VsdBIpCgllcnJvckNvZGUYASABKA4yFi5Qcm90b2NvbC5OZXR3b3Jr",
             "RXJyb3ISEAoIYXV0aENvZGUYAiABKA0iZgoLcE9ubGluZVVzZXISDAoEbmFt",
             "ZRgBIAEoCRIQCghhdXRoQ29kZRgCIAEoDRIkCgd3aGVyZUF0GAMgASgOMhMu",
-            "UHJvdG9jb2wucEFyZWFUeXBlEhEKCWNhbkFjY2VzcxgEIAEoCCIsCglwRW5k",
-            "UG9pbnQSEQoJaXBBZGRyZXNzGAEgASgDEgwKBHBvcnQYAiABKAUqtAUKCFBh",
-            "Y2tldElEEhIKDkNfQ09NTU9OX0RFQlVHEAASEgoOU19FUlJPUl9QQUNLRVQQ",
-            "ARISCg5DX0xPR0lOX0FDQ0VTUxACEhUKEVNfUkVTUE9OU0VfQUNDRVNTEAMS",
-            "FAoQQ19MT0dJTl9SRUdJU1RFUhAEEhcKE1NfUkVTUE9OU0VfUkVHSVNURVIQ",
-            "BRIXChNDX0NPTU1PTl9ESVNDT05ORUNUEAYSGgoWQ19MT0dJTl9SRVFVRVNU",
-            "X09OTElORRAHEh0KGVNfUkVTUE9OU0VfUkVRVUVTVF9PTkxJTkUQCBIgChxD",
-            "X0xPR0lOX1JFUVVFU1RfR0FNRV9TRVNTSU9OEAkSGAoUU19MT0dJTl9HQU1F",
-            "X1NUQU5EQlkQChIWChJTX0dBTUVfVVNFUl9BQ0NFU1MQCxIjCh9TX1JFU1BP",
-            "TlNFX1JFUVVFU1RfR0FNRV9TRVNTSU9OEAwSFAoQQ19HQU1FX1RSWV9FTlRF",
-            "UhANEhIKDlNfTE9BRF9QTEFZRVJTEA4SEAoMU19MT0FEX0lURU1TEA8SEAoM",
-            "U19MT0FEX0ZJRUxEEBASHAoYU19CUk9BRENBU1RfUExBWUVSX1NQQVdOEBES",
-            "DwoLQ19HQU1FX01PVkUQEhIbChdTX0JST0FEQ0FTVF9QTEFZRVJfTU9WRRAT",
-            "EhMKD0NfR0FNRV9ST1RBVElPThAUEh8KG1NfQlJPQURDQVNUX1BMQVlFUl9S",
-            "T1RBVElPThAVEhkKFUNfR0FNRV9UUkFOU0ZPUk1fU1lOQxAWEhsKF1NfU1lO",
-            "Q19QTEFZRVJfVFJBTlNGT1JNEBcSEwoPQ19HQU1FX0lOVEVSQUNUEBgSHAoY",
-            "U19CUk9BRENBU1RfUExBWUVSX0xFQVZFEBkSHgoaU19MT0dJTl9OT1RJRllf",
-            "U0VSVkVSX0lORk8QGipyCglwQXJlYVR5cGUSDQoJR0FNRVNUQVJUEAASCwoH",
-            "SElERU9VVBABEgwKCEZJRUxETUFQEAISDAoIQ0lUWUhBTEwQAxIPCgtSRVNJ",
-            "REVOVElBTBAEEg4KCklORFVTVFJJQUwQBRIMCghDT01NRVJDRRAGKkYKDXBQ",
-            "bGF5ZXJTdGFuY2USDAoITk9TVEFOQ0UQABIICgRJRExFEAESCgoGQ1JPVUNI",
-            "EAISCAoEV0FMSxADEgcKA1JVThAEKnMKDE5ldHdvcmtFcnJvchILCgdTVUND",
-            "RVNTEAASDQoJTk9BQ0NPVU5UEAESCwoHT1ZFUkxBUBACEhQKEElOVkFMSURf",
-            "UEFTU1dPUkQQAxIQCgxJTlZBTElEX1JPT00QBBISCg5JTlZBTElEX0FDQ0VT",
-            "UxAFKqYBCg1wSW50ZXJhY3RUeXBlEhQKEElOVEVSQUNUWVBFX05PTkUQABIO",
-            "CgpDSEVTVF9PUEVOEAESDwoLQ0hFU1RfQ0xPU0UQAhINCglET09SX09QRU4Q",
-            "AxIOCgpET09SX0NMT1NFEAQSDwoLRE9PUl9CUkVBQ0gQBRINCglJVEVNX1RB",
-            "S0UQBhIPCgtJVEVNX1NFQVJDSBAHEg4KCk9CSkVDVF9VU0UQCCrGAQoLcE9i",
-            "amVjdFR5cGUSDQoJTk9ORV9OT05FEAASGAoQQ0hBUkFDVEVSX1BMQVlFUhCA",
-            "gICIARIaChJDSEFSQUNURVJfTUVSQ0hBTlQQgICAkAESGgoSQ0hBUkFDVEVS",
-            "X1ZBTkNSVUVMEICAgKABEh4KFk9CSkVDVF9OT05JTlRFUkFDVEFCTEUQgICA",
-            "iAISGwoTT0JKRUNUX0lOVEVSQUNUQUJMRRCAgICQAhIZChFPQkpFQ1RfUFJP",
-            "SkVDVElMRRCAgICgAkIbqgIYR29vZ2xlLlByb3RvYnVmLlByb3RvY29sYgZw",
-            "cm90bzM="));
+            "UHJvdG9jb2wucEFyZWFUeXBlEhEKCWNhbkFjY2VzcxgEIAEoCCItCglwRW5k",
+            "UG9pbnQSEgoKaG9zdFN0cmluZxgBIAEoCRIMCgRwb3J0GAIgASgFKrQFCghQ",
+            "YWNrZXRJRBISCg5DX0NPTU1PTl9ERUJVRxAAEhIKDlNfRVJST1JfUEFDS0VU",
+            "EAESEgoOQ19MT0dJTl9BQ0NFU1MQAhIVChFTX1JFU1BPTlNFX0FDQ0VTUxAD",
+            "EhQKEENfTE9HSU5fUkVHSVNURVIQBBIXChNTX1JFU1BPTlNFX1JFR0lTVEVS",
+            "EAUSFwoTQ19DT01NT05fRElTQ09OTkVDVBAGEhoKFkNfTE9HSU5fUkVRVUVT",
+            "VF9PTkxJTkUQBxIdChlTX1JFU1BPTlNFX1JFUVVFU1RfT05MSU5FEAgSIAoc",
+            "Q19MT0dJTl9SRVFVRVNUX0dBTUVfU0VTU0lPThAJEhgKFFNfTE9HSU5fR0FN",
+            "RV9TVEFOREJZEAoSFgoSU19HQU1FX1VTRVJfQUNDRVNTEAsSIwofU19SRVNQ",
+            "T05TRV9SRVFVRVNUX0dBTUVfU0VTU0lPThAMEhQKEENfR0FNRV9UUllfRU5U",
+            "RVIQDRISCg5TX0xPQURfUExBWUVSUxAOEhAKDFNfTE9BRF9JVEVNUxAPEhAK",
+            "DFNfTE9BRF9GSUVMRBAQEhwKGFNfQlJPQURDQVNUX1BMQVlFUl9TUEFXThAR",
+            "Eg8KC0NfR0FNRV9NT1ZFEBISGwoXU19CUk9BRENBU1RfUExBWUVSX01PVkUQ",
+            "ExITCg9DX0dBTUVfUk9UQVRJT04QFBIfChtTX0JST0FEQ0FTVF9QTEFZRVJf",
+            "Uk9UQVRJT04QFRIZChVDX0dBTUVfVFJBTlNGT1JNX1NZTkMQFhIbChdTX1NZ",
+            "TkNfUExBWUVSX1RSQU5TRk9STRAXEhMKD0NfR0FNRV9JTlRFUkFDVBAYEhwK",
+            "GFNfQlJPQURDQVNUX1BMQVlFUl9MRUFWRRAZEh4KGlNfTE9HSU5fTk9USUZZ",
+            "X1NFUlZFUl9JTkZPEBoqcgoJcEFyZWFUeXBlEg0KCUdBTUVTVEFSVBAAEgsK",
+            "B0hJREVPVVQQARIMCghGSUVMRE1BUBACEgwKCENJVFlIQUxMEAMSDwoLUkVT",
+            "SURFTlRJQUwQBBIOCgpJTkRVU1RSSUFMEAUSDAoIQ09NTUVSQ0UQBipGCg1w",
+            "UGxheWVyU3RhbmNlEgwKCE5PU1RBTkNFEAASCAoESURMRRABEgoKBkNST1VD",
+            "SBACEggKBFdBTEsQAxIHCgNSVU4QBCpzCgxOZXR3b3JrRXJyb3ISCwoHU1VD",
+            "Q0VTUxAAEg0KCU5PQUNDT1VOVBABEgsKB09WRVJMQVAQAhIUChBJTlZBTElE",
+            "X1BBU1NXT1JEEAMSEAoMSU5WQUxJRF9ST09NEAQSEgoOSU5WQUxJRF9BQ0NF",
+            "U1MQBSqmAQoNcEludGVyYWN0VHlwZRIUChBJTlRFUkFDVFlQRV9OT05FEAAS",
+            "DgoKQ0hFU1RfT1BFThABEg8KC0NIRVNUX0NMT1NFEAISDQoJRE9PUl9PUEVO",
+            "EAMSDgoKRE9PUl9DTE9TRRAEEg8KC0RPT1JfQlJFQUNIEAUSDQoJSVRFTV9U",
+            "QUtFEAYSDwoLSVRFTV9TRUFSQ0gQBxIOCgpPQkpFQ1RfVVNFEAgqxgEKC3BP",
+            "YmplY3RUeXBlEg0KCU5PTkVfTk9ORRAAEhgKEENIQVJBQ1RFUl9QTEFZRVIQ",
+            "gICAiAESGgoSQ0hBUkFDVEVSX01FUkNIQU5UEICAgJABEhoKEkNIQVJBQ1RF",
+            "Ul9WQU5DUlVFTBCAgICgARIeChZPQkpFQ1RfTk9OSU5URVJBQ1RBQkxFEICA",
+            "gIgCEhsKE09CSkVDVF9JTlRFUkFDVEFCTEUQgICAkAISGQoRT0JKRUNUX1BS",
+            "T0pFQ1RJTEUQgICAoAJCG6oCGEdvb2dsZS5Qcm90b2J1Zi5Qcm90b2NvbGIG",
+            "cHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.AnyReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.PacketID), typeof(global::Google.Protobuf.Protocol.pAreaType), typeof(global::Google.Protobuf.Protocol.pPlayerStance), typeof(global::Google.Protobuf.Protocol.NetworkError), typeof(global::Google.Protobuf.Protocol.pInteractType), typeof(global::Google.Protobuf.Protocol.pObjectType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -140,7 +140,7 @@ namespace Google.Protobuf.Protocol {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.pQuaternion), global::Google.Protobuf.Protocol.pQuaternion.Parser, new[]{ "X", "Y", "Z", "W" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.pAuthResult), global::Google.Protobuf.Protocol.pAuthResult.Parser, new[]{ "ErrorCode", "AuthCode" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.pOnlineUser), global::Google.Protobuf.Protocol.pOnlineUser.Parser, new[]{ "Name", "AuthCode", "WhereAt", "CanAccess" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.pEndPoint), global::Google.Protobuf.Protocol.pEndPoint.Parser, new[]{ "IpAddress", "Port" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.pEndPoint), global::Google.Protobuf.Protocol.pEndPoint.Parser, new[]{ "HostString", "Port" }, null, null, null, null)
           }));
     }
     #endregion
@@ -5105,7 +5105,7 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pEndPoint(pEndPoint other) : this() {
-      ipAddress_ = other.ipAddress_;
+      hostString_ = other.hostString_;
       port_ = other.port_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -5115,14 +5115,14 @@ namespace Google.Protobuf.Protocol {
       return new pEndPoint(this);
     }
 
-    /// <summary>Field number for the "ipAddress" field.</summary>
-    public const int IpAddressFieldNumber = 1;
-    private long ipAddress_;
+    /// <summary>Field number for the "hostString" field.</summary>
+    public const int HostStringFieldNumber = 1;
+    private string hostString_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public long IpAddress {
-      get { return ipAddress_; }
+    public string HostString {
+      get { return hostString_; }
       set {
-        ipAddress_ = value;
+        hostString_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -5150,7 +5150,7 @@ namespace Google.Protobuf.Protocol {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (IpAddress != other.IpAddress) return false;
+      if (HostString != other.HostString) return false;
       if (Port != other.Port) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -5158,7 +5158,7 @@ namespace Google.Protobuf.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (IpAddress != 0L) hash ^= IpAddress.GetHashCode();
+      if (HostString.Length != 0) hash ^= HostString.GetHashCode();
       if (Port != 0) hash ^= Port.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -5173,9 +5173,9 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (IpAddress != 0L) {
-        output.WriteRawTag(8);
-        output.WriteInt64(IpAddress);
+      if (HostString.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(HostString);
       }
       if (Port != 0) {
         output.WriteRawTag(16);
@@ -5189,8 +5189,8 @@ namespace Google.Protobuf.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (IpAddress != 0L) {
-        size += 1 + pb::CodedOutputStream.ComputeInt64Size(IpAddress);
+      if (HostString.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(HostString);
       }
       if (Port != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Port);
@@ -5206,8 +5206,8 @@ namespace Google.Protobuf.Protocol {
       if (other == null) {
         return;
       }
-      if (other.IpAddress != 0L) {
-        IpAddress = other.IpAddress;
+      if (other.HostString.Length != 0) {
+        HostString = other.HostString;
       }
       if (other.Port != 0) {
         Port = other.Port;
@@ -5223,8 +5223,8 @@ namespace Google.Protobuf.Protocol {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 8: {
-            IpAddress = input.ReadInt64();
+          case 10: {
+            HostString = input.ReadString();
             break;
           }
           case 16: {

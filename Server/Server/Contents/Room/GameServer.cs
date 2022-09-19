@@ -20,6 +20,7 @@ namespace Server.Contents.Room {
         public void InitializeServer(GameServerSession session, S_Login_Game_Standby serverInfo) {
             Session = session;
             EndPoint = serverInfo.EndPoint;
+            AreaType = serverInfo.AreaType;
 
             ServerInitialized = true;
         }
