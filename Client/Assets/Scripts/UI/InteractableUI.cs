@@ -40,7 +40,7 @@ public class InteractableUI : MonoBehaviour {
         _panel.SetActive(false);
     }
 
-    public void CloseInteractType() {
+    public void CloseInteractTypeUI() {
         _panel.SetActive(false);
 
         _isOpen = false;

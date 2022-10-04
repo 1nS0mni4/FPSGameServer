@@ -851,21 +851,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1478996839316928782, guid: 5e70da16b3c1a7444aae3bb2ffe1f2b5, type: 3}
+      propertyPath: _interactUI
+      value: 
+      objectReference: {fileID: 1188166324842917570}
     - target: {fileID: 7824235981259312582, guid: 5e70da16b3c1a7444aae3bb2ffe1f2b5, type: 3}
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7824235981259312582, guid: 5e70da16b3c1a7444aae3bb2ffe1f2b5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.365267
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7824235981259312582, guid: 5e70da16b3c1a7444aae3bb2ffe1f2b5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.16
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 7824235981259312582, guid: 5e70da16b3c1a7444aae3bb2ffe1f2b5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.50382996
+      value: -20
       objectReference: {fileID: 0}
     - target: {fileID: 7824235981259312582, guid: 5e70da16b3c1a7444aae3bb2ffe1f2b5, type: 3}
       propertyPath: m_LocalRotation.w
@@ -873,15 +877,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7824235981259312582, guid: 5e70da16b3c1a7444aae3bb2ffe1f2b5, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7824235981259312582, guid: 5e70da16b3c1a7444aae3bb2ffe1f2b5, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7824235981259312582, guid: 5e70da16b3c1a7444aae3bb2ffe1f2b5, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7824235981259312582, guid: 5e70da16b3c1a7444aae3bb2ffe1f2b5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -901,7 +905,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7824235981259477478, guid: 5e70da16b3c1a7444aae3bb2ffe1f2b5, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8809489228700957762, guid: 5e70da16b3c1a7444aae3bb2ffe1f2b5, type: 3}
       propertyPath: _interactUI
@@ -919,7 +923,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: 5e70da16b3c1a7444aae3bb2ffe1f2b5, type: 3}
 --- !u!114 &1751838934 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2784430793119933343, guid: 5e70da16b3c1a7444aae3bb2ffe1f2b5, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2410793036619663045, guid: 5e70da16b3c1a7444aae3bb2ffe1f2b5, type: 3}
   m_PrefabInstance: {fileID: 1751838933}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -1106,16 +1110,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _areaType: 1
   _uiManager: {fileID: 1473308079}
-  _spawnPoints:
-  - fromArea: 0
-    toArea: 1
-    transform: {fileID: 0}
-  - fromArea: 1
-    toArea: 1
-    transform: {fileID: 0}
-  - fromArea: 2
-    toArea: 1
-    transform: {fileID: 0}
   _myPlayer: {fileID: 1751838934}
   _characterPooler: {fileID: 391359733}
   f_Loaded_Player: 0

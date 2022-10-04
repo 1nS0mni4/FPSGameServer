@@ -1223,7 +1223,6 @@ GameObject:
   - component: {fileID: 7824235981259312582}
   - component: {fileID: 8243954086173636594}
   - component: {fileID: 7824235981252092458}
-  - component: {fileID: 4681125973563690420}
   - component: {fileID: 3010722437137580252}
   - component: {fileID: 1439933476148684792}
   m_Layer: 0
@@ -1289,25 +1288,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &4681125973563690420
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7824235981259477478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1918d29ddb1fdc048983b40f9126c170, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Health: 0
-  MaxHealth: 0
-  CurrentSpeed: 0
-  RunSpeed: 8
-  WalkSpeed: 5
-  CrouchWalkSpeed: 3
-  JumpForce: 5
 --- !u!114 &3010722437137580252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1320,6 +1300,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0cf6967b9d59c44eb5d4af078b80ceb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stat:
+    Health: 0
+    MaxHealth: 0
+    RunSpeed: 0
+    WalkSpeed: 0
+    CrouchWalkSpeed: 0
+    JumpForce: 0
 --- !u!114 &1439933476148684792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1332,8 +1319,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a59fc17223485de4ba8656a89450bf07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _movement: {fileID: 3010722437137580252}
-  _arm: {fileID: 7824235981259477472}
+  _stat:
+    Health: 0
+    MaxHealth: 0
+    RunSpeed: 0
+    WalkSpeed: 0
+    CrouchWalkSpeed: 0
+    JumpForce: 0
 --- !u!1 &7824235981259477480
 GameObject:
   m_ObjectHideFlags: 0

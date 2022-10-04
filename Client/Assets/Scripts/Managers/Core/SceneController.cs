@@ -6,11 +6,20 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour {
-    public MSceneManager Manager { get; set; }
+    #region Reference-Type Variables
+    private WaitForSeconds  loadingWaitSeconds = new WaitForSeconds(0.1f);
+    public Queue<Action>    Completed = new Queue<Action>();
+
+    #endregion
+
+    #region Value-Type Variables
     private bool _isSceneChanging = false;
     private float _fakeLoadingTime = 3.0f;
 
-    private WaitForSeconds loadingWaitSeconds = new WaitForSeconds(0.1f);
+    #endregion
+
+    #region Properties
+    public MSceneManager Manager { get; set; }
     public bool IsSceneChanging {
         get { return _isSceneChanging == true; }
         set {
@@ -25,11 +34,12 @@ public class SceneController : MonoBehaviour {
             }
         }
     }
-    public Queue<Action> Completed = new Queue<Action>();
+    #endregion
+
     public void ChangeSceneTo(pAreaType type) {
         Debug.Log($"ChangeSceneTo {type} Called!");
         _isSceneChanging = true;
-        Managers.Input.CanInput = false;
+        Managers.CanInput = false;
 
         InGameUIManager uiManager = UIManager.GetManager<InGameUIManager>();
 
@@ -52,7 +62,7 @@ public class SceneController : MonoBehaviour {
             float progress = task.progress + 0.1f;
             realLoadingTime += 0.1f;
 
-            Debug.Log("Loading...");
+            //Debug.Log("Loading...");
             if(realLoadingTime >= _fakeLoadingTime)
                 break;
 

@@ -21,7 +21,7 @@ public class Transmitter : InteractableObject {
     }
 
     #region Override Functions
-    public override void ShowInteractType() {
+    public override void ShowInteractTypeUI() {
         _interactableUI.ShowInteractType(this, _interactTypes);
     }
 

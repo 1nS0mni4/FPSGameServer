@@ -4,10 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class InputManager : Manager, IManagerStart, IManagerUpdate {
+public class InputManager : Manager, IManagerStart, IManagerUpdate, IManagerFixedUpdate {
     private Action _keyInputHandler = null;
     private Action _mouseInputHandler = null;
-    //public KeyOption _keySetting = null;
     public bool CanInput = false;
 
     public void AddKeyInputHandler(Action handler) {
@@ -26,16 +25,20 @@ public class InputManager : Manager, IManagerStart, IManagerUpdate {
     }
 
     public void Start() {
-        //_keySetting = new KeyOption();
+
     }
 
     public void Update() {
         if(CanInput == false)
             return;
 
-        if(_mouseInputHandler != null)
-            _mouseInputHandler.Invoke();
-        if(_keyInputHandler != null)
-            _keyInputHandler.Invoke();
+        _mouseInputHandler?.Invoke();
+    }
+
+    public void FixedUpdate() {
+        if(CanInput == false)
+            return;
+
+        _keyInputHandler?.Invoke();
     }
 }

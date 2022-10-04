@@ -63,26 +63,23 @@ enum PacketID{
 	//---------------------<GameAccess>--------------------
 	C_LOGIN_REQUEST_GAME_SESSION		= 9;
 	S_LOGIN_GAME_STANDBY				= 10;
-	S_GAME_USER_ACCESS					= 11;
-	S_RESPONSE_REQUEST_GAME_SESSION		= 12;
+	S_LOGIN_DEBUG_GAME_STANDBY			= 11;
+	S_GAME_USER_ACCESS					= 12;
+	S_RESPONSE_REQUEST_GAME_SESSION		= 13;
 
 	//--------------------<Game Server Only>---------------
-	C_GAME_TRY_ENTER					= 13;
-	S_LOAD_PLAYERS						= 14;
-	S_LOAD_ITEMS						= 15;
-	S_LOAD_FIELD						= 16;
-	S_BROADCAST_PLAYER_SPAWN			= 17;
-	C_GAME_MOVE							= 18;
-	S_BROADCAST_PLAYER_MOVE				= 19;
-	C_GAME_ROTATION						= 20;
-	S_BROADCAST_PLAYER_ROTATION			= 21;
-	C_GAME_TRANSFORM_SYNC				= 22;
-	S_SYNC_PLAYER_TRANSFORM				= 23;
-	C_GAME_INTERACT						= 24;
-	S_BROADCAST_PLAYER_LEAVE			= 25;
+	C_GAME_TRY_ENTER					= 14;
+	S_LOAD_PLAYERS						= 15;
+	S_LOAD_ITEMS						= 16;
+	S_LOAD_FIELD						= 17;
+	S_BROADCAST_PLAYER_SPAWN			= 18;
+	C_GAME_INPUT						= 19;
+	S_BROADCAST_PLAYER_MOVE				= 20;
+	C_GAME_INTERACT						= 21;
+	S_BROADCAST_PLAYER_LEAVE			= 22;
 
 	//--------------------<Server To Server>---------------
-	S_LOGIN_NOTIFY_SERVER_INFO			= 26;
+	S_LOGIN_NOTIFY_SERVER_INFO			= 23;
 
 	//--------------------<Common Packet>---------------
 
@@ -116,17 +113,9 @@ message C_Game_Try_Enter{
 	uint32 authCode = 1;
 }
 
-message C_Game_Move{
-	pVector3 velocity = 1;
-}
-
-message C_Game_Rotation{
-	uint32		  authCode = 1;
-	pQuaternion	  rotation = 2;
-}
-
-message C_Game_Transform_Sync{
-	pVector3 position = 1;
+message C_Game_Input{
+	repeated bool inputs = 1;
+	pQuaternion camFront = 2;
 }
 
 message C_Game_Interact{
@@ -167,6 +156,14 @@ message S_Login_Game_Standby{
 	pEndPoint endPoint = 1;
 	uint32	  serverID = 2;
 	pAreaType areaType = 3;
+	uint32	  capacity = 4;
+}
+
+message S_Login_Debug_Game_Standby{
+	pEndPoint endPoint = 1;
+	uint32	  serverID = 2;
+	pAreaType areaType = 3;
+	uint32	  capacity = 4;
 }
 
 message S_Load_Players{
@@ -182,17 +179,10 @@ message S_Broadcast_Player_Spawn{
 }
 
 message S_Broadcast_Player_Move{
-	uint32	 authCode = 1;
-	pVector3 velocity = 2;
-}
-
-message S_Broadcast_Player_Rotation{
-	uint32		authCode = 1;
-	pQuaternion rotation = 2;
-}
-
-message S_Sync_Player_Transform{
-	repeated pObjectData players = 1;
+	uint32	 authCode	 = 1;
+	uint32   serverTick  = 2;
+	pVector3 newPosition = 3;
+	pQuaternion camFront = 4;
 }
 
 message S_Broadcast_Player_Leave{
@@ -257,11 +247,11 @@ enum pAreaType{
 }
 
 enum pPlayerStance{	
-	NOSTANCE	= 0;
-	IDLE		= 1;
-	CROUCH		= 2;
-	WALK		= 3;
-	RUN			= 4;
+	STANCE_NOSTANCE		= 0;
+	STANCE_IDLE			= 1;
+	STANCE_CROUCH		= 2;
+	STANCE_WALK			= 3;
+	STANCE_RUN			= 4;
 }
 
 enum NetworkError{
@@ -298,4 +288,14 @@ enum pObjectType{
 	OBJECT_NONINTERACTABLE	= 553648128;
 	OBJECT_INTERACTABLE		= 570425344;
 	OBJECT_PROJECTILE		= 603979776;
+}
+
+enum pInputMovementType{
+	INPUT_FORWARD	= 0;
+	INPUT_BACKWARD	= 1;
+	INPUT_LEFT		= 2;
+	INPUT_RIGHT		= 3;
+	INPUT_SPRINT	= 4;
+	INPUT_CROUCH	= 5;
+	INPUT_JUMP		= 6;
 }

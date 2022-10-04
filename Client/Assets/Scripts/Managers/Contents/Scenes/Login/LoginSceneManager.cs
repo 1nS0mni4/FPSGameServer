@@ -5,15 +5,19 @@ using UnityEngine;
 
 public class LoginSceneManager : MSceneManager {
 
-    public override void ClearScene() {
+    public override void OnDestroyEvent() {
         
     }
 
-    public override void InitScene() {
+    public override void OnAwakeEvent() {
         
     }
 
-    public override void LoadCompleted() {
+    public override void OnLoadCompleted() {
+        
+    }
+
+    public override void OnStartEvent() {
         
     }
 }

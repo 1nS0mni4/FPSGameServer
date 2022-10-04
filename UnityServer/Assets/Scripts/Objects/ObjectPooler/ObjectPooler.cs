@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPooler<T> : MonoBehaviour where T: MonoBehaviour {
+public class ObjectPooler<T> : MonoBehaviour where T : MonoBehaviour {
     [SerializeField]
     private Transform _transform = null;
 
@@ -12,14 +12,23 @@ public class ObjectPooler<T> : MonoBehaviour where T: MonoBehaviour {
     private object l_objects = new object();
 
     private void Awake() {
-        if(transform.childCount <= 0)
-            throw new MissingReferenceException();
+        if(_transform == null)
+            _transform = transform;
+
+        if(_transform.childCount <= 0)
+            return;
+
+        _childCount = _transform.childCount;
+        lock(l_objects) {
+            for(int i = 0; i < _transform.childCount; i++) {
+                T child = _transform.GetChild(i).GetComponent<T>();
+                child.gameObject.SetActive(false);
+                _objects.Add(child);
+            }
+        }
     }
 
     public T Get() {
-        if(_transform == null)
-            return null;
-
         lock(l_objects) {
             T go = null;
 

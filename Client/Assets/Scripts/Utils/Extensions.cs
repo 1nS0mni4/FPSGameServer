@@ -38,14 +38,10 @@ namespace Extensions {
         public static float Magnitude(this pVector3 vec) {
             return Mathf.Sqrt(vec.X * vec.X + vec.Y * vec.Y + vec.Z * vec.Z);
         }
-
-        public static Vector3 ToUnityVector3(this pVector3 vec) {
-            return new Vector3(vec.X, vec.Y, vec.Z);
-        }
     }
 
     public static class pQuaternionEx {
-        public static Quaternion ToUnityQuaternion(this pQuaternion pQuat) {
+        public static Quaternion ToQuaternion(this pQuaternion pQuat) {
             return new Quaternion(pQuat.X, pQuat.Y, pQuat.Z, pQuat.W);
         }
 

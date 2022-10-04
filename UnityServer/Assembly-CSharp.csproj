@@ -127,7 +127,6 @@
     <Compile Include="Assets\Scripts\ServerCore\RecvBuffer.cs" />
     <Compile Include="Assets\ExternalAssets\Apartment Kit\Scripts &amp; Animation\TableFlip\TableFlipL.cs" />
     <Compile Include="Assets\Scripts\Packet\ServerPacketHandler.cs" />
-    <Compile Include="Assets\Scripts\Objects\Base\BaseStat.cs" />
     <Compile Include="Assets\ExternalAssets\SE Basic Assets\Scripts and Animations\Windows\opencloseWindow1.cs" />
     <Compile Include="Assets\Scripts\Utils\PacketQueue.cs" />
     <Compile Include="Assets\Scripts\Managers\NetworkManager.cs" />

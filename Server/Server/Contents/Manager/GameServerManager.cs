@@ -24,6 +24,8 @@ namespace Server.Contents.Manager {
         private Dictionary<uint, GameServer> _commerceServers = new Dictionary<uint, GameServer>();
         private object l_commerce = new object();
 
+        
+
         private List<ClientSession> _cityhallWaiting    = new List<ClientSession>();
         private object l_cityhallWaiting       = new object();
         private List<ClientSession> _residentialWaiting = new List<ClientSession>();
@@ -50,14 +52,15 @@ namespace Server.Contents.Manager {
                 default: break;
             }
 
+            #region Before Start UnityServer
             ProcessStartInfo info = new ProcessStartInfo($"{ServerProgramPath}UnityServer.exe");
             //실행할 때 새로운 CMD창 띄우기 (true: 띄우지 않는다. false: 띄운다.)
             info.CreateNoWindow = false;
             info.UseShellExecute = false;
             //CMD 데이터 보내기
             info.RedirectStandardInput = true;
+            info.RedirectStandardOutput = false;
 
-            info.CreateNoWindow = true;
             info.ArgumentList.Add("-batchmode");
             info.ArgumentList.Add("-nographics");
             info.ArgumentList.Add(Program.HostString);
@@ -65,9 +68,17 @@ namespace Server.Contents.Manager {
             info.ArgumentList.Add(server.ServerID.ToString());
             info.ArgumentList.Add(( (int)areaType ).ToString());
 
-            Console.WriteLine($"Host String: {Program.HostString}");
-
             Process.Start(info);
+            #endregion
+
+            #region New Start UnityServer With CMD
+            //ProcessStartInfo psi = new ProcessStartInfo();
+            //psi.FileName = "cmd.exe";
+            //psi.Arguments = $"UnityServer.exe -batchmode -nographics {Program.HostString} {Program.ServerPort} {server.ServerID} {(int)areaType}";
+
+            //Process.Start(psi);
+            #endregion
+
             Console.WriteLine("GameServer Process Start");
         }
 
@@ -133,9 +144,17 @@ namespace Server.Contents.Manager {
                 return;
             }
             else {
+                server.InformUserAccess(1);
+
                 S_Response_Request_Game_Session request = new S_Response_Request_Game_Session();
                 request.EndPoint = server.EndPoint;
                 session.Send(request);
+
+                S_Game_User_Access access = new S_Game_User_Access();
+                access.UserCount = 1;
+                access.AuthCode.Add(session.AuthCode);
+
+                server.Session.Send(access);
             }
         }
 
@@ -152,24 +171,16 @@ namespace Server.Contents.Manager {
 
             switch(serverInfo.AreaType) {
                 case pAreaType.Cityhall: {
-                    lock(l_cityhall) {
                         _cityhallServers.TryGetValue(serverInfo.ServerID, out server);
-                    }
                 }break;
                 case pAreaType.Residential: {
-                    lock(l_residential) {
                         _residentialServers.TryGetValue(serverInfo.ServerID, out server);
-                    }
                 }break;
                 case pAreaType.Industrial: {
-                    lock(l_industrial) {
                         _industrialServers.TryGetValue(serverInfo.ServerID, out server);
-                    }
                 }break;
                 case pAreaType.Commerce: {
-                    lock(l_commerce) {
                         _commerceServers.TryGetValue(serverInfo.ServerID, out server);
-                    }
                 }break;
                 default:return;
             }
@@ -230,6 +241,25 @@ namespace Server.Contents.Manager {
             accessUser.UserCount = waiterList.Count;
 
             session.Send(accessUser);
+            return;
+        }
+
+        public void GameServerStandby(GameServerSession session, S_Login_Debug_Game_Standby serverInfo) {
+            if(session == null)
+                return;
+
+            GameServer server = new GameServer();
+            server.ServerID = Interlocked.Exchange(ref _serverID, _serverID + 1);
+            server.AreaType = serverInfo.AreaType;
+            server.InitializeServer(session, serverInfo);
+
+            switch(server.AreaType) {
+                case pAreaType.Cityhall: { lock(l_cityhall) { _cityhallServers.Add(server.ServerID, server); } } break;
+                case pAreaType.Residential: { lock(l_residential) { _residentialServers.Add(server.ServerID, server); } } break;
+                case pAreaType.Industrial: { lock(l_industrial) { _industrialServers.Add(server.ServerID, server); } } break;
+                case pAreaType.Commerce: { lock(l_commerce) { _commerceServers.Add(server.ServerID, server); } } break;
+                default: break;
+            }
         }
 
         public void GameServerUpdate(S_Login_Notify_Server_Info notify) {

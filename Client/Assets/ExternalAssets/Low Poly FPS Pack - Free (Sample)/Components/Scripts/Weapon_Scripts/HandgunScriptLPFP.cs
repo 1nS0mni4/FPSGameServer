@@ -43,7 +43,8 @@ public class HandgunScriptLPFP : MonoBehaviour {
 	public float sliderBackTimer = 1.58f;
 	private bool hasStartedSliderBack;
 
-	//Eanbles auto reloading when out of ammo
+	//Eanbles auto re
+	//when out of ammo
 	[Tooltip("Enables auto reloading when out of ammo.")]
 	public bool autoReload;
 	//Delay between shooting last bullet and reloading

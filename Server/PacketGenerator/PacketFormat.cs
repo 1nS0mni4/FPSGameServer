@@ -29,7 +29,7 @@ public class PacketManager {{
     private Dictionary<ushort, Action<PacketSession, ArraySegment<byte>, ushort>> _makeFunc = new Dictionary<ushort, Action<PacketSession, ArraySegment<byte>, ushort>>();
     private Dictionary<ushort, Action<PacketSession, IMessage>> _handler = new Dictionary<ushort, Action<PacketSession, IMessage>>();
 
-    public Action<ushort, IMessage> CustomHandler {{ get; set; }} = null;
+    public Action<PacketSession, IMessage, ushort > CustomHandler {{ get; set; }} = null;
 
     private void Register() {{
 {0}
@@ -54,7 +54,7 @@ public class PacketManager {{
         pkt.MergeFrom(segment.Array, segment.Offset + 4, segment.Count - 4);
 
         if(CustomHandler != null) {{
-            CustomHandler.Invoke(msgID, pkt);
+            CustomHandler.Invoke(session, pkt, msgID);
         }}
         else {{
             Action<PacketSession, IMessage> action = null;

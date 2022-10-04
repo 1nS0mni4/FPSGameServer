@@ -8,126 +8,102 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 public class InGameSceneManager : MSceneManager {
-    [SerializeField] private InGameUIManager _uiManager = null;
+    #region Components & GameObjects
+    [SerializeField] private InGameUIManager             _uiManager        = null;
+    [SerializeField] private MyPlayer                    _myPlayer         = null;
+                     public  Dictionary<uint, Character> _characters       = new Dictionary<uint, Character>();
+                     public  CharacterPooler             _characterPooler  = null;
 
-    [Header("Spawn Point")]
-    [SerializeField] private List<SpawnPointFormat> _spawnPoints = null;
+    #endregion
 
-    [Header("Player")]
-    [SerializeField] private MyPlayer _myPlayer = null;
-                     public Dictionary<uint, Player> _players = new Dictionary<uint, Player>();
-                     public CharacterPooler _characterPooler = null;
+    #region Variables
+    [HideInInspector]public  bool           f_Loaded_Player = true;
+    [HideInInspector]public  bool           f_Loaded_Item   = true;
+    [HideInInspector]public  bool           f_Loaded_Field  = true;
 
-                     private WaitForSeconds loadWaitTime = new WaitForSeconds(0.5f);
+    private WaitForSeconds loadWaitTime    = new WaitForSeconds(0.5f);
 
-    /****************************************************
-     *                  Loading Flags                   *
-     ****************************************************/
+    #endregion
 
-    [HideInInspector]public bool f_Loaded_Player    = true;
-    [HideInInspector]public bool f_Loaded_Item      = true;
-    [HideInInspector]public bool f_Loaded_Field     = true;
+    #region Unity Event Functions & Override Functions
+    /// <summary>
+    /// Call by MSceneManager's UnityEvent.Awake().
+    /// </summary>
+    public override void OnAwakeEvent() {
 
-    public override void InitScene() {
-        //Physics.autoSimulation = false;
     }
 
-    protected override void Start() {
-        base.Start();
+    /// <summary>
+    /// Call by MSceneManager's UnityEvent.Start().
+    /// </summary>
+    public override void OnStartEvent() {
         StartCoroutine(CoCheckDataLoaded());
     }
 
-    public override void ClearScene() {
-        
+    /// <summary>
+    /// Call by MSceneManager's UnityEvent.OnDestroy().
+    /// </summary>
+    public override void OnDestroyEvent() {
+
     }
+
+    /// <summary>
+    /// Call when Game Scene is all loaded.
+    /// </summary>
+    public override void OnLoadCompleted() {
+        Managers.CanInput = true;
+        _uiManager.Fade.FadeControlTo(false);
+    }
+
+    #endregion
 
     public void SpawnPlayer(uint authCode, pVector3 position = null, pQuaternion rotation = null) {
-        if(_players.ContainsKey(authCode))
+        if(_characters.ContainsKey(authCode))
             return;
 
-        Vector3 pos = position.ToUnityVector3();
-        if(position == null)
-            pos = new Vector3(0, 2, -20);
-        
-        Quaternion rot = rotation.ToUnityQuaternion();
-        if(rotation == null)
-            rot = Quaternion.Euler(new Vector3(0, 0, 0));
+        Vector3 pos;
+        if(position == null) pos = new Vector3(0, 2, -20);
+        else                 pos = position.toVector3();
 
-        if(authCode == Managers.Network.AuthCode) {
-            _myPlayer.AuthCode = authCode;
-            _myPlayer.gameObject.transform.position = pos;
-            _myPlayer.gameObject.transform.rotation = rot;
+        Quaternion rot;
+        if(rotation == null) rot = Quaternion.Euler(new Vector3(0, 0, 0));
+        else                 rot = rotation.ToQuaternion();
 
-            _myPlayer.gameObject.SetActive(true);
-        }
+        Character character = null;
+
+        if(authCode == Managers.Network.AuthCode) { character = _myPlayer; }
         else {
-            Player player  = _characterPooler.Get();
-            player.AuthCode = authCode;
-            player.gameObject.transform.position = pos;
-            player.gameObject.transform.rotation = rot;
-            player.gameObject.SetActive(true);
-
-            _players.Add(authCode, player);
+            character  = _characterPooler.Get();
+            _characters.Add(authCode, character);
         }
+
+        character.AuthCode = authCode;
+        character.gameObject.transform.position = pos;
+        character.gameObject.transform.rotation = rot;
+        character.gameObject.SetActive(true);
     }
 
-    public void SyncObjectInPosition(uint authCode, pVector3 position, pQuaternion rotation) {
-        Player player = null;
-
-        if(_players.TryGetValue(authCode, out player)) {
-            player.Position = position.ToUnityVector3();
-            player.RotateDir = rotation.ToUnityQuaternion();
-        }
-    }
-
-    public void SyncPlayerRotation(uint authCode, pQuaternion rot) {
-        Player player = null;
-
-        if(_players.TryGetValue(authCode, out player)) {
-            player.RotateDir = rot.ToUnityQuaternion();
-        }
-    }
-
-    public void SyncPlayerMove(uint authCode, pVector3 velocity) {
-        Player player = null;
-
-        if(_players.TryGetValue(authCode, out player)) {
-            player.Velocity = velocity.ToUnityVector3();
-
-            float deltaTime = Managers.Network.PingTime;
-            while(deltaTime > Time.fixedDeltaTime) {
-                deltaTime -= Time.fixedDeltaTime;
-                Physics.Simulate(Time.fixedDeltaTime);
-            }
+    public void HandleCharacterMove(uint authCode, uint serverTick, pVector3 newPosition, pQuaternion camFront) {
+        if(_characters.TryGetValue(authCode, out Character character)) {
+            character.Move(serverTick, newPosition.toVector3());
+            character.Rotate(camFront.ToQuaternion());
         }
     }
 
     public void RemovePlayer(uint authCode) {
-        if(_players.ContainsKey(authCode)) {
-            _characterPooler.Destroy(_players[authCode]);
+        if(_characters.Remove(authCode)) {
+            _characterPooler.Destroy(_characters[authCode]);
         }
-    }
-
-    public override void LoadCompleted() {
-        Managers.Input.CanInput = true;
-        _uiManager.Fade.FadeControlTo(false);
     }
 
     private IEnumerator CoCheckDataLoaded() {
         bool loading = true;
         while(loading) {
-            loading = !(f_Loaded_Field  & f_Loaded_Item & _myPlayer.gameObject.activeSelf);
+            loading = !( f_Loaded_Field & f_Loaded_Item & _myPlayer.gameObject.activeSelf );
             yield return loadWaitTime;
         }
 
-        LoadCompleted();
+        OnLoadCompleted();
         yield break;
     }
-}
-
-[Serializable]
-public struct SpawnPointFormat {
-    public pAreaType fromArea;
-    public pAreaType toArea;
-    public Transform transform;
 }

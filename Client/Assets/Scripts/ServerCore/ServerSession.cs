@@ -6,12 +6,16 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading;
+using UnityEngine;
 
 namespace Client.Session {
     public class ServerSession : PacketSession {
         public uint AuthCode { get; set; }
         public override void OnConnect(EndPoint endPoint) {
-            Interlocked.Exchange(ref _disconnected, 0);
+            if(Interlocked.Exchange(ref _disconnected, 0) == 0)
+                Disconnect();
+
+            Debug.Log("Server Connected!");
         }
 
         public override void OnDisconnect(EndPoint endPoint) {
@@ -23,7 +27,7 @@ namespace Client.Session {
         }
 
         public override void OnSend(int numOfBytes) {
-            
+            Debug.Log("Send Completed");
         }
 
         public void Send(IMessage packet) {

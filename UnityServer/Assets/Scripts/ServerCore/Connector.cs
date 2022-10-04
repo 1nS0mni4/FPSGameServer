@@ -33,7 +33,9 @@ namespace ServerCore {
                 OnConnectCompleted(null, args);
         }
 
+#nullable enable
         private void OnConnectCompleted(object? sender, SocketAsyncEventArgs args) {
+#nullable disable
             if(args.SocketError == SocketError.Success) {
                 Console.WriteLine($"Connected to {args.ConnectSocket.RemoteEndPoint}");
                 Session session = _sessionFactory.Invoke();

@@ -1,3 +1,4 @@
+using Google.Protobuf;
 using Server.Session;
 using ServerCore;
 using System.Collections;

@@ -1,13 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStat : BaseStat
-{
+[Serializable]
+public struct PlayerStat {
+    [Header("Character's About Health Variables")]
+    public float Health;
+    public float MaxHealth;
+
     [Header("Speed Variables")]
-    public float CurrentSpeed = 0.0f;
-    public float RunSpeed = 0.0f;
-    public float WalkSpeed = 0.0f;
-    public float CrouchWalkSpeed = 0.0f;
-    public float JumpForce = 0.0f;
+    public float RunSpeed;
+    public float WalkSpeed;
+    public float CrouchWalkSpeed;
+    public float JumpForce;
 }

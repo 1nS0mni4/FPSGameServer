@@ -1,47 +1,84 @@
+using Client.Session;
+using Extensions;
 using Google.Protobuf.Protocol;
 using Server.Session;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerMovement))]
+[RequireComponent(typeof(CharacterController))]
 public class Player : Character {
-    [SerializeField]
-    private GameObject _arm = null;
+    #region Components & GameObjects
+    private PlayerMovement _movement = null;
 
-    private Vector3 _position = Vector3.zero;
-    private bool _posInterpolated = false;
 
-    public ClientSession Session { get; set; }
+    /// <summary>
+    /// 나중에 총 오브젝트 만들게 되면 여기다가 넣기.
+    /// </summary>
+    private GameObject gunObject = null;
 
-    public override Vector3 Position {
-        get => base.Position; 
-        set {
-            _position = value;
-            _posInterpolated = true;
-            //transform.position = value;
-        }
-    }
+    #endregion
 
-    protected void Awake() {
+    #region Variables
+    private Vector3 moveDirection = Vector3.zero;
+    #endregion
+
+    #region Properties
+    public uint AuthCode { get; private set; }
+    public bool[] Inputs { get; set; } = new bool[7];
+
+    #endregion
+
+    #region Unity Event Functions
+    protected override void OnAwakeEvent() {
         _movement = GetComponent<PlayerMovement>();
     }
 
     private void Update() {
-        transform.rotation = Quaternion.Slerp(transform.rotation, RotateDir, 5.0f * Time.deltaTime);
-        //_arm.transform.rotation = Quaternion.Slerp(_arm.transform.rotation, RotateDir, 5.0f * Time.deltaTime);
+        float vertical = (Inputs[(int)pInputMovementType.InputForward] ? 1 : 0) + (Inputs[(int)pInputMovementType.InputBackward] ? -1 : 0);
+        float horizontal = (Inputs[(int)pInputMovementType.InputLeft] ? -1 : 0) + (Inputs[(int)pInputMovementType.InputRight] ? 1 : 0);
+
+        moveDirection = new Vector3(horizontal, 0, vertical).normalized;
     }
 
-    public void FixedUpdate() {
-        _movement.MoveTo(MoveDir);
+    private void FixedUpdate() {
+        _movement.MoveTo(moveDirection, Inputs);
 
-        if(_posInterpolated) {
-            transform.position = Vector3.Lerp(transform.position, _position, 10f);
-            _posInterpolated = false;
-        }
+        if(ServerManager.ServerTick % 2 == 0)
+            SendSync();
     }
 
-    public void Jump() {
-        _movement.Jump();
+    private void OnTriggerEnter(Collider other) {
+        //TODO: 총알 트리거로 만들거임
     }
+
+    #endregion
+
+    #region Override Functions
+    public void RotateTo(Quaternion camFront) {
+        transform.rotation = camFront;
+    }
+
+    public override void SetCharacterHealth(float damage) {
+
+    }
+
+    public override void OnDeath() {
+
+    }
+
+    private void SendSync() {
+        S_Broadcast_Player_Move move = new S_Broadcast_Player_Move();
+        move.AuthCode = AuthCode;
+        move.ServerTick = ServerManager.ServerTick;
+        move.NewPosition = transform.position.TopVector3();
+        move.CamFront = transform.rotation.TopQuaternion();
+
+        InGameSceneManager.Instance.Broadcast(move);
+    }
+
+    public void SetAuth(uint authCode) { AuthCode = authCode; }
+
+    #endregion
 }

@@ -1,13 +1,15 @@
 using Google.Protobuf;
+using ServerCore;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
 public struct PacketModel {
+    public PacketSession session;
     public ushort packetID;
     public IMessage packet;
-    public int sessionID;
 }
 public class PacketQueue {
     #region Singleton
@@ -18,32 +20,28 @@ public class PacketQueue {
     public static PacketQueue Instance { get => _instance; }
 
     #endregion
-    private Queue<PacketModel> _queue = new Queue<PacketModel>();
+    private ConcurrentQueue<PacketModel> _queue = new ConcurrentQueue<PacketModel>();
     private object l_queue = new object();
-
     public int PacketCount { get => _queue.Count; }
 
-    public void Push(ushort packetID, IMessage packet, int sessionID) {
+    public void Push(PacketSession session, IMessage packet, ushort packetID) {
         lock(l_queue) {
-            _queue.Enqueue(new PacketModel() { packetID = packetID, packet = packet, sessionID = sessionID});
+            _queue.Enqueue(new PacketModel() { session = session, packetID = packetID, packet = packet });
         }
     }
 
     public List<PacketModel> PopAll() {
         List<PacketModel> list = new List<PacketModel>();
 
-        lock(l_queue) {
-            while(_queue.Count > 0) {
-                list.Add(_queue.Dequeue());
-            }
+        while(_queue.Count > 0) {
+            if(_queue.TryDequeue(out PacketModel model))
+                list.Add(model);
         }
 
         return list;
     }
 
     public void Clear() {
-        lock(l_queue) {
-            _queue.Clear();
-        }
+        _queue.Clear();
     }
 }

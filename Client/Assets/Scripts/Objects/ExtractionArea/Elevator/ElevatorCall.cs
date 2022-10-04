@@ -36,7 +36,7 @@ public class ElevatorCall : InteractableObject {
         }
     }
 
-    public override void ShowInteractType() {
+    public override void ShowInteractTypeUI() {
         if(_elevController.IsInteractable == false)
             return;
 

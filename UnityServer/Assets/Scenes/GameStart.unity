@@ -167,6 +167,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3635938d0111e9a46b630d056e2598a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LoginServerHostName: N-pera
+  LoginServerPort: 35432
+  areaType: 3
 --- !u!1 &565276330
 GameObject:
   m_ObjectHideFlags: 0

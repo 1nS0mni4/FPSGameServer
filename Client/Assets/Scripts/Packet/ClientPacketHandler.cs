@@ -73,12 +73,15 @@ public static class PacketHandler {
         ServerSession session = (ServerSession)s;
         S_Load_Players response = (S_Load_Players)packet;
 
-        Action loadPlayer = delegate() {
-            InGameSceneManager manager = Managers.Scene.GetManager<InGameSceneManager>();
+        SceneController sceneController = Managers.Scene;
+        if(sceneController == null)
+            return;
 
-            if(manager == null)
-                return;
+        InGameSceneManager manager = Managers.Scene.GetManager<InGameSceneManager>();
+        if(manager == null)
+            return;
 
+        Action loadPlayer = () => {
             for(int i = 0; i < response.ObjectList.Count; i++) {
                 manager.SpawnPlayer(response.ObjectList[i].AuthCode, response.ObjectList[i].Position, response.ObjectList[i].Rotation);
                 Debug.Log($"AuthCode: {response.ObjectList[i].AuthCode}");
@@ -87,8 +90,8 @@ public static class PacketHandler {
             manager.f_Loaded_Player = true;
         };
 
-        if(Managers.Scene.IsSceneChanging) 
-            Managers.Scene.Completed.Enqueue(loadPlayer);
+        if(sceneController.IsSceneChanging)
+            sceneController.Completed.Enqueue(loadPlayer);
         else
             loadPlayer.Invoke();
     }
@@ -98,14 +101,13 @@ public static class PacketHandler {
         ServerSession session = (ServerSession)s;
         S_Load_Items response = (S_Load_Items)packet;
 
+        InGameSceneManager manager = Managers.Scene.GetManager<InGameSceneManager>();
+
+        if(manager == null)
+            return;
+
         Action loadItem = delegate () {
-            InGameSceneManager manager = Managers.Scene.GetManager<InGameSceneManager>();
-
-            if(manager == null)
-                return;
-
             //TODO: 맵의 아이템에 대한 모든 정보 기입
-
             manager.f_Loaded_Item = true;
         };
 
@@ -139,21 +141,24 @@ public static class PacketHandler {
         ServerSession session = (ServerSession)s;
         S_Broadcast_Player_Spawn response = (S_Broadcast_Player_Spawn)packet;
 
+        SceneController sceneController = Managers.Scene;
+        if(sceneController == null)
+            return;
+
+        InGameSceneManager manager = Managers.Scene.GetManager<InGameSceneManager>();
+        if(manager == null)
+            return;
+
         Action spawnUser = () => {
-            InGameSceneManager manager = Managers.Scene.GetManager<InGameSceneManager>();
-
-            if(manager == null)
-                return;
-
             manager.SpawnPlayer(response.Info.AuthCode, response.Info.Position, response.Info.Rotation);
         };
 
-        if(Managers.Scene.IsSceneChanging)   //로딩 중 내 캐릭터 생성을 명령 받았을 때
-            Managers.Scene.Completed.Enqueue(spawnUser);
+        if(sceneController.IsSceneChanging)
+            sceneController.Completed.Enqueue(spawnUser);
         else
             spawnUser.Invoke();
 
-        Debug.Log($"S_Spawn Received! {response.Info.AuthCode}");
+        Debug.Log($"S_Broadcast_Player_Spawn Received! {response.Info.AuthCode}");
     }
 
     public static void S_Broadcast_Player_LeaveHandler(PacketSession s, IMessage packet) {
@@ -201,33 +206,6 @@ public static class PacketHandler {
         if(manager == null)
             return;
 
-        manager.SyncPlayerMove(response.AuthCode, response.Velocity);
-    }
-
-    public static void S_Sync_Player_TransformHandler(PacketSession s, IMessage packet) {
-        ServerSession session = (ServerSession)s;
-        S_Sync_Player_Transform response = (S_Sync_Player_Transform)packet;
-
-        InGameSceneManager manager = Managers.Scene.GetManager<InGameSceneManager>();
-        if(manager == null)
-            return;
-
-        for(int i = 0; i < response.Players.Count; i++) {
-            manager.SyncObjectInPosition(response.Players[i].AuthCode, response.Players[i].Position, response.Players[i].Rotation);
-            Debug.Log($"S_Sync_Player_Transform Received! {response.Players[i].AuthCode}");
-        }
-    }
-
-    public static void S_Broadcast_Player_RotationHandler(PacketSession s, IMessage packet) {
-        ServerSession session = (ServerSession)s;
-        S_Broadcast_Player_Rotation response = (S_Broadcast_Player_Rotation)packet;
-
-        InGameSceneManager manager = Managers.Scene.GetManager<InGameSceneManager>();
-        if(manager == null)
-            return;
-
-        manager.SyncPlayerRotation(response.AuthCode, response.Rotation);
-
-        Debug.Log($"S_Broadcast_Look_Rotation Received! {response.AuthCode}");
+        manager.HandleCharacterMove(response.AuthCode, response.ServerTick, response.NewPosition, response.CamFront);
     }
 }

@@ -15,7 +15,7 @@ public class PacketManager {
     private Dictionary<ushort, Action<PacketSession, ArraySegment<byte>, ushort>> _makeFunc = new Dictionary<ushort, Action<PacketSession, ArraySegment<byte>, ushort>>();
     private Dictionary<ushort, Action<PacketSession, IMessage>> _handler = new Dictionary<ushort, Action<PacketSession, IMessage>>();
 
-    public Action<ushort, IMessage> CustomHandler { get; set; } = null;
+    public Action<PacketSession, IMessage, ushort > CustomHandler { get; set; } = null;
 
     private void Register() {
       _makeFunc.Add((ushort)PacketID.SErrorPacket, MakePacket<S_Error_Packet>);
@@ -38,10 +38,6 @@ public class PacketManager {
     _handler.Add((ushort)PacketID.SBroadcastPlayerSpawn, PacketHandler.S_Broadcast_Player_SpawnHandler);
       _makeFunc.Add((ushort)PacketID.SBroadcastPlayerMove, MakePacket<S_Broadcast_Player_Move>);
     _handler.Add((ushort)PacketID.SBroadcastPlayerMove, PacketHandler.S_Broadcast_Player_MoveHandler);
-      _makeFunc.Add((ushort)PacketID.SBroadcastPlayerRotation, MakePacket<S_Broadcast_Player_Rotation>);
-    _handler.Add((ushort)PacketID.SBroadcastPlayerRotation, PacketHandler.S_Broadcast_Player_RotationHandler);
-      _makeFunc.Add((ushort)PacketID.SSyncPlayerTransform, MakePacket<S_Sync_Player_Transform>);
-    _handler.Add((ushort)PacketID.SSyncPlayerTransform, PacketHandler.S_Sync_Player_TransformHandler);
       _makeFunc.Add((ushort)PacketID.SBroadcastPlayerLeave, MakePacket<S_Broadcast_Player_Leave>);
     _handler.Add((ushort)PacketID.SBroadcastPlayerLeave, PacketHandler.S_Broadcast_Player_LeaveHandler);
 
@@ -66,7 +62,7 @@ public class PacketManager {
         pkt.MergeFrom(segment.Array, segment.Offset + 4, segment.Count - 4);
 
         if(CustomHandler != null) {
-            CustomHandler.Invoke(msgID, pkt);
+            CustomHandler.Invoke(session, pkt, msgID);
         }
         else {
             Action<PacketSession, IMessage> action = null;

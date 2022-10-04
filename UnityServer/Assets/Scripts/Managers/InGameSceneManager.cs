@@ -5,6 +5,7 @@ using Server.Session;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.Jobs;
 using UnityEngine;
 
@@ -23,16 +24,16 @@ public class InGameSceneManager : MonoBehaviour {
 
     public List<Transform> _spawnPoint = new List<Transform>();
 
-    [HideInInspector]
     public CharacterPooler _playerPooler;
 
-
-    private List<uint> _playerAuths = new List<uint>();
     private Dictionary<uint, Player> _players = new Dictionary<uint, Player>();
+    private object l_players = new object();
+    private Dictionary<uint, ClientSession> _sessions = new Dictionary<uint, ClientSession>();
+    private object l_sessions = new object();
     private Dictionary<uint, InteractableObject> _fieldObjects = new Dictionary<uint, InteractableObject>();
 
 
-    private bool f_Load_FieldData = false;
+    private bool f_Load_FieldData = true;
     private bool f_Load_Items = true;
 
     private void Awake() {
@@ -60,6 +61,9 @@ public class InGameSceneManager : MonoBehaviour {
         
         f_Load_Items = true;
     }
+    private void OnLoadCompleted() {
+        ServerManager.Network.Listen();
+    }
 
     private IEnumerator CoCheckLoadFinished() {
         while(true) {
@@ -69,15 +73,54 @@ public class InGameSceneManager : MonoBehaviour {
             yield return null;
         }
 
-        ServerManager.Network.Listen();
+        OnLoadCompleted();
+
+#if UNITY_EDITOR
+        S_Login_Debug_Game_Standby standby = new S_Login_Debug_Game_Standby();
+
+        pEndPoint endPoint = new pEndPoint();
+        endPoint.HostString = ServerManager.Network.LocalHostName;
+        endPoint.Port = ServerManager.Network.LocalPort;
+
+        standby.EndPoint = endPoint;
+        standby.AreaType = _areaType;
+        standby.Capacity = 5;
+        
+        //TODO: 필드 별 인원 최대 수용량 설정하기.
+#else
+        S_Login_Game_Standby standby = new S_Login_Game_Standby();
+        pEndPoint endPoint = new pEndPoint();
+        {
+            endPoint.HostString = ServerManager.Network.LocalHostName;
+            endPoint.Port = ServerManager.Network.LocalPort;
+        }
+
+        standby.EndPoint = endPoint;
+        standby.AreaType = _areaType;
+
+#endif
+        ServerManager.Network.SendToLoginServer(standby);
         yield break;
     }
 
     public bool RegisterUserAuth(uint authCode) {
-        if(_playerAuths.Contains(authCode))
+        if(_players.ContainsKey(authCode))
             return false;
 
-        _playerAuths.Add(authCode);
+        Player player = _playerPooler.Get();
+
+        Transform randSpawn = _spawnPoint[UnityEngine.Random.Range(0, _spawnPoint.Count)];
+        if(randSpawn == null) {
+
+        }
+        _spawnPoint.Remove(randSpawn);
+        player.gameObject.SetActive(true);
+        player.transform.position = randSpawn.position;
+        player.SetAuth(authCode);
+
+        lock(l_players) {
+            _players.Add(authCode, player);
+        }
         return true;
     }
 
@@ -87,40 +130,68 @@ public class InGameSceneManager : MonoBehaviour {
     /// <param name="session"></param>
     /// <param name="authCode"></param>
     /// <returns>UserAuth에 등록되어있지 않거나, 이미 캐릭터가 생성되어있을 경우 false, 나머지는 true</returns>
-    public bool EnterGame(ClientSession session, uint authCode) {   
-        if(_playerAuths.Contains(authCode) == false || _players.ContainsKey(authCode))
+    public bool EnterGame(ClientSession session) {   
+        if(_sessions.ContainsKey(session.AuthCode))
             return false;
 
-        Player player = _playerPooler.Get();
-        
-        Transform randSpawn = _spawnPoint[UnityEngine.Random.Range(0, _spawnPoint.Count - 1)];
-        _spawnPoint.Remove(randSpawn);
-        player.gameObject.SetActive(true);
-        player.transform.position = randSpawn.position;
-        player.Session = session;
+        Player player;
+        if(_players.TryGetValue(session.AuthCode, out player) == false)
+            return false;
 
-        _players.Add(authCode, player);
+        session.Character = player;
+        lock(l_sessions) {
+            _sessions.Add(session.AuthCode, session);
+        }
 
         S_Broadcast_Player_Spawn spawn = new S_Broadcast_Player_Spawn();
-        spawn.Info.AuthCode = authCode;
+        spawn.Info.AuthCode = session.AuthCode;
         spawn.Info.Position = player.transform.position.TopVector3();
         spawn.Info.Rotation = player.transform.rotation.TopQuaternion();
 
-        //TODO: Broadcast기능 추가.
-        ServerManager.Network.Broadcast(spawn);
-
+        Broadcast(spawn);
         return true;
     }
 
-    public void PlayerMove(uint authCode, pVector3 velocity) {
+    public bool Disconnect(uint authCode) {
+        bool success = true;
+        if(_players.TryGetValue(authCode, out Player player)) {
+            lock(l_players) {
+                _players.Remove(authCode);
+            }
+            _playerPooler.Destroy(player);
+        }
+        else
+            success &= false;
 
+        if(_sessions.TryGetValue(authCode, out ClientSession session)) {
+            lock(l_sessions) {
+                _sessions.Remove(session.AuthCode);
+            }
+            session.Disconnect();
+        }
+        else
+            success &= false;
+
+        return success;
+    }
+
+    public void PlayerMove(uint authCode, bool[] inputs, pQuaternion camFront) {
+        if(_players.TryGetValue(authCode, out Player player)) {
+            
+        }
     }
 
     public void GameEnd() {
 
     }
 
-    public void Broadcast(IMessage packet) {
-
+    public async Task Broadcast(IMessage packet) {
+        await Task.Factory.StartNew(() => {
+            lock(l_sessions) {
+                foreach(var session in _sessions.Values) {
+                    session.Send(packet);
+                }
+            }
+        });
     }
 }

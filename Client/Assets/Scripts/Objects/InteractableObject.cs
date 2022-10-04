@@ -13,6 +13,6 @@ public abstract class InteractableObject : MonoBehaviour, NetworkObject {
                      public bool Interactable { get => _interactable; }
 
     public uint AuthCode { get; set; }
-    public abstract void ShowInteractType();
+    public abstract void ShowInteractTypeUI();
     public abstract void Interact(pInteractType type);
 }

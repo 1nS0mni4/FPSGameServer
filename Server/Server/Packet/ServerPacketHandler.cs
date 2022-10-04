@@ -50,7 +50,7 @@ public static class PacketHandler {
         C_Login_Request_Game_Session parsedPacket = (C_Login_Request_Game_Session)packet;
         ClientSession session = (ClientSession)s;
 
-        GameServerManager.Instance.TryEnterRoom(session, parsedPacket.AreaType, parsedPacket.UserCount);
+        await Task.Run(() => GameServerManager.Instance.TryEnterRoom(session, parsedPacket.AreaType, parsedPacket.UserCount));
     }
 
     public static void C_Login_Request_OnlineHandler(PacketSession s, IMessage packet) {
@@ -64,14 +64,23 @@ public static class PacketHandler {
         S_Login_Game_Standby parsedPacket = (S_Login_Game_Standby)packet;
         GameServerSession session = (GameServerSession)s;
 
-        GameServerManager.Instance.GameServerStandby(session, parsedPacket);
+        await Task.Run(() => GameServerManager.Instance.GameServerStandby(session, parsedPacket));
         Console.WriteLine("Server Standby!");
     }
-     
+
+    public static async void S_Login_Debug_Game_StandbyHandler(PacketSession s, IMessage packet) {
+        S_Login_Debug_Game_Standby parsedPacket = (S_Login_Debug_Game_Standby)packet;
+        GameServerSession session = (GameServerSession)s;
+
+        await Task.Run(() => GameServerManager.Instance.GameServerStandby(session, parsedPacket));
+        Console.WriteLine("Server Standby!");
+    }
+    
+
     public static async void S_Login_Notify_Server_InfoHandler(PacketSession s, IMessage packet) {
         S_Login_Notify_Server_Info parsedPacket = (S_Login_Notify_Server_Info)packet;
         GameServerSession session = (GameServerSession)s;
 
-        GameServerManager.Instance.GameServerUpdate(parsedPacket);
+        await Task.Run(() => GameServerManager.Instance.GameServerUpdate(parsedPacket));
     }
 }

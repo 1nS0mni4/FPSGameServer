@@ -33,6 +33,7 @@ namespace ServerCore {
 
             bool pending = _listenSocket.AcceptAsync(args);
 
+            UnityEngine.Debug.Log("Listen Success");
             if(pending == false)
                 OnAcceptCompleted(null, args);
         }

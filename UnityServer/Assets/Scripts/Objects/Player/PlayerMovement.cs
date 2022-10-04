@@ -4,47 +4,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(PlayerStat))]
 [RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour {
+    #region Components & GameObjects
     private CharacterController _controller = null;
-    private PlayerStat          _stat       = null;
     private Animator            _animator   = null;
+    [SerializeField] private PlayerStat          _stat;
 
+    #endregion
+
+    #region Value_Type Variables
     private Vector3       moveForce;
-    private pPlayerStance _curStance        = pPlayerStance.Walk;
+    private float _currentSpeed = 0.0f;
 
+    #endregion
+
+    #region Properties
     public bool IsGrounded { get => _controller.isGrounded; }
-    public pPlayerStance Stance {
-        get => _curStance;
-        set {
-            if(_curStance == value)
-                return;
 
-            _curStance = value;
-            switch(value) {
-                case pPlayerStance.Idle: {
-                    _stat.CurrentSpeed = 0;
-                }break;
-                case pPlayerStance.Walk: {
-                    _stat.CurrentSpeed = _stat.WalkSpeed;
-                }break;
-                case pPlayerStance.Crouch: {
-                    _stat.CurrentSpeed = _stat.CrouchWalkSpeed;
-                }break;
-                case pPlayerStance.Run: {
-                    _stat.CurrentSpeed = _stat.RunSpeed;
-                }break;
-            }
+    #endregion
 
-            _animator.SetFloat("Speed", _stat.CurrentSpeed);
-        }
-    }
+    #region Unity Event Functions
 
     private void Awake() {
         _controller = GetComponent<CharacterController>();
-        _stat = GetComponent<PlayerStat>();
         _animator = GetComponentInChildren<Animator>();
     }
 
@@ -52,46 +36,38 @@ public class PlayerMovement : MonoBehaviour {
         StartCoroutine(CoEffectGravity());
     }
 
-    public void MoveTo(Vector3 direction) {
-        direction = transform.rotation * new Vector3(direction.x, 0, direction.z);
-        moveForce = new Vector3(direction.x * _stat.CurrentSpeed, moveForce.y, direction.z * _stat.CurrentSpeed);
-
-        _controller.Move(moveForce * Time.deltaTime);
+    private void OnDestroy() {
+        StopCoroutine(CoEffectGravity());
     }
+
+    #endregion
 
     /// <summary>
-    /// 서버 패킷 수신용
+    /// CharacterController를 통해 캐릭터를 직접 움직이는 함수.
     /// </summary>
-    /// <param name="direction"></param>
-    /// <param name="stance"></param>
-    public void MoveTo(pVector3 direction, pPlayerStance stance) {
-        Stance = stance;
-        Vector3 dir = new Vector3(direction.X, direction.Y, direction.Z);
-        MoveTo(dir);
-    }
+    /// <param name="direction">플레이어의 로컬 이동방향</param>
+    /// <param name="inputs">달리기, 앉기, 점프 등을 가지는 변수</param>
+    public void MoveTo(Vector3 direction, bool[] inputs) {
+        direction = transform.rotation * new Vector3(direction.x, 0, direction.z);
+        _currentSpeed = inputs[(int)pInputMovementType.InputSprint] ? _stat.RunSpeed : inputs[(int)pInputMovementType.InputCrouch] ? _stat.CrouchWalkSpeed : _stat.WalkSpeed;
 
-    public void Interpolate(pVector3 position) {
-        Vector3 pos = new Vector3(position.X, position.Y, position.Z);
-        //transform.position = Vector3.Lerp(transform.position, pos, );
+        moveForce = new Vector3(direction.x * _currentSpeed, moveForce.y, direction.z * _currentSpeed);
+
+        if(inputs[(int)pInputMovementType.InputJump]) Jump();
+
+        _controller.SimpleMove(moveForce);
     }
 
     public void Jump() {
         if(_controller.isGrounded == false)
             return;
+
         moveForce += new Vector3(0, _stat.JumpForce, 0);
-        _controller.Move(moveForce * Time.deltaTime);
     }
 
     public void RotateTo(Vector3 direction) {
         transform.rotation = Quaternion.Euler(direction.x, direction.y, 0);
     }
-
-    //public IEnumerator CoStartRotate(Vector3 direction) {
-    //    while(true) {
-    //        RotateTo(direction);
-    //        yield return null;
-    //    }
-    //}
 
     public IEnumerator CoEffectGravity() {
         while(true) {
@@ -105,7 +81,4 @@ public class PlayerMovement : MonoBehaviour {
         }
     }
 
-    private void OnDestroy() {
-        StopCoroutine(CoEffectGravity());
-    }
 }

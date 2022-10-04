@@ -1,27 +1,78 @@
 using Google.Protobuf.Protocol;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
+using static Define;
 
-[RequireComponent(typeof(PlayerMovement))]
-public class Character : MonoBehaviour, CharacterObject { 
+public abstract class Character : MonoBehaviour, NetworkObject {
+    #region Components & GameObjects
+    [Header("Character Components")]
+
+    #endregion
+
+    #region Variables
+    [SerializeField] protected PlayerStat       _stat;
+
+    #endregion
+    #region Properties
     public uint AuthCode { get; set; }
+    public bool IsLocal { get; protected set; }
+    #endregion
 
-    [SerializeField] protected PlayerMovement _movement = null;
+    #region Unity Event Functions
 
-    public virtual Vector3 MoveDir { get; set; }
-    public virtual Quaternion RotateDir { get; set; }
-    public virtual Vector3 Position { get => transform.position; set => transform.position = value; }
-    public virtual pPlayerStance Stance { 
-        get {
-            if(_movement == null)
-                return pPlayerStance.Nostance;
-
-            return _movement.Stance; 
-        } 
-        set {
-            if(_movement != null)
-                _movement.Stance = value;
-        } 
+    /// <summary>
+    /// Initializing First
+    /// </summary>
+    private void Awake() {
+        OnAwakeEvent();
     }
+
+    /// <summary>
+    /// Initializing Second
+    /// </summary>
+    private void OnEnable() {
+        OnEnableEvent();
+    }
+
+    /// <summary>
+    /// Initializing Third
+    /// </summary>
+    private void Start() {
+        OnStartEvent();
+    }
+
+    #endregion
+
+    #region Virtual Functions
+    /// <summary>
+    /// Calling by UnityEvent.Awake().
+    /// </summary>
+    protected virtual void OnAwakeEvent() { }
+
+    /// <summary>
+    /// Calling by UnityEvent.Start().
+    /// </summary>
+    protected virtual void OnStartEvent() { }
+    protected virtual void OnEnableEvent() { }
+
+    /// <summary>
+    /// All Characters' Moving Method except for Local Player.
+    /// </summary>
+    /// <param name="serverTick">Dedicated Server's Tick for synchronization.</param>
+    /// <param name="newPosition">Character's next position.</param>
+    public virtual void Move(uint serverTick, Vector3 newPosition) { }
+    public virtual void Rotate(Quaternion camFront) { }
+
+    #endregion
+
+    #region Abstract Functions
+    /// <summary>
+    /// All Character's DecreasingHealth Method.
+    /// </summary>
+    /// <param name="damage">value that calculated by Dedicated Server.</param>
+    public abstract void OnDamage(float damage);
+    public abstract void OnDeath();
+    #endregion
 }

@@ -5,13 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Utils {
-    public class Singleton<T> where T : new() {
+    public abstract class Singleton<T> where T : new() {
         private static T _instance = new T();
         public static T Instance {
-            get { 
+            get {
                 if(_instance == null)
                     _instance = new T();
-                return _instance; 
+                return _instance;
             }
         }
     }

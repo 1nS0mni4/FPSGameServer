@@ -32,7 +32,7 @@ namespace ServerCore {
             if(pending == false)
                 OnConnectCompleted(null, args);
         }
-
+#nullable enable
         private void OnConnectCompleted(object? sender, SocketAsyncEventArgs args) {
             if(args.SocketError == SocketError.Success) {
                 Console.WriteLine($"Connected to {args.ConnectSocket.RemoteEndPoint}");
@@ -44,5 +44,6 @@ namespace ServerCore {
                 Console.WriteLine($"Connect Failed! {args.SocketError}");
             }
         }
+#nullable disable
     }
 }

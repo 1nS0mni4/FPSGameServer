@@ -15,6 +15,12 @@ public class ServerManager : MonoBehaviour {
     private NetworkManager _network = new NetworkManager();
     public static NetworkManager Network { get => _instance._network; }
 
+    public static uint ServerTick { get; private set; }
+
+    public string LoginServerHostName = "";
+    public int LoginServerPort = 0;
+    public pAreaType areaType = pAreaType.Gamestart;
+
     private void Awake() {
         if(_instance != null)
             Destroy(_instance.gameObject);
@@ -30,30 +36,28 @@ public class ServerManager : MonoBehaviour {
         Console.WriteLine($"args Count: {args.Length}");
         Console.WriteLine($"args[0]: {args[0]}");
 
+#if !UNITY_EDITOR
         if(args.Length < 2) {
             Console.WriteLine("Args Required: [ProcessName] [-batchmode] [-nographics] [LoginServerIP] [LoginServerPort] [pAreaType]");
-            //Application.Quit();
-            //return;
+            Application.Quit();
+            return;
         }
 
-        string hostString = args[3];
 
-        int port;
-        if(int.TryParse(args[4], out port) == false) {
+        LoginServerHostName = args[3];
+
+        if(int.TryParse(args[4], out LoginServerPort) == false) {
             Console.WriteLine("Args [LoginServerPort] not Parsed as int");
-            //Application.Quit();
-            //return;
+            Application.Quit();
+            return;
         }
 
-        pAreaType areaType = (pAreaType)Enum.Parse(typeof(pAreaType), args[6]);
+        areaType = (pAreaType)Enum.Parse(typeof(pAreaType), args[6]);
+#endif
 
-        foreach(string argument in args) {
-            Console.WriteLine($"{argument}");
-        }
+        IPHostEntry ipHost = Dns.GetHostEntry(LoginServerHostName);
 
-        IPHostEntry ipHost = Dns.GetHostEntry(hostString);
-
-        Network.ConnectTo(ipHost.AddressList[0], port);
+        Network.ConnectTo(ipHost.AddressList[0], LoginServerPort);
 
         SceneManager.LoadSceneAsync((int)areaType, LoadSceneMode.Single);
     }
@@ -67,11 +71,13 @@ public class ServerManager : MonoBehaviour {
             Action<PacketSession, IMessage> action = null;
 
             action = PacketManager.Instance.GetPacketHandler(list[i].packetID);
-            if(action != null) {
-                //action.Invoke(SessionManager.Instance.Find(list[i].sessionID), list[i].packet);
+            if(null != action) {
+                action.Invoke(list[i].session, list[i].packet);
             }
         }
     }
+
+    private void FixedUpdate() { ServerTick++; }
 
     public void CloseServer() {
 

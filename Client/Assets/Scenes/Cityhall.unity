@@ -123,11 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!4 &102410362 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2899379602266581932, guid: 13c0dc9c81824d143900a41a0bb3e37f, type: 3}
-  m_PrefabInstance: {fileID: 2899379602164433878}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &181439025
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -365,16 +360,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8671ec303dc261540bd1b8580d25bcd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &234105869 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2899379602129579995, guid: 13c0dc9c81824d143900a41a0bb3e37f, type: 3}
-  m_PrefabInstance: {fileID: 2899379602164433878}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &239589882 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2899379602134768172, guid: 13c0dc9c81824d143900a41a0bb3e37f, type: 3}
-  m_PrefabInstance: {fileID: 2899379602164433878}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &256120266
 GameObject:
   m_ObjectHideFlags: 0
@@ -493,6 +478,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _execUI: {fileID: 955501994}
   _fade: {fileID: 615522214}
+  _transmitter: {fileID: 0}
 --- !u!1001 &559127116
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -927,11 +913,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 304383228173817767, guid: d99e168e5589b66498c5ab688b5c5c02, type: 3}
   m_PrefabInstance: {fileID: 955501993}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1007049176 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2899379601291614734, guid: 13c0dc9c81824d143900a41a0bb3e37f, type: 3}
-  m_PrefabInstance: {fileID: 2899379602164433878}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1127044118
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1135,7 +1116,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: 5e70da16b3c1a7444aae3bb2ffe1f2b5, type: 3}
 --- !u!114 &1676215800 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2784430793119933343, guid: 5e70da16b3c1a7444aae3bb2ffe1f2b5, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2410793036619663045, guid: 5e70da16b3c1a7444aae3bb2ffe1f2b5, type: 3}
   m_PrefabInstance: {fileID: 1676215799}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -1190,19 +1171,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _areaType: 2
   _uiManager: {fileID: 256120271}
-  _spawnPoints:
-  - fromArea: 1
-    toArea: 3
-    transform: {fileID: 234105869}
-  - fromArea: 1
-    toArea: 4
-    transform: {fileID: 1007049176}
-  - fromArea: 1
-    toArea: 5
-    transform: {fileID: 239589882}
-  - fromArea: 1
-    toArea: 6
-    transform: {fileID: 102410362}
   _myPlayer: {fileID: 1676215800}
   _characterPooler: {fileID: 2117257320}
   f_Loaded_Player: 1

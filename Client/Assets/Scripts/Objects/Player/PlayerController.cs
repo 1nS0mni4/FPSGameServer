@@ -7,97 +7,82 @@ using Google.Protobuf.Protocol;
 
 [Serializable]
 public class KeyOption {
-    public KeyCode MoveForward      = KeyCode.W;
-    public KeyCode MoveBackward     = KeyCode.S;
-    public KeyCode MoveLeft         = KeyCode.A;
-    public KeyCode MoveRight        = KeyCode.D;
-    public KeyCode Jump             = KeyCode.Space;
-    public KeyCode Interact         = KeyCode.E;
-    public KeyCode Run              = KeyCode.LeftShift;
-    public KeyCode Crouch           = KeyCode.LeftControl;
-    public KeyCode Reload           = KeyCode.R;
-
-    public KeyCode Inventory        = KeyCode.Tab;
+    //TODO: 전부 다 유니티 InputManager의 이름 값으로 수정 필요.
+    public readonly KeyCode MoveForward      = KeyCode.W;
+    public readonly KeyCode MoveBackward     = KeyCode.S;
+    public readonly KeyCode MoveLeft         = KeyCode.A;
+    public readonly KeyCode MoveRight        = KeyCode.D;
+    public readonly KeyCode Jump             = KeyCode.Space;
+    public readonly KeyCode Interact         = KeyCode.E;
+    public readonly KeyCode Run              = KeyCode.LeftShift;
+    public readonly KeyCode Crouch           = KeyCode.LeftControl;
+    public readonly KeyCode Reload           = KeyCode.R;
+           
+    public readonly KeyCode Inventory        = KeyCode.Tab;
 }
 
-[RequireComponent(typeof(PlayerMovement))]
 public class PlayerController : MonoBehaviour {
-    [Header("Interaction Ray Implements")]
-    public  float               _interactDistance       = 5.0f;
-    private Ray                 _interactRay;
-    public  LayerMask           _interactLayerMask;
-    public  InteractableUI      _interactUI             = null;
-    private InteractableObject  _curInteracting         = null;
 
-    private PlayerMovement      _movement               = null;
-    private KeyOption           _keyOption              = new KeyOption();
 
-    private Action<int, bool>   MouseClickAction;
-    private ushort              _mouseClickListener     = 0;
-    private Action<int>         MouseWheelAction;
-    private ushort              _mouseWheelListener     = 0;
+    #region Components
+    [Header("Interaction Components")]
+    private InteractableUI _interactUI = null;
+    private InteractController _interactController = null;
 
-    public void AddMouseClickListener(Action<int, bool> action) {
-        MouseClickAction -= action;
-        MouseClickAction += action;
-        _mouseClickListener++;
-    }
-    public void RemoveMouseClickListener(Action<int, bool> action) {
-        MouseClickAction -= action;
-        _mouseClickListener--;
-    }
-    public void AddMouseWheelListener(Action<int> action) {
-        MouseWheelAction -= action;
-        MouseWheelAction += action;
-        _mouseWheelListener++;
-    }
-    public void RemoveMouseWheelListener(Action<int> action) {
-        MouseWheelAction -= action;
-        _mouseWheelListener--;
-    }
+    #endregion
 
+    #region Reference-Type Variables
+    private Managers       _manager   = Managers.Instance;
+    private KeyOption      _keyOption = new KeyOption();
+
+    #endregion
+
+    #region Camera Rotation Variables
+    [Header("Camera Rotation Attributes")]
     [SerializeField] private float rotCamXAxisSpeed = 5;
     [SerializeField] private float rotCamYAxisSpeed = 3;
 
-                     private float limitMinX = -80;
-                     private float limitMaxX = 50;
-                     private float eulerAngleX;
-                     private float eulerAngleY;
-                     
-                     private bool isCrouch = false;
-                                          
-                     private Vector3 moveDir = Vector3.zero;
+    private float limitMinX = -90;
+    private float limitMaxX = 80;
+    private float eulerAngleX;
+    private float eulerAngleY;
+
+    #endregion
+
+    #region Boolean Type Input Variables
+    [Header("Boolean_type Inputs")]
+    [SerializeField] private MovementSystem_Local _movement      = null;
+    [HideInInspector]public  bool                 toggle_Crouch  = false;
+                     private bool                 isCrouch       = false;
+                     private bool                 isRun          = false;
+                     private bool                 isJump         = false;
+                     private bool                 moveForward    = false;
+                     private bool                 moveBackward   = false;
+                     private bool                 moveLeft       = false;
+                     private bool                 moveRight      = false;
+
+    #endregion
 
     private void Awake() {
-        Managers.Input.AddMouseInputHandler(MouseInputHandler);
-        Managers.Input.AddKeyInputHandler(KeyboardInputHandler);
-
-        _movement = GetComponent<PlayerMovement>();
+        _movement = GetComponent<MovementSystem_Local>();
+        _interactController = GetComponent<InteractController>();
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    public void MouseInputHandler() {
+    private void Update() {
+        MouseAction();
+        KeyAction();
+    }
+
+    private void MouseAction() {
+        if(Managers.CanInput == false)
+            return;
+
         eulerAngleX -= Input.GetAxis("Mouse Y") * rotCamXAxisSpeed;
         eulerAngleY += Input.GetAxis("Mouse X") * rotCamYAxisSpeed;
 
         eulerAngleX = ClampAngle(eulerAngleX, limitMinX, limitMaxX);
-
-        _movement.RotateTo(new Vector3(eulerAngleX, eulerAngleY, 0));
-
-        if(_mouseClickListener > 0) {
-            if(Input.GetMouseButtonDown(0)) {
-                MouseClickAction.Invoke(0, true);
-            }
-            else if(Input.GetMouseButtonUp(0)) {
-                MouseClickAction.Invoke(0, false);
-            }
-            if(Input.GetMouseButtonDown(1)) {
-                MouseClickAction.Invoke(1, true);
-            }
-            else if(Input.GetMouseButtonUp(1)) {
-                MouseClickAction.Invoke(1, false);
-            }
-        }
+        _movement?.RotateTo(new Vector3(eulerAngleX, eulerAngleY, 0));
 
         Vector2 mouseScroll = Input.mouseScrollDelta;
         if(mouseScroll != Vector2.zero) {
@@ -107,114 +92,63 @@ public class PlayerController : MonoBehaviour {
                 _interactUI.ScrollInteractType(direction);
             }
             else {
-
+                //TODO: Interactable을 보고 있지 않을 때 휠을 굴리면 작동할 작업
             }
         }
-
-        RaycastHit hit;
-        _interactRay = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f));
-        Debug.DrawRay(_interactRay.origin, _interactRay.direction, Color.red, _interactDistance);
-        if(Physics.Raycast(_interactRay, out hit, _interactDistance, _interactLayerMask)) {
-            if(_curInteracting != null && _curInteracting.CompareTag(hit.collider.tag))
-                return;
-
-            _curInteracting = hit.collider.GetComponent<InteractableObject>();
-            _curInteracting.ShowInteractType();
-        }
-        else {
-            if(_interactUI.IsOpen) {
-                _interactUI.CloseInteractType();
-                _curInteracting = null;
-            }
-        }
-        
     }
-    public void KeyboardInputHandler() {
-        #region Action Input Handler
-        if(Input.GetKeyDown(_keyOption.Inventory)) {
-            //TODO: UI창 띄우기 등 각종 필요한 액션들 작성 필요
+
+    private void KeyAction() {
+        if(Input.GetKey(KeyCode.Escape)) {
+            //TODO: UI창 띄우기
         }
 
-        if(Input.GetKeyDown(_keyOption.Interact)) {
-            //TODO: 상호작용 시 필요한 액션 작성 필요
-            if(_interactUI == null)
-                return;
+        #region Ignore Input conditions
+        if(_keyOption == null)
+            return;
 
-            if(_curInteracting == null)
-                return;
-
-            _interactUI.Interact();
-        }
-
-        #endregion
-
-        #region Movement Input Handler
         if(_movement == null)
             return;
 
         if(_movement.IsGrounded == false)
             return;
 
-        if(_keyOption == null)
-            return;
+        #endregion
 
-        if(Input.GetKeyDown(_keyOption.Jump)) {
-            _movement.Jump();
+        #region Action Input Handler
+        if(Input.GetKeyDown(_keyOption.Inventory)) {
+            //TODO: UI창 띄우기 등 각종 필요한 액션들 작성 필요
         }
 
-        if(Input.GetKeyDown(_keyOption.Crouch)) {
-            _movement.Stance = pPlayerStance.Crouch;
-            isCrouch = true;
-        }
-        if(Input.GetKeyUp(_keyOption.Crouch)) {
-            _movement.Stance = pPlayerStance.Walk;
-            isCrouch = false;
+        if(Input.GetKeyDown(_keyOption.Interact)) {
+            _interactController.Interact();
         }
 
-        float moveX = Input.GetAxisRaw("Horizontal");
-        float moveZ = Input.GetAxisRaw("Vertical");
+        #endregion
 
-        if(moveX != 0 || moveZ != 0) {
-            bool isRun = false;
-            if(moveZ > 0 && isCrouch == false) isRun = Input.GetKey(_keyOption.Run);
+        #region Movement Input Handler
 
-            _movement.Stance = isRun ? pPlayerStance.Run : ( isCrouch ? pPlayerStance.Crouch : pPlayerStance.Walk );
-        }
-        else {
-            _movement.Stance = pPlayerStance.Idle;
-        }
+        if(toggle_Crouch)
+            isCrouch = (Input.GetKeyDown(_keyOption.Crouch) ? !isCrouch : isCrouch );
+        else
+            isCrouch = Input.GetKey(_keyOption.Crouch);
 
-        Vector3 direction = new Vector3(moveX, moveDir.y, moveZ).normalized;
+        isRun        = Input.GetKey(_keyOption.Run);
+        isJump       = Input.GetKey(_keyOption.Jump);
 
+        moveForward  = Input.GetKey(_keyOption.MoveForward);
+        moveBackward = Input.GetKey(_keyOption.MoveBackward);
+        moveLeft     = Input.GetKey(_keyOption.MoveLeft);
+        moveRight    = Input.GetKey(_keyOption.MoveRight);
 
-        if(moveDir.Equals(direction) == false) {
-            moveDir = direction;
-            C_Game_Move movePacket = new C_Game_Move();
-            movePacket.Velocity = _movement.Velocity.TopVector3();
-
-            Managers.Network.Send(movePacket);
-        }
-
-        _movement.MoveTo(moveDir);
+        _movement.SetInput(new bool[7] { moveForward, moveBackward, moveLeft, moveRight, isRun, isCrouch, isJump });
 
         #endregion
     }
+
     private float ClampAngle(float angle, float min, float max) {
         if(angle < -360) angle += 360;
         if(angle > 360) angle -= 360;
 
         return Mathf.Clamp(angle, min, max);
-    }
-
-#if UNITY_EDITOR
-    private void OnApplicationQuit() {
-        Managers.Input.RemoveMouseInputHandler(MouseInputHandler);
-        Managers.Input.RemoveKeyInputHandler(KeyboardInputHandler);
-    }
-#endif
-
-    private void OnDestroy() {
-        Managers.Input.RemoveMouseInputHandler(MouseInputHandler);
-        Managers.Input.RemoveKeyInputHandler(KeyboardInputHandler);
     }
 }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class InteractableObject : MonoBehaviour, NetworkObject {
-    public int AuthCode { get; set; }
+    public uint AuthCode { get; set; }
 
 #if UNITY_CLIENT_FPS
     [SerializeField] protected InteractableUI _interactableUI = null;

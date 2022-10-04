@@ -2,20 +2,25 @@ ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
     - CharacterPooler
-    - ElevatorCall
-    - ElevatorController
-    - ExtractionArea
     - InGameSceneManager
+    - Player
+    - PlayerMovement
     - ServerManager
-    - TrainController
-    - Transmitter
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
+    UnityEditor.Graphs.dll:
+    - UnityEditor.Graphs.AnimationBlendTree.Graph
+    - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.Graph
+    - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
+    - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
     - UnityEditor.TestTools.TestRunner.TestListCacheData
     - UnityEditor.TestTools.TestRunner.TestRun.TestJobDataHolder
-  serializedClasses: {}
+  serializedClasses:
+    Assembly-CSharp:
+    - PlayerStat
   methodsToPreserve: []
   sceneClasses:
     Assets/Scenes/Cityhall.unity:
@@ -39,31 +44,29 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 64
       Script: {instanceID: 0}
-    - Class: 65
-      Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
-    - Class: 82
+    - Class: 90
+      Script: {instanceID: 0}
+    - Class: 95
       Script: {instanceID: 0}
     - Class: 104
       Script: {instanceID: 0}
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 1610}
+      Script: {instanceID: 1818}
     - Class: 114
-      Script: {instanceID: 1628}
+      Script: {instanceID: 2862}
     - Class: 114
-      Script: {instanceID: 2514}
+      Script: {instanceID: 4408}
     - Class: 114
-      Script: {instanceID: 2670}
-    - Class: 114
-      Script: {instanceID: 3230}
-    - Class: 114
-      Script: {instanceID: 3716}
-    - Class: 114
-      Script: {instanceID: 3974}
+      Script: {instanceID: 4438}
     - Class: 115
+      Script: {instanceID: 0}
+    - Class: 137
+      Script: {instanceID: 0}
+    - Class: 143
       Script: {instanceID: 0}
     - Class: 157
       Script: {instanceID: 0}
@@ -145,7 +148,7 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 3640}
+      Script: {instanceID: 4016}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 157
@@ -344,7 +347,7 @@ ScriptsOnlyBuild:
     className: Projectile
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 6554a00ef5f763ff219f7ddc8cd41952
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerMovement
@@ -366,12 +369,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_FontAsset
-  - hash:
-      serializedVersion: 2
-      Hash: 7cf5d910361d65e93f58cee6748ad9e7
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: PlayerStat
   - hash:
       serializedVersion: 2
       Hash: 94f6ed5c9bf042cddaecdb3dae1e4938
@@ -488,7 +485,7 @@ ScriptsOnlyBuild:
     className: TimelineAsset
   - hash:
       serializedVersion: 2
-      Hash: 2a0316f6f8931d5184b19d72f3512f5e
+      Hash: b0c867982531a59363c42ce3340346f0
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: InGameSceneManager
@@ -534,12 +531,6 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: GraphicRaycaster
-  - hash:
-      serializedVersion: 2
-      Hash: f698907fa31dbdf66d1bcd05eaf039e3
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: Character
   - hash:
       serializedVersion: 2
       Hash: f40fedccd4adbc76605bea6d67537e4b
@@ -782,7 +773,7 @@ ScriptsOnlyBuild:
     className: PositionAsUV1
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 745cfaa9efef3f26d53c98942f999aef
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ServerManager
@@ -836,7 +827,7 @@ ScriptsOnlyBuild:
     className: SignalTrack
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 89d6b09a42934a6a9eaaa573803b664e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: CharacterPooler
@@ -848,7 +839,7 @@ ScriptsOnlyBuild:
     className: Mask
   - hash:
       serializedVersion: 2
-      Hash: 9ae71d13463771206702a40fb7b9e5c8
+      Hash: 6554a00ef5f763ff219f7ddc8cd41952
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
@@ -948,12 +939,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_ScrollbarEventHandler
-  - hash:
-      serializedVersion: 2
-      Hash: 23308e92c089f74a3d9cc6d416303fea
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: BaseStat
   - hash:
       serializedVersion: 2
       Hash: 1ce6f757bda026ce273c4a348afe5c9a

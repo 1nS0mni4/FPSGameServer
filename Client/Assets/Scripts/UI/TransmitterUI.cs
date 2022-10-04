@@ -62,13 +62,13 @@ public class TransmitterUI : UI_Panel {
     #region Override Functions
 
     protected override void OnEnabled() {
-        Managers.Input.CanInput = false;
+        Managers.CanInput = false;
         StartCoroutine(CoStartLoading());
     }
 
     protected override void OnDisabled() {
         //Managers.Network.MessageWait.Remove(typeof(S_Response_Request_Online));
-        Managers.Input.CanInput = true;
+        Managers.CanInput = true;
 
         StopCoroutine(CoStartLoading());
         _loadingIcon.gameObject.SetActive(false);

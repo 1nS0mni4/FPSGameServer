@@ -15,7 +15,7 @@ public class PacketManager {
     private Dictionary<ushort, Action<PacketSession, ArraySegment<byte>, ushort>> _makeFunc = new Dictionary<ushort, Action<PacketSession, ArraySegment<byte>, ushort>>();
     private Dictionary<ushort, Action<PacketSession, IMessage>> _handler = new Dictionary<ushort, Action<PacketSession, IMessage>>();
 
-    public Action<ushort, IMessage> CustomHandler { get; set; } = null;
+    public Action<PacketSession, IMessage, ushort > CustomHandler { get; set; } = null;
 
     private void Register() {
       _makeFunc.Add((ushort)PacketID.CCommonDebug, MakePacket<C_Common_Debug>);
@@ -32,6 +32,8 @@ public class PacketManager {
     _handler.Add((ushort)PacketID.CLoginRequestGameSession, PacketHandler.C_Login_Request_Game_SessionHandler);
       _makeFunc.Add((ushort)PacketID.SLoginGameStandby, MakePacket<S_Login_Game_Standby>);
     _handler.Add((ushort)PacketID.SLoginGameStandby, PacketHandler.S_Login_Game_StandbyHandler);
+      _makeFunc.Add((ushort)PacketID.SLoginDebugGameStandby, MakePacket<S_Login_Debug_Game_Standby>);
+    _handler.Add((ushort)PacketID.SLoginDebugGameStandby, PacketHandler.S_Login_Debug_Game_StandbyHandler);
       _makeFunc.Add((ushort)PacketID.SLoginNotifyServerInfo, MakePacket<S_Login_Notify_Server_Info>);
     _handler.Add((ushort)PacketID.SLoginNotifyServerInfo, PacketHandler.S_Login_Notify_Server_InfoHandler);
 
@@ -56,7 +58,7 @@ public class PacketManager {
         pkt.MergeFrom(segment.Array, segment.Offset + 4, segment.Count - 4);
 
         if(CustomHandler != null) {
-            CustomHandler.Invoke(msgID, pkt);
+            CustomHandler.Invoke(session, pkt, msgID);
         }
         else {
             Action<PacketSession, IMessage> action = null;

@@ -386,7 +386,6 @@
 "Assets/Scripts/Managers/NetworkManager.cs"
 "Assets/Scripts/Managers/ServerManager.cs"
 "Assets/Scripts/Managers/SessionManager.cs"
-"Assets/Scripts/Objects/Base/BaseStat.cs"
 "Assets/Scripts/Objects/Base/NetworkObject.cs"
 "Assets/Scripts/Objects/ExtractionArea/Elevator/ElevatorCall.cs"
 "Assets/Scripts/Objects/ExtractionArea/Elevator/ElevatorController.cs"
